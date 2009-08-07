@@ -1,0 +1,98 @@
+{# begin {templatelocation} #}
+<script type="text/javascript">
+// <![CDATA[
+	var form_name = 'compose_form';
+	var text_name = 'message';
+	// Define the bbCode tags
+	var bbcode = new Array();
+	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=1]','[/list]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]');
+	var imageTag = false;
+// ]]>
+</script>
+<script type="text/javascript" src="{site_url}/pm/javascript/compose.js"></script>
+<script language="javascript" type="text/javascript">
+function adduser() {
+  var dropdownIndex = document.getElementById('combo_user').selectedIndex;
+  var dropdownValue = document.getElementById('combo_user')[dropdownIndex].value
+  document.compose_form.username_list.value +=  dropdownValue + ',';
+  document.compose_form.combo_user.value = '';
+}
+function addfriend() {
+  var dropdownIndex = document.getElementById('combo_friend').selectedIndex;
+  var dropdownValue = document.getElementById('combo_friend')[dropdownIndex].value
+  document.compose_form.username_list.value +=  dropdownValue + ',';
+}
+</script>
+<form id="compose_form" name="compose_form" action="{site_url}/pm/compose.php" method="post">
+<input type="hidden" name="reply_msgid" value="{reply_msgid}" />
+<input type="hidden" name="msgid" value="{msgid}" />
+
+<div id="pm" class="pm-main">
+  {# common header area - show where we are #}
+  <h2>PM :: <strong>{$LANG_PM00[compose_msg]}</strong></h2>
+  {# end of common header #}
+  <div style="clear:both;"></div>
+  <hr />
+
+  {!if error_message}
+    <div style="padding-top:5px;padding-bottom:5px;background-color:#ff3300;">
+    {error_message}
+    </div>
+  {!endif}
+
+  <table style="width:100%;border:none;padding-bottom:0;margin-bottom:0;" class="bg1">
+    <tr>
+      <td style="width:10%;text-align:left;vertical-align:top;">
+        To:
+      </td>
+      <td style="vertical-align:top;">
+        <textarea tabindex="1" id="username_list" class="inputbox" rows="2" cols="50" name="username_list">{to}</textarea>
+      </td>
+      <td style="vertical-align:top;text-align:left;">
+        {userselect}&nbsp;<input type="button" value="{$LANG_PM00[add_user]}" onclick="adduser();" />
+      </td>
+      <td style="vertical-align:top;text-align:left;">
+        {friendselect}&nbsp;<input style="vertical-align:top;" type="button" value="{$LANG_PM00[add_friend]}" onclick="addfriend();" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {$LANG_PM00[subject]}:
+      </td>
+      <td colspan="3">
+        <input tabindex="2" id="subject" class="inputbox autowidth" type="text" value="{subject}" maxlength="60" size="45" name="subject"/>
+      </td>
+    </tr>
+  </table>
+
+  <div id="format-buttons">
+    <input class="button2" type="button" title="Bold text: [b]text[/b]" onclick="bbstyle(0)" style="font-weight: bold; width: 30px;" value=" B " name="addbbcode0" accesskey="b"/>
+    <input class="button2" type="button" title="Italic text: [i]text[/i]" onclick="bbstyle(2)" style="font-style: italic; width: 30px;" value=" i " name="addbbcode2" accesskey="i"/>
+    <input class="button2" type="button" title="Underline text: [u]text[/u]" onclick="bbstyle(4)" style="text-decoration: underline; width: 30px;" value=" u " name="addbbcode4" accesskey="u"/>
+    <input class="button2" type="button" title="Quote text: [quote]text[/quote]" onclick="bbstyle(6)" style="width: 50px;" value="Quote" name="addbbcode6" accesskey="q"/>
+    <input class="button2" type="button" title="Code display: [code]code[/code]" onclick="bbstyle(8)" style="width: 40px;" value="Code" name="addbbcode8" accesskey="c"/>
+    <input class="button2" type="button" title="List: [list]text[/list]" onclick="bbstyle(10)" style="width: 40px;" value="List" name="addbbcode10" accesskey="l"/>
+    <input class="button2" type="button" title="Ordered list: [list=]text[/list]" onclick="bbstyle(12)" style="width: 40px;" value="List=" name="addbbcode12" accesskey="o"/>
+    <input class="button2" type="button" title="List item: [*]text[/*]" onclick="bbstyle(-1)" style="width: 40px;" value="[*]" name="addlitsitem" accesskey="t"/>
+    <input class="button2" type="button" title="Insert image: [img]http://image_url[/img]" onclick="bbstyle(14)" style="width: 40px;" value="Img" name="addbbcode14" accesskey="p"/>
+    <input class="button2" type="button" title="Insert URL: [url]http://url[/url] or [url=http://url]URL text[/url]" onclick="bbstyle(16)" style="text-decoration: underline; width: 40px;" value="URL" name="addbbcode16" accesskey="w"/>
+    Font size:&nbsp;
+    <select title="Font size: [size=9]small text[/size]" onchange="bbfontstyle('[size=' + this.form.addbbcode20.options[this.form.addbbcode20.selectedIndex].value + ']', '[/size]');this.form.addbbcode20.selectedIndex = 2;" name="addbbcode20">
+      <option value="7">Tiny</option>
+      <option value="9">Small</option>
+      <option selected="selected" value="12">Normal</option>
+      <option value="18">Large</option>
+      <option value="24">Huge</option>
+    </select>
+  </div>
+
+  <div id="message-box">
+    <textarea id="message" class="inputbox" style="width:95%;" onkeyup="storeCaret(this);" onclick="storeCaret(this);" onselect="storeCaret(this);" tabindex="3" cols="76" rows="15" name="message"/>{message}</textarea>
+  </div>
+
+</div>
+<input type="hidden" name="{gltoken_name}" value="{gltoken}" />
+<input type="submit" name="send" value="{$LANG_PM00[send]}" tabindex="4" />
+<input type="submit" name="preview" value="{$LANG_PM00[preview]}" tabindex="5" />
+<input type="submit" name="cancel" value="{$LANG_PM00[cancel]}" tabindex="6" />
+</form>

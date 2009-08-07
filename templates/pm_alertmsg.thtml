@@ -1,0 +1,12 @@
+<div id="msgbox" style="font-weight:bold;width:95%;margin:10px;border:1px solid black;">
+    <div style="padding:5px;color:#FFFFFF;background:url({layout_url}/images/header-bg.png) #1A3955;">
+      {message_title}
+    </div>
+    <div style="padding:5px 15px 15px 15px;border-top:3px solid black;background:#E7E7E7;">
+      {message_text}
+      <br />
+      <div style="padding-top:10px;padding-bottom:10px;">
+        Click <a href="javascript:history.back()">HERE</a> to return
+      </div>
+    </div>
+</div>

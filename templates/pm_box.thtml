@@ -1,0 +1,88 @@
+{# begin {templatelocation} #}
+<script type="text/javascript" src="{site_url}/pm/javascript/pm.js"></script>
+<form id="index_form" action="{site_url}/pm/index.php" method="post">
+
+<div id="pm" class="pm-main">
+  <h2>{$LANG_PM00[pm]} :: {$LANG_PM00[view_folder]}: <strong>{folder_name} {unread_text}</strong></h2>
+  <div class="selectfolder">
+    <strong>{$LANG_PM00[folder]}:&nbsp;</strong>
+    {folder_select}
+    <input type="submit" value="{$LANG_PM00[go]}" name="folder_select" />
+  </div>
+
+  <div style="clear:both;"></div>
+  {# area specific header #}
+  <div id="compose_button" class="floatleft buttons" style="display:none;padding-bottom:5px;">
+    <button type="button" name="submit" onclick="window.location.href='{site_url}/pm/compose.php?mode=new'">
+    {$LANG_PM00[compose_msg]}
+    </button>
+  </div>
+  <div id="compose_link" class="floatleft">
+    [ <a href="{site_url}/pm/compose.php?mode=new">{$LANG_PM00[compose_msg]}</a> ]
+  </div>
+
+  <div class="rightside pagination">
+    {pagination}
+  </div>
+
+  {# content #}
+  <div style="clear:both;"></div>
+  <br />
+  <table class="pm-list" style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+   <th colspan="4">
+     {$LANG_PM00[messages]}
+   </th>
+   <th>{$LANG_PM00[select]}</th>
+   </tr>
+     {msg_records}
+   </table>
+
+  {# area footer #}
+
+  <fieldset class="display-options">
+    <span style="text-align:left;float:left;">
+      <a href="{site_url}/pm/friends.php">{$LANG_PM00[manage_friends]}</a>
+    </span>
+	<select name="mark_option">
+	  <option value="" selected="selected">---</option>
+	  <option value="delete_marked">{$LANG_PM00[delete_marked]}</option>
+	  {!if not_archive}
+	  <option value="archive_marked">{$LANG_PM00[archive_marked]}</option>
+	  {!endif}
+	</select>
+	<input class="button2" type="submit" name="submit_mark" value="{$LANG_PM00[go]}"  onclick="return confirm('{$LANG_PM00[batch_confirm]}');"/>
+	<div style="float:right;">
+	  <a href="#" onclick="marklist('index_form', 'marked_msg', true); return false;">{$LANG_PM00[mark_all]}</a> &bull; <a href="#" onclick="marklist('index_form', 'marked_msg', false); return false;">{$LANG_PM00[unmark_all]}</a>
+	</div>
+  </fieldset>
+
+  <fieldset>
+    <div class="rightside pagination">
+        {pagination}
+    </div>
+  </fieldset>
+  <fieldset class="display-options">
+    <label>
+      {$LANG_PM00[display]}:
+      {time_select}
+    </label>
+    <label>
+      {$LANG_PM00[sort_by]}
+      {sort_select}
+    </label>
+    <label>
+     {sort_dir_select}
+      <input type="submit" value="{$LANG_PM00[go]}" name="sort" />
+    </label>
+    <input type="hidden" value="{current_folder}" name="current_folder" />
+  </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    document.getElementById('compose_button').style.display='';
+    document.getElementById('compose_link').style.display='none';
+//]]>
+</script>
+{# end of header area #}

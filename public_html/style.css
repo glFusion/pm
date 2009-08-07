@@ -1,0 +1,223 @@
+.pm-main {
+  margin:5px;
+  padding:0;
+}
+
+#pm h2 {
+  border-bottom: medium none;
+  margin-left:0;
+  padding:0;
+  border-bottom-color: #CCC;
+  font-size: 1.2em;
+  font-weight: normal;
+  margin-bottom:0;
+  margin-top:0.5em;
+  padding-bottom:0;
+  width:50%;
+  float:left;
+}
+
+#pm .selectfolder {
+  float:right;
+  border-bottom: medium none;
+  margin-left:0;
+  padding:0;
+  border-bottom-color: #CCC;
+  font-size: 1.1em;
+  font-weight: normal;
+  margin-bottom:0;
+  margin-top:0.5em;
+  padding-bottom:0;
+  width:49%;
+  text-align:right;
+}
+
+#pm .pagination {
+  float:right;
+  height:1%;
+  margin-top:5px;
+  text-align:right;
+  width:auto;
+}
+
+#pm .rightside {
+  margin-left:5px;
+  float:right;
+  margin-right:0;
+  text-align:right;
+  margin-top:5px;
+}
+
+#pm fieldset {
+  border-width:0;
+  font-size:1.1em;
+}
+
+#pm fieldset.display-options {
+  margin:3px 0 5px;
+  text-align:center;
+}
+
+.pm-list th {
+  font-size:1.1em;
+  border-left-width:0;
+  padding-bottom:2px;
+  padding-top:2px;
+  text-transform:uppercase;
+}
+
+.pm-list td {
+  font-size: 1em;
+  border-bottom: 1px solid #bbbbbb;
+  padding: 5px 2px;
+}
+
+#pm .unread {
+  font-weight:bold;
+}
+
+#pm .read {
+  font-weight:normal;
+}
+
+.pm-list a:link, .pm-list a:visited {
+  text-decoration:none;
+}
+
+/* --- view message --- */
+
+.some {
+    clear:both;
+}
+
+.post {
+  clear:both;
+  line-height: 1.48em;
+  padding: 0;
+  color:#333333;
+  background-color:#ECF3F7;
+}
+
+.postbody {
+  clear:both;
+  float:left;
+  line-height: 1.48em;
+  padding: 0;
+  width:76%;
+  color:#333333;
+  background-color:#ECF3F7;
+}
+
+.postbody ul.profile-icons {
+  float: right;
+  padding: 0;
+  width: auto;
+}
+
+ul.profile-icons {
+  list-style-image:none;
+  list-style-position:outside;
+  list-style-type:none;
+  padding-top:10px;
+}
+
+.postbody h3 {
+  margin:0;
+  border-color:#a4b3bf;
+  font-size:1.4em;
+
+}
+
+p.author {
+  line-height:1.1em;
+  font-size:1.0em;
+  font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+}
+
+.content {
+  padding:0;
+  font-size: 1.1em;
+  color:#333333;
+  line-height: 1.4em;
+  min-height: 3em;
+  overflow:hidden;
+}
+
+.pm-signature {
+  border-top-color: #cccccc;
+  border-top: 1px solid #cccccc;
+  clear:left;
+  font-size:1em;
+  line-height:140%;
+  margin-top:1.5em;
+  overflow:hidden;
+  padding-top:0.2em;
+  width:100%;
+}
+
+.postheader {
+  background-color:#ECF3F7;
+  padding-bottom:5px;
+  border-bottom:1px solid gray;
+}
+
+/* profile area */
+
+.pm-main .postprofile {
+  color:#666666;
+  display:inline;
+  float:right;
+  margin: 5px 0 10px;
+  min-height:80px;
+  background-color:#ECF3F7;
+}
+
+.postprofile dd, .postprofile dt {
+  line-height: 1.2em;
+  margin-left: 8px;
+}
+
+.quotepm {
+	background: #ebebeb url(images/img_quote.gif) repeat right top;
+	border: 1px solid #d7d7d7;
+	border-left: 4px solid #cdcdcd;
+	color: #425259;
+	margin: 5px 10px 8px;
+	padding: 10px 10px 10px 15px;
+}
+
+#format-buttons {
+    padding:5px;
+}
+
+#pm textarea, input, select {
+	font-size: 1em;
+    font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+}
+
+#pm input.button1, #pm input.button2 {
+	font-size: 1em;
+}
+
+#pm a.button1, #pm input.button1, #pm a.button2, #pm input.button2 {
+	width: auto !important;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	color: #000;
+	background: #E1EBF2 none repeat-x top;
+}
+
+a.button1, input.button1 {
+	font-weight: bold;
+	border: 1px solid #666666;
+}
+
+#pm a.button2, #pm input.button2 {
+	border: 1px solid #666666;
+}
+
+#pm .msgbody {
+	font-size: 1em;
+    font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+}

@@ -1,0 +1,16 @@
+
+{$LANG_PM_NOTIFY[hello]} {to_username}
+
+
+{$LANG_PM_NOTIFY[new_pm_text]}: {from_username}
+
+{$LANG_PM_NOTIFY[subject]}: {msg_subject}
+
+
+{$LANG_PM_NOTIFY[disclaimer]}
+
+
+{$LANG_PM_NOTIFY[sincerely]},
+{site_name} {$LANG_PM_NOTIFY[support]}
+
+{site_url}

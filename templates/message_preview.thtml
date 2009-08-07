@@ -1,0 +1,79 @@
+{# begin {templatelocation} #}
+
+<div class="pm-main">
+  {# common header area - show where we are #}
+  <h2>{$LANG_PM00[pm]} :: <strong>{$LANG_PM00[preview_msg]}</strong></h2>
+  {# end of common header #}
+
+  {# area specific header #}
+  <div style="clear:both;"></div>
+
+  <h2><strong>{subject}</strong></h2>
+  {# end of header area #}
+  <div style="clear:both;"></div>
+  {# area content #}
+  <table style="width:100%;">
+    <tr>
+      <td style="width:76%;vertical-align:top;">
+        <table  style="width:100%;">
+          <tr>
+            <td class="pluginRow2">
+              <p class="author">
+                <strong>{$LANG_PM00[sent]}:</strong>
+                {date}
+                <br />
+                <strong>{$LANG_PM00[from]}:</strong>
+                {from_name}
+                <br />
+                <strong>{$LANG_PM00[to]}:</strong>
+                {to_name}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="msgbody">
+              {msg_text}
+              {!if signature}
+              <div id="sig{user_id}" class="pm-signature">
+                <em>{signature}</em>
+              </div>
+              {!endif}
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td style="vertical-align:top;padding:5px;border-left:1px solid #cccccc;">
+        <div class="profile-image" style="text-align:center;">{avatar}</div>
+        <div>{from_name}</div>
+        <div>{rank}</div>
+        <br />
+        {!if registered}
+          <div><strong>{$LANG_PM00[registered]}:</strong>&nbsp;{registered}</div>
+        {!endif}
+        {!if location}
+          <div><strong>{$LANG_PM00[location]}:</strong>&nbsp;{location}</div>
+        {!endif}
+        <div>
+          <img src="images/pm.png" alt="{$LANG_PM00[send_pm']}" />
+          {!if homepage}
+            <img src="images/home.png" alt="{$LANG_PM00[homepage]}"/>
+          {!endif}
+          {!if email}
+            <img src="images/email.png" alt="{$LANG_PM00[email]}"/>
+          {!endif}
+        </div>
+      </td>
+    </tr>
+  </table>
+  {# end of area content #}
+
+  <div style="clear:both;"></div>
+
+  {# area specific footer #}
+  {# end of area specific footer #}
+
+  {# general footer #}
+
+  {# end of general footer #}
+</div>
+{# end {templatelocation} #}

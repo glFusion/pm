@@ -1,0 +1,69 @@
+{# begin {templatelocation} #}
+<script type="text/javascript" src="{site_url}/pm/javascript/pm.js"></script>
+<script language="javascript" type="text/javascript">
+function adduser() {
+  var dropdownIndex = document.getElementById('combo_user').selectedIndex;
+  var dropdownValue = document.getElementById('combo_user')[dropdownIndex].value
+  document.friend_form.newfriends.value +=  dropdownValue + ',';
+}
+</script>
+
+<form id="friend_form" name="friend_form" action="{site_url}/pm/friends.php" method="post">
+<div id="pm" class="pm-main">
+  <h2>{$LANG_PM00[pm]} :: <strong>{$LANG_PM00[manage_friends]}</strong></h2>
+
+  {# area specific header #}
+  <div class="rightside">
+    <a class="left" href="{site_url}/pm/index.php">
+      <strong>{$LANG_PM00[return_to]} {$LANG_PM00[inbox]}</strong>
+    </a>
+  </div>
+
+  {# content #}
+  <div style="clear:both;"></div>
+
+  {!if error_message}
+    <div style="padding-top:5px;padding-bottom:5px;background-color:#ff3300;">
+    {error_message}
+    </div>
+  {!endif}
+
+  <div style="padding-top:5px;padding-bottom:5px;padding-left:2px;" class="pluginRow2">
+    {$LANG_PM00[friend_help]}
+  </div>
+
+  <table class="pm-list" style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td style="vertical-align:top;width:30%;padding-left:10px;">
+        <strong>{$LANG_PM00[your_friends]}:</strong><br />
+        {$LANG_PM00[your_friends_help]}
+      </td>
+      <td style="vertical-align:top;" colspan="2">
+        {friend_select}
+      </td>
+    </tr>
+
+    <tr>
+      <td style="vertical-align:top;width:30%;padding-left:10px;">
+        <strong>{$LANG_PM00[add_new_friend]}:</strong><br />
+        {$LANG_PM00[add_new_friend_help]}
+      </td>
+      <td style="vertical-align:top;width:40%;">
+        <textarea id="newfriends" name="newfriends" cols="90" rows="4" style="width:90%;">{newfriends}</textarea>
+      </td>
+       <td style="vertical-align:top;text-align:left;">
+        {user_select}&nbsp;<input type="button" value="{$LANG_PM00[add_user]}" onclick="adduser();" />
+      </td>
+    </tr>
+   </table>
+
+  {# area footer #}
+  <div style="text-align:center;padding-top:10px;">
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}" />
+    <input type="submit" value="{$LANG_PM00[submit]}" name="submit" />&nbsp;&nbsp;
+    <input type="submit" value="{$LANG_PM00[cancel]}" name="cancel" />
+  </div>
+
+</div>
+</form>
+{# end of header area #}
