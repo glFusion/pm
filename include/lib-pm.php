@@ -128,6 +128,9 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
     if ( DB_numRows($result) < 1 ) {
         return;
     }
+    $parsers = array();
+    $parsers[] = array(array('block','inline','link','listitem'), '_bbc_replacesmiley');
+
     $counter = 0;
     $prevmsgtime = 0;
     while ( $msg = DB_fetchArray($result) ) {
@@ -140,12 +143,14 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
         $prevmsgtime = $msg['message_time'];
         $subject = htmlentities($msg['message_subject']);
 
+        $formatted_msg_text = BBC_formatTextBlock($msg['message_text'],'text', $parsers);
+
         $T->set_var(array(
             'from'        => $msg['author_uid'],
             'to'          => $msg['user_id'],
             'subject'     => $subject,
             'date'        => @strftime('%b %d %Y @ %H:%M', $msg['message_time'] ),
-            'msg_text'    => BBC_formatTextBlock($msg['message_text'],'text'),
+            'msg_text'    => $formatted_msg_text, // BBC_formatTextBlock($msg['message_text'],'text'),
             'from_name'   => $msg['author_name'],
             'to_name'     => $msg['to_address'],
         ));
@@ -197,4 +202,13 @@ function PM_deleteMessage( $msg_id=0, $folder='' )
     }
 }
 
+function _bbc_replacesmiley($str) {
+    global $_CONF,$_TABLES,$CONF_FORUM;
+
+    if (function_exists('msg_showsmilies') ) {
+        $str = msg_replaceEmoticons($str);
+    }
+
+    return $str;
+}
 ?>

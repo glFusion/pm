@@ -1,6 +1,13 @@
 ChangeLog
 
+v1.1.0
+------
+- Add support for smileys plugin (Mark)
+- Improve speedlimit handling (Mark)
+- Added German translation (Tony Kluever)
+
 v1.0.0
+------
 - Do not expose user's email, use glFusion mail link instead.
 - Modifed style to use the core glFusion styles, this allows improved
   integration into other themes.

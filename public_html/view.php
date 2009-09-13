@@ -125,7 +125,10 @@ if ( DB_numRows($result) > 0 ) {
         $T->set_var('add_friend','');
     }
 
-    $formatted_msg_text = BBC_formatTextBlock($msg['message_text'],'text');
+    $parsers = array();
+    $parsers[] = array(array('block','inline','link','listitem'), '_bbc_replacesmiley');
+
+    $formatted_msg_text = BBC_formatTextBlock($msg['message_text'],'text', $parsers);
 
     $T->set_var(array(
         'from'          => $msg['author_uid'],
@@ -162,6 +165,14 @@ $styleLink = '<link rel="stylesheet" type="text/css" href="'.$_CONF['site_url'].
 
 $display = '';
 $display .= COM_siteHeader('menu',$LANG_PM00['title'],$styleLink);
+if ( isset($_GET['msg']) ) {
+    $msg_header = COM_applyFilter ($_GET['msg'], true);
+} else {
+    $msg_header = 0;
+}
+if ( $msg_header > 0 ) {
+    $display .= COM_showMessage ($msg_header, 'pm');
+}
 $display .= $retval;
 $display .= COM_siteFooter();
 echo $display;

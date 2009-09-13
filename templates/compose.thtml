@@ -22,6 +22,19 @@ function addfriend() {
   var dropdownValue = document.getElementById('combo_friend')[dropdownIndex].value
   document.compose_form.username_list.value +=  dropdownValue + ',';
 }
+
+function emoticon(text) {
+    var txtarea = document.compose_form.message;
+    text = ' ' + text + ' ';
+    if (txtarea.createTextRange && txtarea.caretPos) {
+        var caretPos = txtarea.caretPos;
+        caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? caretPos.text + text + ' ' : caretPos.text + text;
+        txtarea.focus();
+    } else {
+        txtarea.value  += text;
+        txtarea.focus();
+    }
+}
 </script>
 <form id="compose_form" name="compose_form" action="{site_url}/pm/compose.php" method="post">
 <input type="hidden" name="reply_msgid" value="{reply_msgid}" />
@@ -88,6 +101,10 @@ function addfriend() {
 
   <div id="message-box">
     <textarea id="message" class="inputbox" style="width:95%;" onkeyup="storeCaret(this);" onclick="storeCaret(this);" onselect="storeCaret(this);" tabindex="3" cols="76" rows="15" name="message"/>{message}</textarea>
+  </div>
+
+  <div id="smileys" style="padding:5px;width:95%;">
+    {smileys}
   </div>
 
 </div>

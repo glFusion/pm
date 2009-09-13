@@ -122,12 +122,15 @@ function PM_previewMessage( $msgID = 0 )
     $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
     $T->set_file (array ('message'=>'message_preview.thtml'));
 
+    $parsers = array();
+    $parsers[] = array(array('block','inline','link','listitem'), '_bbc_replacesmiley');
+
     $T->set_var(array(
         'from'        => $msg['source_uid'],
         'to'          => $msg['target_uid'],
         'subject'     => $subject,
         'date'        => @strftime('%b %d %Y @ %H:%M', $msg['datetime'] ),
-        'msg_text'    => BBC_formatTextBlock($msg['message'],'text'),
+        'msg_text'    => BBC_formatTextBlock($msg['message'],'text',$parsers),
         'avatar'      => USER_getPhoto($msg['source_uid'],$photo,'',128),
         'from_name'   => $username,
         'to_name'     => htmlentities($msg['username_list']),
@@ -187,6 +190,12 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     }
     $friendselect .= '</select>';
 
+    if ( function_exists('msg_showsmilies') ) {
+        $smileys = msg_showsmilies();
+    } else {
+        $smileys = '';
+    }
+
     $T->set_var(array(
         'to'          => htmlentities($to),
         'subject'     => htmlentities($subject),
@@ -195,6 +204,7 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
         'friendselect'=> $friendselect,
         'reply_msgid' => $reply_msgid,
         'msgid'       => $msgid,
+        'smileys'     => $smileys,
     ));
     $error_message = '';
     if ( count($errors) > 0 ) {
@@ -394,12 +404,12 @@ switch ( $mode ) {
         break;
     case 'reply' :
         COM_clearSpeedlimit ($_PM_CONF['post_speedlimit'], 'pm');
+        $reply_msgid = COM_applyFilter($_GET['msgid'],true);
         $last = COM_checkSpeedlimit ('pm');
         if ($last > 0) {
-            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=4');
+            echo COM_refresh($_CONF['site_url'].'/pm/view.php?msgid='.intval($reply_msgid).'&amp;msg=4');
             exit;
         }
-        $reply_msgid = COM_applyFilter($_GET['msgid'],true);
         $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".intval($reply_msgid)." AND dist.user_id=".$_USER['uid'];
         $result = DB_query($sql);
         if ( DB_numRows($result) < 1 ) {
