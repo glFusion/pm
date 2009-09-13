@@ -117,7 +117,7 @@ function PM_previewMessage( $msgID = 0 )
     }
 
     // clean things up a little...
-    $subject = htmlentities($msg['subject']);
+    $subject = htmlentities($msg['subject'], ENT_QUOTES, COM_getEncodingt());
 
     $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
     $T->set_file (array ('message'=>'message_preview.thtml'));
@@ -133,7 +133,7 @@ function PM_previewMessage( $msgID = 0 )
         'msg_text'    => BBC_formatTextBlock($msg['message'],'text',$parsers),
         'avatar'      => USER_getPhoto($msg['source_uid'],$photo,'',128),
         'from_name'   => $username,
-        'to_name'     => htmlentities($msg['username_list']),
+        'to_name'     => htmlentities($msg['username_list'], ENT_QUOTES, COM_getEncodingt()),
         'rank'        => SEC_inGroup('Root',$msg['source_uid']) ? 'Site Admin' : 'User',
         'registered'  => $regdate,
         'signature'   => nl2br($sig),
@@ -197,9 +197,9 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     }
 
     $T->set_var(array(
-        'to'          => htmlentities($to),
-        'subject'     => htmlentities($subject),
-        'message'     => htmlentities($message),
+        'to'          => htmlentities($to, ENT_QUOTES, COM_getEncodingt()),
+        'subject'     => htmlentities($subject, ENT_QUOTES, COM_getEncodingt()),
+        'message'     => htmlentities($message, ENT_QUOTES, COM_getEncodingt()),
         'userselect'  => $userselect,
         'friendselect'=> $friendselect,
         'reply_msgid' => $reply_msgid,
@@ -286,7 +286,7 @@ function PM_msgSend( )
     }
 
     // do a little cleaning...
-    $subject = htmlentities(strip_tags($subject));
+    $subject = htmlentities(strip_tags($subject), ENT_QUOTES, COM_getEncodingt());
 
     $parent_id = 0;
 

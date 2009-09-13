@@ -141,7 +141,7 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
             continue;
         }
         $prevmsgtime = $msg['message_time'];
-        $subject = htmlentities($msg['message_subject']);
+        $subject = htmlentities($msg['message_subject'], ENT_QUOTES, COM_getEncodingt());
 
         $formatted_msg_text = BBC_formatTextBlock($msg['message_text'],'text', $parsers);
 
@@ -150,7 +150,7 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
             'to'          => $msg['user_id'],
             'subject'     => $subject,
             'date'        => @strftime('%b %d %Y @ %H:%M', $msg['message_time'] ),
-            'msg_text'    => $formatted_msg_text, // BBC_formatTextBlock($msg['message_text'],'text'),
+            'msg_text'    => $formatted_msg_text,
             'from_name'   => $msg['author_name'],
             'to_name'     => $msg['to_address'],
         ));

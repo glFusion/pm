@@ -69,6 +69,7 @@ function pm_upgrade()
             DB_query($_SQL['pm_userprefs'],1);
         case '0.9.0' :
         case '1.0.0' :
+        case '1.0.1' :
             // no DB changes fallthru to the default handler...
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");

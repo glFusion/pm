@@ -2,8 +2,8 @@
     <id>pm</id>
     <name>Private Message</name>
     <description>Private Message plugin for glFusion CMS</description>
-    <version>1.0.1</version>
-    <glfusionversion>1.1.5</glfusionversion>
+    <version>1.1.0</version>
+    <glfusionversion>1.1.6</glfusionversion>
     <phpversion>4.3.0</phpversion>
     <url>http://www.glfusion.org</url>
     <maintainer>Mark R. Evans</maintainer>
