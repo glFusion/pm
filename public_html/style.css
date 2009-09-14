@@ -177,13 +177,18 @@ p.author {
   margin-left: 8px;
 }
 
-.quotepm {
+.quotepm, .quotemain {
 	background: #ebebeb url(images/img_quote.gif) repeat right top;
 	border: 1px solid #d7d7d7;
 	border-left: 4px solid #cdcdcd;
 	color: #425259;
 	margin: 5px 10px 8px;
 	padding: 10px 10px 10px 15px;
+	width:auto !important;
+}
+
+.php {
+    width:auto !important;
 }
 
 #format-buttons {
