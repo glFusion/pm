@@ -2,6 +2,7 @@ ChangeLog
 
 v1.1.0
 ------
+- Override quotmain style (Mark)
 - Add support for smileys plugin (Mark)
 - Improve speedlimit handling (Mark)
 - Added German translation (Tony Kluever)
