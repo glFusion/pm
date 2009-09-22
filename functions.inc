@@ -287,7 +287,7 @@ function plugin_profileicondisplay_pm($uid)
 
     $retval = array();
 
-    if ( $uid > 1 ) {
+    if ( $uid > 1 && !COM_isAnonUser() && SEC_hasRights('pm.user') ) {
 
         $retval = array(
             'url' => $_CONF['site_url'].'/pm/compose.php?mode=new&amp;uid='.$uid,
