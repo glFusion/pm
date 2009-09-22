@@ -270,4 +270,31 @@ function plugin_profilesave_pm( )
     }
     DB_save($_TABLES['pm_userprefs'],'uid,notify',"'".$_USER['uid']."',".$notify);
 }
+
+/*
+ * Return a link to the help element for this configuration option
+ *
+ */
+
+function plugin_config_element_help_pm($element)
+{
+    return array(2,'http://www.glfusion.org/wiki/doku.php/pm:start#configuration_settings');
+}
+
+function plugin_profileicondisplay_pm($uid)
+{
+    global $_CONF, $_USER, $LANG_PM00;
+
+    $retval = array();
+
+    if ( $uid > 1 ) {
+
+        $retval = array(
+            'url' => $_CONF['site_url'].'/pm/compose.php?mode=new&amp;uid='.$uid,
+            'text' => $LANG_PM00['title'],
+            'icon' => $_CONF['site_url'].'/pm/images/pm-profile.png',
+        );
+    }
+    return $retval;
+}
 ?>
