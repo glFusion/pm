@@ -161,16 +161,6 @@ function plugin_dopluginsearch_pm($query, $datestart, $dateend, $topic, $type, $
     $sql .= "CONCAT('/pm/view.php?msgid=',msg.msg_id,'&amp;folder=',dist.folder_name) AS url ";
     $sql .= "FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE dist.user_id=$uid ";
 
-    if (!empty($datestart) && !empty($dateend)) {
-        $delim = substr($datestart, 4, 1);
-        if (!empty($delim)) {
-            $DS = explode($delim, $datestart);
-            $DE = explode($delim, $dateend);
-            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-            $sql .= "AND (message_time BETWEEN '$startdate' AND '$enddate') ";
-        }
-    }
     if (!empty ($author)) {
         $sql .= "AND (msg.author_uid = ".intval($author).") ";
     }
@@ -178,6 +168,7 @@ function plugin_dopluginsearch_pm($query, $datestart, $dateend, $topic, $type, $
     // Search the public events
     $search = new SearchCriteria('pm', array($LANG_PM00['pm']));
     $columns = array('message_text','message_subject');
+    $sql .= $search->getDateRangeSQL('AND', 'message_time', $datestart, $dateend);
     list($sql_tmp,$ftsql_tmp) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
     $search->setSQL($sql_tmp);
     $search->setFTSQL($ftsql_tmp);
