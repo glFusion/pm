@@ -267,9 +267,9 @@ function plugin_profilesave_pm( )
  *
  */
 
-function plugin_config_element_help_pm($element)
+function plugin_getconfigelementhelp_pm($element)
 {
-    return array(2,'http://www.glfusion.org/wiki/doku.php/pm:start#configuration_settings');
+    return array('http://www.glfusion.org/wiki/doku.php/pm:start#configuration_settings',2);
 }
 
 function plugin_profileicondisplay_pm($uid)
