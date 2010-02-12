@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -63,6 +63,8 @@ function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
 
     $to_email = DB_getItem($_TABLES['users'],'email','username="'.addslashes($to_user).'"');
 
+    $privateMessage = PM_FormatForEmail( $pm_message,'text');
+
    // build the template...
     $T = new Template($_CONF['path'] . 'plugins/pm/templates');
     $T->set_file ('email', 'pm_notify.thtml');
@@ -73,17 +75,36 @@ function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
         'msg_subject'       => $pm_subject,
         'site_name'         => $_CONF['site_name'] . ' - ' . $_CONF['site_slogan'],
         'site_url'          => $_CONF['site_url'],
+        'pm_text'           => $privateMessage,
     ));
     $T->parse('output','email');
     $message = $T->finish($T->get_var('output'));
+
+    $html2txt = new html2text($msgText,false);
+    $messageText = $html2txt->get_text();
 
     $to = array($to_email,$to_user);
     $from = array($_CONF['noreply_mail'],$_CONF['site_name']);
     $subject =  $_CONF['site_name'] .' - '. $LANG_PM_NOTIFY['new_pm_notification'];
 
-    COM_mail( $to, $subject, $message, $from, false);
+    COM_mail( $to, $subject, $message, $from, true,0,'',$messageText);
 
     return true;
+}
+
+function PM_FormatForEmail( $str, $postmode='html' ) {
+    global $_CONF;
+
+    USES_lib_html2text();
+
+    $parsers = array();
+    $parsers[] = array(array('block','inline','link','listitem'));
+    $str = BBC_formatTextBlock($str,'text',$parsers);
+
+    // we don't have a stylesheet for email, so replace our div with the style...
+    $str = str_replace('<div class="quotemain">','<div style="border: 1px dotted #000;border-left: 4px solid #8394B2;color:#465584;  padding: 4px;  margin: 5px auto 8px auto;">',$str);
+
+    return $str;
 }
 
 function PM_previewMessage( $msgID = 0 )
@@ -167,8 +188,9 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     while ($A = DB_fetchArray($result) ) {
         $groupList .= ','.$A['ug_grp_id'];
     }
-    $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname "
-          ."FROM {$_TABLES['group_assignments']},{$_TABLES['users']} "
+    $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname,block "
+          ."FROM {$_TABLES['group_assignments']},{$_TABLES['users']} LEFT JOIN {$_TABLES['pm_userprefs']} "
+          ." ON {$_TABLES['users']}.uid={$_TABLES['pm_userprefs']}.uid "
           ."WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.status=3 "
           ."AND {$_TABLES['users']}.uid<>".$_USER['uid']." "
           ."AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid "
@@ -178,7 +200,9 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     $userselect = '<select id="combo_user" name="to_name"> ';
     $result = DB_query($sql);
     while ($userRow = DB_fetchArray($result) ) {
-        $userselect .= '<option value="'.$userRow['username'].'">'.$userRow['username'].'</option>' .LB;
+        if ( $userRow['block'] != 1 ) {
+            $userselect .= '<option value="'.$userRow['username'].'">'.$userRow['username'].'</option>' .LB;
+        }
     }
     $userselect .= '</select>';
 
@@ -247,18 +271,27 @@ function PM_msgSend( )
         if ( $to == '' ) {
             continue;
         }
-        $toUID = DB_getItem($_TABLES['users'],'uid','username="'.addslashes($to).'"');
-        if ( $toUID == '' || $toUID == 0 ) {
+        $sql = "SELECT {$_TABLES['users']}.uid, block FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['pm_userprefs']} "
+              ." ON {$_TABLES['users']}.uid={$_TABLES['pm_userprefs']}.uid "
+              ." WHERE {$_TABLES['users']}.username='".addslashes($to)."'";
+
+        $result = DB_query($sql);
+        if ( DB_numRows($result) < 1 ) {
             $errArray[] = $LANG_PM_ERROR['unknown_user']. ': '.$to;
         } else {
-            $distributionList[$counter]['uid'] = $toUID;
-            $distributionList[$counter]['username'] = $to;
-            if ( $counter > 0 ) {
-                $toList .= ','.$to;
+            list($toUID,$block) = DB_fetchArray($result);
+            if ( $block == 1 ) {
+                $errArray[] = $LANG_PM_ERROR['unknown_user']. ': '.$to;
             } else {
-                $toList .= $to;
+                $distributionList[$counter]['uid'] = $toUID;
+                $distributionList[$counter]['username'] = $to;
+                if ( $counter > 0 ) {
+                    $toList .= ','.$to;
+                } else {
+                    $toList .= $to;
+                }
+                $counter++;
             }
-            $counter++;
         }
     }
     if ( $counter == 0 && count($errArray) == 0 ) {

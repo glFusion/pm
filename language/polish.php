@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -105,6 +105,7 @@ $LANG_PM00 = array (
 );
 
 $LANG_PM_NOTIFY = array(
+    'pm_notify'         => 'PM Notifications',
     'new_pm_notification' => 'Nowa Wiadomosc Prywatna',
     'hello'             => 'Witaj',
     'subject'           => 'Temat',
@@ -112,6 +113,8 @@ $LANG_PM_NOTIFY = array(
     'disclaimer'        => 'Wiadomosc ta zostala, poniewaz pozwalaja na e-mail z administratorem witryny. Aby zmienic ustawienia prywatnosci, nalezy uzyc ustawienia Moje konto ' . $_CONF['site_url'] ,
     'sincerely'         => 'Dzieki!',
     'support'           => 'Wsparcie',
+    'pm_block'          => 'Block other users from sending me PMs',
+    'notify_header'     => 'Private Message Notification from ',
 );
 
 $LANG_PM_ERROR = array(

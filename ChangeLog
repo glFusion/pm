@@ -1,5 +1,10 @@
 ChangeLog
 
+v1.2.0
+------
+- Add ability to block users from sending you a PM
+- Full text notification - include the actual PM in the notification email
+
 v1.1.1
 ------
 - New Dutch Translation

@@ -1,4 +1,8 @@
   <tr>
+    <td style="width:100px;"><label for="pmblock">{lang_pmblock}:</label></td>
+    <td><input type="checkbox" id="pmblock" name="pmblock" {pmblock_checked}{xhtml}></td>
+  </tr>
+  <tr>
     <td style="width:100px;"><label for="pmnotify">{lang_pmnotify}:</label></td>
     <td><input type="checkbox" id="pmnotify" name="pmnotify" {pmnotify_checked}{xhtml}></td>
   </tr>

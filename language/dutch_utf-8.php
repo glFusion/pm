@@ -2,13 +2,13 @@
 // +--------------------------------------------------------------------------+
 // | PM Plugin - glFusion CMS                                                 |
 // +--------------------------------------------------------------------------+
-// | dutch.php                                                              |
+// | dutch_utf-8.php                                                          |
 // |                                                                          |
-// | Dutch language file                                                    |
+// | Dutch language file                                                      |
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -106,7 +106,7 @@ $LANG_PM00 = array (
 );
 
 $LANG_PM_NOTIFY = array(
-    'pm_notify'         => 'PM Meldingen',    
+    'pm_notify'         => 'PM Meldingen',
     'new_pm_notification' => 'Melding Nieuw Prive Bericht',
     'hello'             => 'Hallo',
     'subject'           => 'Onderwerp',
@@ -114,6 +114,8 @@ $LANG_PM_NOTIFY = array(
     'disclaimer'        => 'You are receiving this because you allow email from the site admin.  To change your privacy settings, please use the My Account setting at ' . $_CONF['site_url'] ,
     'sincerely'         => 'Bedankt!',
     'support'           => 'Support',
+    'pm_block'          => 'Block other users from sending me PMs',
+    'notify_header'     => 'Private Message Notification from ',
 );
 
 $LANG_PM_ERROR = array(

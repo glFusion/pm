@@ -75,6 +75,7 @@ $_SQL['pm_friends'] = "CREATE TABLE {$_TABLES['pm_friends']} (
 $_SQL['pm_userprefs'] = "CREATE TABLE {$_TABLES['pm_userprefs']} (
   uid mediumint(9) NOT NULL,
   notify tinyint(4) NOT NULL DEFAULT '1',
+  block tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (uid)
 ) TYPE=MyISAM;";
 ?>

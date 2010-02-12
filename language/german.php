@@ -9,7 +9,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -117,6 +117,8 @@ $LANG_PM_NOTIFY = array(
     'disclaimer'        => 'Du erhältst Diese Nachricht, weil Du E-Mails vom Seiten-Admin erlaubt hast.  Um Deine privaten Einstellungen zu ändern, verwende bitte die Mein Account - Einstellung bei ' . $_CONF['site_url'] ,
     'sincerely'         => 'Danke!',
     'support'           => 'Unterstützung',
+    'pm_block'          => 'Block other users from sending me PMs',
+    'notify_header'     => 'Private Message Notification from ',
 );
 
 $LANG_PM_ERROR = array(

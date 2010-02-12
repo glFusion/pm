@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -116,10 +116,12 @@ $LANG_PM_NOTIFY = array(
     'disclaimer'        => 'Du har mottagit detta för du tillåter "privat meddelande-besked". För att ändra dina sekretessinställningar, var god använd Mitt konto-alternativ på ' . $_CONF['site_url'] ,
     'sincerely'         => 'Tackar!',
     'support'           => 'Support',
+    'pm_block'          => 'Block other users from sending me PMs',
+    'notify_header'     => 'Private Message Notification from ',
 );
 
 $LANG_PM_ERROR = array(
-    'token_failure'     => 'Felande säkerhetsnyckel',  
+    'token_failure'     => 'Felande säkerhetsnyckel',
     'message_not_found' => 'Meddelande ej funnet',
     'no_to_address'     => 'Ingen till adress specifierad',
     'no_subject'        => 'Ämnet får ej vara blankt och måste vara längre än 4 karaktärer.',

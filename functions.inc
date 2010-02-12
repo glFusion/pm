@@ -201,7 +201,8 @@ function plugin_userpreferencesedit_pm($panel,$uid)
 
     switch ($panel) {
         case 'privacy' :
-            $retval = '<tr><td><label>Receive PM Notifications</label></td><td><input type="checkbox"></td></tr>';
+            $retval =  '<tr><td><label>Receive PM Notifications</label></td><td><input type="checkbox"></td></tr>';
+            $retval .= '<tr><td><label>Allow Users to Send me Private Messages</label></td><td><input type="checkbox"></td></tr>';
             break;
     }
     return $retval;
@@ -226,12 +227,15 @@ function plugin_profileedit_pm($uid,$panel,$fieldset)
                     }
                     $A = DB_fetchArray($result);
                     $notify = $A['notify'];
+                    $block  = $A['block'];
 
                     $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
                     $T->set_file (array ('privacy'=>'profile_privacy.thtml'));
                     $T->set_var(array(
                         'lang_pmnotify'     => $LANG_PM_NOTIFY['pm_notify'],
                         'pmnotify_checked'  => $notify ? ' checked="checked"' : '',
+                        'lang_pmblock'      => $LANG_PM_NOTIFY['pm_block'],
+                        'pmblock_checked'   => $block ? ' checked="checked"' : '',
                     ));
                     $T->parse ('output', 'privacy');
                     $retval .= $T->finish ($T->get_var('output'));
@@ -259,7 +263,13 @@ function plugin_profilesave_pm( )
     } else {
         $notify = 0;
     }
-    DB_save($_TABLES['pm_userprefs'],'uid,notify',"'".$_USER['uid']."',".$notify);
+    if ( isset($_POST['pmblock']) ) {
+        $block = 1;
+    } else {
+        $block = 0;
+    }
+
+    DB_save($_TABLES['pm_userprefs'],'uid,notify,block',"'".$_USER['uid']."',".$notify.','.$block);
 }
 
 /*

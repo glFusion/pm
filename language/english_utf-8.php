@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -116,6 +116,8 @@ $LANG_PM_NOTIFY = array(
     'disclaimer'        => 'You are receiving this because you allow Private Message notifications.  To change your privacy settings, please use the My Account option at ' . $_CONF['site_url'] ,
     'sincerely'         => 'Thanks!',
     'support'           => 'Support',
+    'pm_block'          => 'Block other users from sending me PMs',
+    'notify_header'     => 'Private Message Notification from ',
 );
 
 $LANG_PM_ERROR = array(

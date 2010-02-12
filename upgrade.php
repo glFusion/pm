@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -71,7 +71,8 @@ function pm_upgrade()
         case '1.0.0' :
         case '1.0.1' :
         case '1.1.0' :
-            // no DB changes fallthru to the default handler...
+        case '1.1.1' :
+            DB_query("ALTER TABLE {$_TABLES['pm_userprefs']} ADD `block` INT NOT NULL DEFAULT '0'");
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");
             break;
