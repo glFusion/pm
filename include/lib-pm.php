@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -202,6 +202,21 @@ function PM_deleteMessage( $msg_id=0, $folder='' )
     }
 }
 
+// bbcode extensions...
+
+function PM_BBC_formatTextBlock($str,$postmode='text',$parsers=array())
+{
+
+    $codes = array();
+
+//-sample code
+//    $codes[] = array('youtube', 'usecontent?', '_bbc_youtube', array ('usecontent_param' => 'default'),
+//                      'link', array ('listitem', 'block', 'inline'), array ('link'));
+
+    return BBC_formatTextBlock($str,'text',$parsers,$codes);
+}
+
+
 function _bbc_replacesmiley($str) {
     global $_CONF,$_TABLES,$CONF_FORUM;
 
@@ -211,4 +226,20 @@ function _bbc_replacesmiley($str) {
 
     return $str;
 }
+
+//-sample code
+/*---
+function _bbc_youtube ($action, $attributes, $content, $params, $node_object) {
+
+    if ($action == 'validate') {
+        return true;
+    }
+    $retval = '<div><div><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/'.$attributes['default'].'&hl=en_US&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'.$attributes['default'].'&hl=en_US&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object></div>'.$content.'</div>';
+    if ( $content == '' ) {
+        $content = 'Check out this video';
+    }
+    return $retval;
+    return '<a href="http://www.youtube.com/watch?v='.$attributes['default'].'">'.$content.'</a>';
+}
+*/
 ?>

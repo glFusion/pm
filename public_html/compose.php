@@ -99,7 +99,8 @@ function PM_FormatForEmail( $str, $postmode='html' ) {
 
     $parsers = array();
     $parsers[] = array(array('block','inline','link','listitem'));
-    $str = BBC_formatTextBlock($str,'text',$parsers);
+
+    $str = PM_BBC_formatTextBlock($str,'text',$parsers);
 
     // we don't have a stylesheet for email, so replace our div with the style...
     $str = str_replace('<div class="quotemain">','<div style="border: 1px dotted #000;border-left: 4px solid #8394B2;color:#465584;  padding: 4px;  margin: 5px auto 8px auto;">',$str);
@@ -151,7 +152,7 @@ function PM_previewMessage( $msgID = 0 )
         'to'          => $msg['target_uid'],
         'subject'     => $subject,
         'date'        => @strftime('%b %d %Y @ %H:%M', $msg['datetime'] ),
-        'msg_text'    => BBC_formatTextBlock($msg['message'],'text',$parsers),
+        'msg_text'    => PM_BBC_formatTextBlock($msg['message'],'text',$parsers),
         'avatar'      => USER_getPhoto($msg['source_uid'],$photo,'',128),
         'from_name'   => $username,
         'to_name'     => htmlentities($msg['username_list'], ENT_QUOTES, COM_getEncodingt()),
@@ -214,21 +215,22 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     }
     $friendselect .= '</select>';
 
-    if ( function_exists('msg_showsmilies') ) {
-        $smileys = msg_showsmilies();
-    } else {
-        $smileys = '';
-    }
+    $additionalCodes = array();
+
+//    $additionalCodes = array(
+//                       array('name'=>'youtube','label'=>'YouTube','help'=>'Embed YouTube Video: [youtube=]text[/youtube]','start_tag'=>'[youtube=]','end_tag'=>'[/youtube]','select'=>''),
+//                    );
+
+    $bbcodeEditor = BBC_editor($message,'compose_form','message',$additionalCodes);
 
     $T->set_var(array(
         'to'          => htmlentities($to, ENT_QUOTES, COM_getEncodingt()),
         'subject'     => htmlentities($subject, ENT_QUOTES, COM_getEncodingt()),
-        'message'     => htmlentities($message, ENT_QUOTES, COM_getEncodingt()),
         'userselect'  => $userselect,
         'friendselect'=> $friendselect,
         'reply_msgid' => $reply_msgid,
         'msgid'       => $msgid,
-        'smileys'     => $smileys,
+        'editor'        => $bbcodeEditor,
     ));
     $error_message = '';
     if ( count($errors) > 0 ) {

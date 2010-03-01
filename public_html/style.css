@@ -191,35 +191,9 @@ p.author {
     width:auto !important;
 }
 
-#format-buttons {
-    padding:5px;
-}
-
 #pm textarea, input, select {
 	font-size: 1em;
     font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
-}
-
-#pm input.button1, #pm input.button2 {
-	font-size: 1em;
-}
-
-#pm a.button1, #pm input.button1, #pm a.button2, #pm input.button2 {
-	width: auto !important;
-	padding-top: 1px;
-	padding-bottom: 1px;
-	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
-	color: #000;
-	background: #E1EBF2 none repeat-x top;
-}
-
-a.button1, input.button1 {
-	font-weight: bold;
-	border: 1px solid #666666;
-}
-
-#pm a.button2, #pm input.button2 {
-	border: 1px solid #666666;
 }
 
 #pm .msgbody {
