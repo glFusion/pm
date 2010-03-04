@@ -141,6 +141,7 @@ $LANG_confignames['pm'] = array(
     'messages_per_page'     => 'Meddelanden per sida',
     'post_speedlimit'       => 'Postnings hastighetsgräns (sekunder)',
     'max_recipients'        => 'Max antal mottagare per meddelande',
+    'displayblocks'         => 'Display glFusion Blocks',
 );
 $LANG_configsubgroups['pm'] = array(
     'sg_main'               => 'Huvudinställningar',
@@ -148,6 +149,12 @@ $LANG_configsubgroups['pm'] = array(
 
 $LANG_fs['pm'] = array(
     'pm_general'            => 'PM Allmänna inställningar',
+);
+
+$LANG_configselects['pm'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => TRUE, 'False' => FALSE),
+    2 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
 );
 
 $PLG_pm_MESSAGE1 = 'Meddelande(n) skickat.';

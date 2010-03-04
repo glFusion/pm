@@ -499,8 +499,8 @@ switch ( $mode ) {
 
 $styleLink = '<link rel="stylesheet" type="text/css" href="'.$_CONF['site_url'].'/pm/style.css" />'.LB;
 
-$display = COM_siteHeader('menu',$LANG_PM00['title'],$styleLink);
+$display = PM_siteHeader($LANG_PM00['title'],$styleLink);
 $display .= $body;
-$display .= COM_siteFooter();
+$display .= PM_siteFooter();
 echo $display;
 ?>

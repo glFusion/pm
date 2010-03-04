@@ -40,6 +40,9 @@ function pm_upgrade()
 
     $currentVersion = DB_getItem($_TABLES['plugins'],'pi_version',"pi_name='pm'");
 
+    require_once $_CONF['path'] . 'system/classes/config.class.php';
+    $c = config::get_instance();
+
     switch ($currentVersion) {
         case '0.5.0' :
         case '0.6.0' :
@@ -73,6 +76,7 @@ function pm_upgrade()
         case '1.1.0' :
         case '1.1.1' :
             DB_query("ALTER TABLE {$_TABLES['pm_userprefs']} ADD `block` INT NOT NULL DEFAULT '0'");
+            $c->add('displayblocks',0,'select', 0, 0, 2, 40, true, 'pm');
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");
             break;

@@ -409,7 +409,7 @@ $retval .= $T->finish ($T->get_var('output'));
 
 $styleLink = '<link rel="stylesheet" type="text/css" href="'.$_CONF['site_url'].'/pm/style.css" />'.LB;
 
-$display = COM_siteHeader('menu',$LANG_PM00['title'],$styleLink);
+$display = PM_siteHeader($LANG_PM00['title'],$styleLink);
 if ( isset($_GET['msg']) ) {
     $msg_header = COM_applyFilter ($_GET['msg'], true);
 } else {
@@ -419,6 +419,6 @@ if ( $msg_header > 0 ) {
     $display .= COM_showMessage ($msg_header, 'pm');
 }
 $display .= $retval;
-$display .= COM_siteFooter();
+$display .= PM_siteFooter();
 echo $display;
 ?>

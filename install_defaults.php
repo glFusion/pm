@@ -10,7 +10,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -50,6 +50,7 @@ $CONF_PM_DEFAULT = array();
 $CONF_PM_DEFAULT['messages_per_page'] = 15;
 $CONF_PM_DEFAULT['post_speedlimit']   = 30;
 $CONF_PM_DEFAULT['max_recipients']    = 5;
+$CONF_PM_DEFAULT['displayblocks']     = 0;
 
 /**
 * Initialize PM plugin configuration
@@ -81,6 +82,9 @@ function plugin_initconfig_pm()
 
         $c->add('max_recipients',$CONF_PM_DEFAULT['max_recipients'], 'text',
                 0, 0, NULL, 30, true, 'pm');
+
+        $c->add('displayblocks',$CONF_PM_DEFAULT['displayblocks'], 'select',
+                0, 0, 2, 40, true, 'pm');
 
     }
     return true;

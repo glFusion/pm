@@ -136,6 +136,7 @@ $LANG_confignames['pm'] = array(
     'messages_per_page'     => 'Wiadomosci na stronie',
     'post_speedlimit'       => 'Posting Speedlimit (seconds)',
     'max_recipients'        => 'Maksymalna liczba adresatów na wiadomosc',
+    'displayblocks'         => 'Display glFusion Blocks',
 );
 $LANG_configsubgroups['pm'] = array(
     'sg_main'               => 'Glówne Ustawienia',
@@ -143,6 +144,12 @@ $LANG_configsubgroups['pm'] = array(
 
 $LANG_fs['pm'] = array(
     'pm_general'            => 'PM Ustawienia ogólne',
+);
+
+$LANG_configselects['pm'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => TRUE, 'False' => FALSE),
+    2 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
 );
 
 $PLG_pm_MESSAGE1 = 'Wiadomosci zostaly wyslane.';

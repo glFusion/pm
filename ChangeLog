@@ -2,6 +2,7 @@ ChangeLog
 
 v1.2.0
 ------
+- Configuration option to specify which blocks display
 - Add ability to block users from sending you a PM
 - Full text notification - include the actual PM in the notification email
 

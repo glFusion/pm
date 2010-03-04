@@ -141,6 +141,7 @@ $LANG_confignames['pm'] = array(
     'messages_per_page'     => 'Messages per page',
     'post_speedlimit'       => 'Posting Speedlimit (seconds)',
     'max_recipients'        => 'Max Number of recipients per message',
+    'displayblocks'         => 'Display glFusion Blocks',
 );
 $LANG_configsubgroups['pm'] = array(
     'sg_main'               => 'Main Settings',
@@ -148,6 +149,12 @@ $LANG_configsubgroups['pm'] = array(
 
 $LANG_fs['pm'] = array(
     'pm_general'            => 'PM General Settings',
+);
+
+$LANG_configselects['pm'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => TRUE, 'False' => FALSE),
+    2 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
 );
 
 $PLG_pm_MESSAGE1 = 'Message(s) successfully sent.';
