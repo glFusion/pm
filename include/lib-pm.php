@@ -36,10 +36,14 @@ if (!defined ('GVERSION')) {
 /*
  * Only allow logged-in users or users who have the pm.user permission
  */
-if ( COM_isAnonUser() ) {
-    echo COM_refresh($_CONF['site_url'].'/users.php');
+ if ( COM_isAnonUser()  )  {
+    $display = COM_siteHeader();
+    $display .= SEC_loginRequiredForm();
+    $display .= COM_siteFooter();
+    echo $display;
     exit;
 }
+
 if ( !SEC_hasRights('pm.user') ) {
     echo COM_refresh($_CONF['site_url']);
     exit;
@@ -182,7 +186,7 @@ function PM_deleteMessage( $msg_id=0, $folder='' )
         return;
     }
 
-    $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".intval($msg_id)." AND dist.user_id=".$_USER['uid']." AND folder_name='".addslashes($folder)."'";
+    $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".intval($msg_id)." AND dist.user_id=".$_USER['uid']." AND folder_name='".DB_escapeString($folder)."'";
     $result = DB_query($sql);
     if ( DB_numRows($result) < 1 ) {
         return;
@@ -194,7 +198,7 @@ function PM_deleteMessage( $msg_id=0, $folder='' )
         DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".intval($msg_id).")");
     } else {
         // must be in our in, sent, or archive folder
-        DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE msg_id = ".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".addslashes($folder)."'");
+        DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE msg_id = ".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
         $msgCount = DB_count($_TABLES['pm_dist'],'msg_id',intval($msg_id));
         if ( $msgCount == 0 ) {
             DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".intval($msg_id).")");

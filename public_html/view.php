@@ -71,14 +71,14 @@ $toUs   = 0;
 $sql  = "SELECT * ";
 $sql .= "FROM {$_TABLES['pm_msg']} msg ";
 $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
-$sql .= "WHERE msg.msg_id=".intval($msg_id)." AND user_id=".$_USER['uid']." AND dist.folder_name='".addslashes($folder)."'";
+$sql .= "WHERE msg.msg_id=".intval($msg_id)." AND user_id=".$_USER['uid']." AND dist.folder_name='".DB_escapeString($folder)."'";
 
 $result = DB_query($sql);
 if ( DB_numRows($result) > 0 ) {
     $msg = DB_fetchArray($result);
 
     if ( ($folder == 'inbox' || $folder == 'archive') && $msg['pm_unread'] == 1 ) {
-        DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_unread=0 WHERE msg_id=".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".addslashes($folder)."'");
+        DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_unread=0 WHERE msg_id=".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
         DB_query("UPDATE {$_TABLES['pm_dist']} SET folder_name='sent' WHERE msg_id=".intval($msg_id)." AND user_id=".$msg['author_uid']." AND folder_name='outbox'");
         CACHE_remove_instance('stmenu');
     }

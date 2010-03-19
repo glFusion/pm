@@ -168,7 +168,7 @@ function PM_friendProcess()
         if ( $friend == '' ) {
             continue;
         }
-        $friendUID = DB_getItem($_TABLES['users'],'uid','username="'.addslashes($friend).'"');
+        $friendUID = DB_getItem($_TABLES['users'],'uid','username="'.DB_escapeString($friend).'"');
         if ( $friendUID == '' || $friendUID == 0 ) {
             $errArray[] = $LANG_PM_ERROR['unknown_user']. ': '.$friend;
         } else {
@@ -189,7 +189,7 @@ function PM_friendProcess()
     $friendCount = count($distributionList);
     for($x=0;$x<$friendCount;$x++) {
         $friendUID = intval($distributionList[$x]['uid']);
-        $friendUserName = addslashes($distributionList[$x]['username']);
+        $friendUserName = DB_escapeString($distributionList[$x]['username']);
         $sql  = "INSERT INTO {$_TABLES['pm_friends']} ";
         $sql .= "(uid,friend_id,friend_name) ";
         $sql .= "VALUES (".$_USER['uid'].",'$friendUID','$friendUserName')";

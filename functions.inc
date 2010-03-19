@@ -153,7 +153,7 @@ function plugin_dopluginsearch_pm($query, $datestart, $dateend, $topic, $type, $
     }
 
     // Make sure the query is SQL safe
-    $query = addslashes(trim(htmlspecialchars($query)));
+    $query = DB_escapeString(trim(htmlspecialchars($query)));
 
     $sql  = "SELECT msg.msg_id AS id, msg.message_subject AS title,
                     message_text AS description, message_time AS date,

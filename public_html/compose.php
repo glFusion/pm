@@ -61,7 +61,7 @@ function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
         return;
     }
 
-    $to_email = DB_getItem($_TABLES['users'],'email','username="'.addslashes($to_user).'"');
+    $to_email = DB_getItem($_TABLES['users'],'email','username="'.DB_escapeString($to_user).'"');
 
     $privateMessage = PM_FormatForEmail( $pm_message,'text');
 
@@ -275,7 +275,7 @@ function PM_msgSend( )
         }
         $sql = "SELECT {$_TABLES['users']}.uid, block FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['pm_userprefs']} "
               ." ON {$_TABLES['users']}.uid={$_TABLES['pm_userprefs']}.uid "
-              ." WHERE {$_TABLES['users']}.username='".addslashes($to)."'";
+              ." WHERE {$_TABLES['users']}.username='".DB_escapeString($to)."'";
 
         $result = DB_query($sql);
         if ( DB_numRows($result) < 1 ) {
@@ -342,7 +342,7 @@ function PM_msgSend( )
 
     $sql  = "INSERT INTO {$_TABLES['pm_msg']} ";
     $sql .= "(parent_id,author_uid,author_name,author_ip,message_time,message_subject,message_text,to_address,bcc_address) ";
-    $sql .= "VALUES($parent_id,".$_USER['uid'].",'".addslashes($_USER['username'])."','$REMOTE_ADDR',UNIX_TIMESTAMP(),'".addslashes($subject)."','".addslashes($message)."','".addslashes($toList)."','')";
+    $sql .= "VALUES($parent_id,".$_USER['uid'].",'".DB_escapeString($_USER['username'])."','$REMOTE_ADDR',UNIX_TIMESTAMP(),'".DB_escapeString($subject)."','".DB_escapeString($message)."','".DB_escapeString($toList)."','')";
 
     DB_query($sql);
 
@@ -350,7 +350,7 @@ function PM_msgSend( )
     // insert a record for each recipient
     for($x=0;$x<$msgCount;$x++) {
         $targetUID = intval($distributionList[$x]['uid']);
-        $targetUserName = addslashes($distributionList[$x]['username']);
+        $targetUserName = DB_escapeString($distributionList[$x]['username']);
         $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
         $sql .= "(msg_id,user_id,username,author_uid) ";
         $sql .= "VALUES ('$lastmsg_id','$targetUID','$targetUserName',".$_USER['uid'].")";
@@ -362,7 +362,7 @@ function PM_msgSend( )
     // insert a record for the user sending the message...
     $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
     $sql .= "(msg_id,user_id,username,author_uid,folder_name,pm_unread,pm_replied) ";
-    $sql .= "VALUES ('$lastmsg_id',".$_USER['uid'].",'".addslashes($_USER['username'])."',".$_USER['uid'].",'outbox',0,0)";
+    $sql .= "VALUES ('$lastmsg_id',".$_USER['uid'].",'".DB_escapeString($_USER['username'])."',".$_USER['uid'].",'outbox',0,0)";
     DB_query($sql);
 
     // update original record to show it has been replied...
