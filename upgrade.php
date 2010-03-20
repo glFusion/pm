@@ -77,6 +77,7 @@ function pm_upgrade()
         case '1.1.1' :
             DB_query("ALTER TABLE {$_TABLES['pm_userprefs']} ADD `block` INT NOT NULL DEFAULT '0'");
             $c->add('displayblocks',0,'select', 0, 0, 2, 40, true, 'pm');
+            DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='PM Admin'",1);
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");
             break;

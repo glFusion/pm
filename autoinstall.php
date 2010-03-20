@@ -49,13 +49,14 @@ $INSTALL_plugin['pm'] = array(
     array('type' => 'table', 'table' => $_TABLES['pm_msg'], 'sql' => $_SQL['pm_msg']),
     array('type' => 'table', 'table' => $_TABLES['pm_friends'], 'sql' => $_SQL['pm_friends']),
     array('type' => 'table', 'table' => $_TABLES['pm_userprefs'], 'sql' => $_SQL['pm_userprefs']),
-    array('type' => 'group', 'group' => 'PM Admin', 'desc' => 'Administrators of the PM Plugin', 'variable' => 'admin_group_id', 'addroot' => true),
-    array('type' => 'group', 'group' => 'PM Users', 'desc' => 'Users of the PM Plugin', 'variable' => 'user_group_id', 'addroot' => true),
+    array('type' => 'group', 'group' => 'PM Admin', 'desc' => 'Administrators of the PM Plugin',
+            'variable' => 'admin_group_id', 'addroot' => true, 'admin' => true),
+    array('type' => 'group', 'group' => 'PM Users', 'desc' => 'Users of the PM Plugin',
+            'variable' => 'user_group_id', 'addroot' => true, 'default' => true),
     array('type' => 'feature', 'feature' => 'pm.admin', 'desc' => 'Ability to administer the PM plugin', 'variable' => 'admin_feature_id'),
     array('type' => 'feature', 'feature' => 'pm.user', 'desc' => 'PM User', 'variable' => 'user_feature_id'),
     array('type' => 'mapping', 'group' => 'admin_group_id', 'feature' => 'admin_feature_id', 'log' => 'Adding PM feature to the PM admin group'),
     array('type' => 'mapping', 'group' => 'user_group_id', 'feature' => 'user_feature_id', 'log' => 'Adding PM feature to the PM user group'),
-    array('type' => 'addgroup','parent_grp' => 'PM Users', 'child_grp' => 'Logged-in Users'),
 );
 
 /**
