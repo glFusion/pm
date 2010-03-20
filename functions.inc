@@ -56,7 +56,7 @@ function plugin_chkVersion_pm() {
 function plugin_geticon_pm() {
     global $_CONF;
 
-    $retval = $_CONF['site_url'].'/pm/images/pm.jpg';
+    $retval = $_CONF['site_url'].'/pm/images/pm48.png';
     return $retval;
 }
 
