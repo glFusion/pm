@@ -80,7 +80,7 @@ function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
     $T->parse('output','email');
     $message = $T->finish($T->get_var('output'));
 
-    $html2txt = new html2text($msgText,false);
+    $html2txt = new html2text($privateMessage,false);
     $messageText = $html2txt->get_text();
 
     $to = array($to_email,$to_user);
