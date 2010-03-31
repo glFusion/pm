@@ -103,6 +103,8 @@ $LANG_PM00 = array (
     'add_new_friend_help' => 'You may enter several usernames separated by a comma.',
     'in_friends_list'   => 'Is Uw Vriend(in)',
     'send_pm'           => 'Verstuur een Prive Bericht',
+    'error'             => ' Error',
+    'newpm'             => '<b>You have %d new </b><a href="'.$_CONF['site_url'].'/pm/index.php"><b>private message(s)</b>',
 );
 
 $LANG_PM_NOTIFY = array(
@@ -126,6 +128,8 @@ $LANG_PM_ERROR = array(
     'no_message'        => 'Message body must not be blank and must be greater than 4 characters in length.',
     'unknown_user'      => 'Kan de volgende gebruiker niet vinden:',
     'too_many_recipients' => 'You have included too many recipients - Maximum %s allowed.',
+    'invalid_msg_id'    => 'Invalid Message ID',
+    'invalid_reply_id'  => 'Invalid Reply ID',
 );
 
 // Localization of the Admin Configuration UI

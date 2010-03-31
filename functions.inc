@@ -195,14 +195,14 @@ function plugin_templatesetvars_pm($templatename, &$template)
 
 function plugin_userpreferencesedit_pm($panel,$uid)
 {
-    global $_CONF, $_TABLES, $_PM_CONF;
+    global $_CONF, $_TABLES, $_PM_CONF, $LANG_PM_NOTIFY;
 
     $retval = '';
 
     switch ($panel) {
         case 'privacy' :
-            $retval =  '<tr><td><label>Receive PM Notifications</label></td><td><input type="checkbox"></td></tr>';
-            $retval .= '<tr><td><label>Allow Users to Send me Private Messages</label></td><td><input type="checkbox"></td></tr>';
+            $retval =  '<tr><td><label>'.$LANG_PM_NOTIFY['pm_notify'].'</label></td><td><input type="checkbox"></td></tr>';
+            $retval .= '<tr><td><label>'.$LANG_PM_NOTIFY['pm_block'].'</label></td><td><input type="checkbox"></td></tr>';
             break;
     }
     return $retval;
