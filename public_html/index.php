@@ -209,8 +209,8 @@ switch ( $folder ) {
         $sql .= "WHERE dist.user_id=".$_USER['uid']." AND dist.folder_name='inbox' ";
         break;
     case 'sent' :
-        list($totalRecs) = DB_fetchArray($result);
         $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.author_uid=".$_USER['uid']." AND dist.folder_name='sent'");
+        list($totalRecs) = DB_fetchArray($result);
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
