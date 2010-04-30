@@ -398,10 +398,10 @@ switch ( $mode ) {
         }
         if ( isset($_GET['uid']) ) {
             $uid = COM_applyFilter($_GET['uid'],true);
-            $to_name = DB_getItem($_TABLES['users'],'username','uid='.intval($uid));
+            $to_name = DB_getItem($_TABLES['users'],'username','uid='. (int) $uid) . ',';
         } else {
             if ( isset($_GET['username']) ) {
-                $to_name = COM_applyFilter($_GET['username']);
+                $to_name = COM_applyFilter($_GET['username']) . ',';
             } else {
                 $to_name = '';
             }
