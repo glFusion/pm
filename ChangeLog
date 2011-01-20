@@ -1,5 +1,10 @@
 ChangeLog
 
+v1.2.1
+------
+- Quotes in subjects did not display properly on reply
+- Improved error message when recipient blocks PM messages
+
 v1.2.0
 ------
 - Implemented new glFusion admin authentication
