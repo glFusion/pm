@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2010 by the following authors:                        |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -50,7 +50,7 @@ $display = '';
 function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
     global $_CONF, $_USER, $_TABLES, $LANG_PM_NOTIFY;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".intval($to_uid));
+    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=". (int) $to_uid);
     if ( DB_numRows($result) == 0 ) {
         $sendEmail = 1;
     } else {
@@ -132,7 +132,7 @@ function PM_previewMessage( $msgID = 0 )
     $about = '';
     $location = '';
 
-    $sql = "SELECT username,fullname,email,homepage,sig,regdate,photo,about,location,emailfromuser FROM {$_TABLES['users']} AS user LEFT JOIN {$_TABLES['userinfo']} AS info ON user.uid=info.uid LEFT JOIN {$_TABLES['userprefs']} AS prefs ON info.uid=prefs.uid WHERE user.uid=".intval($msg['source_uid']);
+    $sql = "SELECT username,fullname,email,homepage,sig,regdate,photo,about,location,emailfromuser FROM {$_TABLES['users']} AS user LEFT JOIN {$_TABLES['userinfo']} AS info ON user.uid=info.uid LEFT JOIN {$_TABLES['userprefs']} AS prefs ON info.uid=prefs.uid WHERE user.uid=".(int) $msg['source_uid'];
     $result = DB_query($sql);
     if ( DB_numRows($result) > 0 ) {
         list($username,$fullname,$email,$homepage,$sig,$regdate,$photo,$about,$location,$emailfromuser) = DB_fetchArray($result);
@@ -283,7 +283,7 @@ function PM_msgSend( )
         } else {
             list($toUID,$block) = DB_fetchArray($result);
             if ( $block == 1 ) {
-                $errArray[] = $LANG_PM_ERROR['unknown_user']. ': '.$to;
+                $errArray[] = $LANG_PM_ERROR['private_user']. ': '.$to;
             } else {
                 $distributionList[$counter]['uid'] = $toUID;
                 $distributionList[$counter]['username'] = $to;
@@ -321,7 +321,7 @@ function PM_msgSend( )
     }
 
     // do a little cleaning...
-    $subject = htmlentities(strip_tags($subject), ENT_QUOTES, COM_getEncodingt());
+    $subject = strip_tags($subject);
 
     $parent_id = 0;
 
@@ -329,7 +329,7 @@ function PM_msgSend( )
 
     if ( $reply_msgid > 0 ) {
         $pm_replied = 1;
-        $parent_id = DB_getItem($_TABLES['pm_msg'],'parent_id','msg_id='.intval($reply_msgid) );
+        $parent_id = DB_getItem($_TABLES['pm_msg'],'parent_id','msg_id='.(int) $reply_msgid );
         if ( $parent_id == 0 ) {
             $parent_id = $reply_msgid;
         }
@@ -349,7 +349,7 @@ function PM_msgSend( )
     $lastmsg_id = DB_insertID();
     // insert a record for each recipient
     for($x=0;$x<$msgCount;$x++) {
-        $targetUID = intval($distributionList[$x]['uid']);
+        $targetUID = (int) $distributionList[$x]['uid'];
         $targetUserName = DB_escapeString($distributionList[$x]['username']);
         $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
         $sql .= "(msg_id,user_id,username,author_uid) ";
@@ -366,7 +366,7 @@ function PM_msgSend( )
     DB_query($sql);
 
     // update original record to show it has been replied...
-    DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_replied=1 WHERE msg_id=".intval($reply_msgid)." AND user_id=".$_USER['uid']." AND folder_name NOT IN ('outbox','sent')");
+    DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_replied=1 WHERE msg_id=".(int) $reply_msgid." AND user_id=".$_USER['uid']." AND folder_name NOT IN ('outbox','sent')");
 
     COM_updateSpeedlimit ('pm');
     CACHE_remove_instance('stmenu');
@@ -419,7 +419,7 @@ switch ( $mode ) {
             exit;
         }
         $reply_msgid = COM_applyFilter($_GET['msgid'],true);
-        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".intval($reply_msgid)." AND dist.user_id=".$_USER['uid'];
+        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $reply_msgid." AND dist.user_id=".$_USER['uid'];
         $result = DB_query($sql);
         if ( DB_numRows($result) < 1 ) {
             PM_alertMessage( $LANG_PM_ERROR['invalid_reply_id'] );
@@ -442,10 +442,10 @@ switch ( $mode ) {
         $reply_msgid = COM_applyFilter($_GET['msgid'],true);
         $last = COM_checkSpeedlimit ('pm');
         if ($last > 0) {
-            echo COM_refresh($_CONF['site_url'].'/pm/view.php?msgid='.intval($reply_msgid).'&amp;msg=4');
+            echo COM_refresh($_CONF['site_url'].'/pm/view.php?msgid='.(int) $reply_msgid.'&amp;msg=4');
             exit;
         }
-        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".intval($reply_msgid)." AND dist.user_id=".$_USER['uid'];
+        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $reply_msgid." AND dist.user_id=".$_USER['uid'];
         $result = DB_query($sql);
         if ( DB_numRows($result) < 1 ) {
             PM_alertMessage( $LANG_PM_ERROR['invalid_reply_id'] );
