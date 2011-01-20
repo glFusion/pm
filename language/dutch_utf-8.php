@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2010 by the following authors:                        |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -130,6 +130,7 @@ $LANG_PM_ERROR = array(
     'too_many_recipients' => 'You have included too many recipients - Maximum %s allowed.',
     'invalid_msg_id'    => 'Invalid Message ID',
     'invalid_reply_id'  => 'Invalid Reply ID',
+    'private_user'      => 'User does not allow PM messages',
 );
 
 // Localization of the Admin Configuration UI

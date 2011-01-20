@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2010 by the following authors:                        |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -130,6 +130,7 @@ $LANG_PM_ERROR = array(
     'too_many_recipients' => 'Du har lagt till för många mottagare - Max %s tillåtna.',
     'invalid_msg_id'    => 'Invalid meddelande-ID',
     'invalid_reply_id'  => 'Invalid svars-ID',
+    'private_user'      => 'User does not allow PM messages',
 );
 
 // Localization of the Admin Configuration UI
