@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -61,19 +61,19 @@ function PM_processMarked()
             if ( $operation == 'delete_marked' ) {
                 if ( $current_folder == 'outbox' ) {
                     // we know no one has read it yet or it wouldn't be in our out box
-                    DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE (msg_id = ".intval($msg_id).")");
-                    DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".intval($msg_id).")");
+                    DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE (msg_id = ".(int) $msg_id.")");
+                    DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".(int) $msg_id.")");
                 } else {
                     // must be in our in, sent, or archive folder
-                    DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE msg_id = ".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".$current_folder."'");
-                    $msgCount = DB_count($_TABLES['pm_dist'],'msg_id',intval($msg_id));
+                    DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE msg_id = ".(int) $msg_id." AND user_id=".(int) $_USER['uid']." AND folder_name='".DB_escapeString($current_folder)."'");
+                    $msgCount = DB_count($_TABLES['pm_dist'],'msg_id',(int) $msg_id);
                     if ( $msgCount == 0 ) {
-                        DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".intval($msg_id).")");
+                        DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".(int) $msg_id.")");
                     }
                 }
             }
             if ( $operation == 'archive_marked' ) {
-                DB_query("UPDATE {$_TABLES['pm_dist']} SET folder_name='archive' WHERE msg_id=".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".$current_folder."'");
+                DB_query("UPDATE {$_TABLES['pm_dist']} SET folder_name='archive' WHERE msg_id=".(int) $msg_id." AND user_id=".(int) $_USER['uid']." AND folder_name='".DB_escapeString($current_folder)."'");
             }
         }
     }
@@ -209,20 +209,20 @@ switch ( $folder ) {
         $sql .= "WHERE dist.user_id=".$_USER['uid']." AND dist.folder_name='inbox' ";
         break;
     case 'sent' :
-        $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.author_uid=".$_USER['uid']." AND dist.folder_name='sent'");
+        $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.author_uid=".(int) $_USER['uid']." AND dist.folder_name='sent'");
         list($totalRecs) = DB_fetchArray($result);
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
-        $sql .= "WHERE msg.author_uid=".$_USER['uid']." AND dist.folder_name='sent' ";
+        $sql .= "WHERE msg.author_uid=".(int) $_USER['uid']." AND dist.folder_name='sent' ";
         break;
     case 'archive' :
-        $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON  msg.msg_id = dist.msg_id WHERE dist.author_uid =".$_USER['uid']." AND dist.folder_name='archive' ");
+        $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON  msg.msg_id = dist.msg_id WHERE dist.author_uid =".(int) $_USER['uid']." AND dist.folder_name='archive' ");
         list($totalRecs) = DB_fetchArray($result);
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
-        $sql .= "WHERE dist.user_id=".$_USER['uid']." AND dist.folder_name='archive' ";
+        $sql .= "WHERE dist.user_id=".(int) $_USER['uid']." AND dist.folder_name='archive' ";
         break;
     case 'outbox' :
         $result = DB_query("SELECT COUNT(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON  msg.msg_id = dist.msg_id WHERE (msg.author_uid=".$_USER['uid']." AND dist.folder_name='outbox') ");
@@ -230,7 +230,7 @@ switch ( $folder ) {
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
-        $sql .= "WHERE msg.author_uid=".$_USER['uid']." AND dist.folder_name='outbox' ";
+        $sql .= "WHERE msg.author_uid=".(int) $_USER['uid']." AND dist.folder_name='outbox' ";
         break;
 }
 
@@ -359,7 +359,7 @@ if ( $msgCounter == 0 ) {
 }
 
 if ( $folder == 'inbox' ) {
-    $result = DB_query("SELECT COUNT(msg_id) AS unread FROM {$_TABLES['pm_dist']} WHERE user_id=".$_USER['uid']." AND pm_unread=1 AND folder_name='inbox'");
+    $result = DB_query("SELECT COUNT(msg_id) AS unread FROM {$_TABLES['pm_dist']} WHERE user_id=".(int) $_USER['uid']." AND pm_unread=1 AND folder_name='inbox'");
     if ( DB_numRows($result) > 0 ) {
         list($unReadCount) = DB_fetchArray($result);
     } else {

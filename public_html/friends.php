@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -61,7 +61,7 @@ function PM_friendMaintenance($newfriends='', $errors = array())
     // build friend list
 
     $friendselect = '<select id="combo_friends" name="current_friends[]"  multiple="multiple" size="10" style="width:25%;" onfocus="ml_autocomplete.populate(event)" onkeydown="ml_autocomplete.setSelection(event)" onkeypress="javascript:return false"> ';
-    $sql = "SELECT * FROM {$_TABLES['pm_friends']} WHERE uid=".$_USER['uid']." ORDER BY friend_name ASC";
+    $sql = "SELECT * FROM {$_TABLES['pm_friends']} WHERE uid=".(int) $_USER['uid']." ORDER BY friend_name ASC";
     $result = DB_query($sql);
     while ($friendRow = DB_fetchArray($result) ) {
         $friendselect .= '<option value="'.$friendRow['friend_id'].'">'.$friendRow['friend_name'].'</option>' .LB;
@@ -79,22 +79,21 @@ function PM_friendMaintenance($newfriends='', $errors = array())
 
     // get all the groups that belong to this group:
 
-    $result = DB_query ("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $pm_users_grp_id AND ug_uid IS NULL");
+    $result = DB_query ("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = ".(int) $pm_users_grp_id." AND ug_uid IS NULL");
     $numrows = DB_numRows ($result);
     while ($A = DB_fetchArray($result) ) {
-        $groupList .= ','.$A['ug_grp_id'];
+        $groupList .= ','.(int) $A['ug_grp_id'];
     }
 
     $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname "
           ."FROM {$_TABLES['group_assignments']},{$_TABLES['users']} "
           ."WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.status=3 "
-          ."AND {$_TABLES['users']}.uid<>".$_USER['uid']." "
+          ."AND {$_TABLES['users']}.uid<>".(int) $_USER['uid']." "
           ."AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid "
           ."AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList})) "
           ."ORDER BY username ASC";
 
     $userselect = '<select id="combo_user" name="combo_user"> ';
-//    $sql = "SELECT * FROM {$_TABLES['users']} WHERE status=3 AND uid<> ".$_USER['uid']." AND uid > 1 ORDER BY username ASC";
     $result = DB_query($sql);
     while ($userRow = DB_fetchArray($result) ) {
         $userselect .= '<option value="'.$userRow['username'].'">'.$userRow['username'].'</option>' .LB;
@@ -144,7 +143,7 @@ function PM_friendProcess()
         $cfriends = $_POST['current_friends'];
         if (is_array($cfriends) ) {
             foreach ($cfriends AS $friend) {
-                DB_query("DELETE FROM {$_TABLES['pm_friends']} WHERE (uid = ".$_USER['uid']." AND friend_id=".intval($friend).")");
+                DB_query("DELETE FROM {$_TABLES['pm_friends']} WHERE (uid = ".(int) $_USER['uid']." AND friend_id=".(int) $friend.")");
             }
         }
     }
@@ -153,7 +152,7 @@ function PM_friendProcess()
      * Process additions
      */
 
-    $newFriendsList = COM_stripslashes($_POST['newfriends']);
+    $newFriendsList = $_POST['newfriends'];
 
     $friendArray = explode(',',$newFriendsList);
 
@@ -188,11 +187,11 @@ function PM_friendProcess()
 
     $friendCount = count($distributionList);
     for($x=0;$x<$friendCount;$x++) {
-        $friendUID = intval($distributionList[$x]['uid']);
+        $friendUID = (int) $distributionList[$x]['uid'];
         $friendUserName = DB_escapeString($distributionList[$x]['username']);
         $sql  = "INSERT INTO {$_TABLES['pm_friends']} ";
         $sql .= "(uid,friend_id,friend_name) ";
-        $sql .= "VALUES (".$_USER['uid'].",'$friendUID','$friendUserName')";
+        $sql .= "VALUES (".$_USER['uid'].",".(int) $friendUID.",'$friendUserName')";
         DB_query($sql,1);
     }
     return array(true,'');
@@ -221,7 +220,7 @@ switch ( $mode ) {
         // perform any additions
         list($rc,$errors) = PM_friendProcess();
         if ( !$rc ) {
-            $friendList  = COM_stripslashes($_POST['newfriends']);
+            $friendList  = $_POST['newfriends'];
             $retval     .= PM_friendMaintenance($friendList,$errors);
         } else {
             echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=5');

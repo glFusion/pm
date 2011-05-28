@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2010 by the following authors:                        |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -112,7 +112,7 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
         FROM ' . $_TABLES['pm_msg'] . ' p, ' . $_TABLES['pm_dist'] . ' t, ' . $_TABLES['users'] . ' u
         WHERE t.msg_id = p.msg_id
             AND p.author_uid = u.uid
-            AND t.user_id = '.$_USER['uid'];
+            AND t.user_id = '.(int) $_USER['uid'];
 
     if ( $compose ) {
         $extraWhere = ' AND t.folder_name NOT IN ("outbox", "sent")';
@@ -122,9 +122,9 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
     $sql  = $sql . $extraWhere;
 
     if (!$parent_id) {
-        $sql .= " AND (p.parent_id = $msg_id OR (p.parent_id = 0 AND p.msg_id = $msg_id))";
+        $sql .= " AND (p.parent_id = $msg_id OR (p.parent_id = 0 AND p.msg_id = ".(int) $msg_id."))";
     } else {
-        $sql .= " AND (p.parent_id = " . $parent_id . ' OR p.msg_id = ' . $parent_id . ')';
+        $sql .= " AND (p.parent_id = " . (int) $parent_id . ' OR p.msg_id = ' . (int) $parent_id . ')';
     }
     $sql .= ' ORDER BY p.message_time DESC ';
 
@@ -186,7 +186,7 @@ function PM_deleteMessage( $msg_id=0, $folder='' )
         return;
     }
 
-    $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".intval($msg_id)." AND dist.user_id=".$_USER['uid']." AND folder_name='".DB_escapeString($folder)."'";
+    $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $msg_id." AND dist.user_id=".(int) $_USER['uid']." AND folder_name='".DB_escapeString($folder)."'";
     $result = DB_query($sql);
     if ( DB_numRows($result) < 1 ) {
         return;
@@ -194,14 +194,14 @@ function PM_deleteMessage( $msg_id=0, $folder='' )
 
     if ( $folder == 'outbox' ) {
         // we know no one has read it yet or it wouldn't be in our out box
-        DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE (msg_id = ".intval($msg_id).")");
-        DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".intval($msg_id).")");
+        DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE (msg_id = ".(int) $msg_id.")");
+        DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".(int) $msg_id.")");
     } else {
         // must be in our in, sent, or archive folder
-        DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE msg_id = ".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
-        $msgCount = DB_count($_TABLES['pm_dist'],'msg_id',intval($msg_id));
+        DB_query("DELETE FROM {$_TABLES['pm_dist']} WHERE msg_id = ".(int) $msg_id." AND user_id=".(int) $_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
+        $msgCount = DB_count($_TABLES['pm_dist'],'msg_id',(int) $msg_id);
         if ( $msgCount == 0 ) {
-            DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".intval($msg_id).")");
+            DB_query("DELETE FROM {$_TABLES['pm_msg']} WHERE (msg_id = ".(int) $msg_id.")");
         }
     }
 }

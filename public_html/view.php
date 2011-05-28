@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -71,15 +71,15 @@ $toUs   = 0;
 $sql  = "SELECT * ";
 $sql .= "FROM {$_TABLES['pm_msg']} msg ";
 $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
-$sql .= "WHERE msg.msg_id=".intval($msg_id)." AND user_id=".$_USER['uid']." AND dist.folder_name='".DB_escapeString($folder)."'";
+$sql .= "WHERE msg.msg_id=".(int) $msg_id." AND user_id=".(int) $_USER['uid']." AND dist.folder_name='".DB_escapeString($folder)."'";
 
 $result = DB_query($sql);
 if ( DB_numRows($result) > 0 ) {
     $msg = DB_fetchArray($result);
 
     if ( ($folder == 'inbox' || $folder == 'archive') && $msg['pm_unread'] == 1 ) {
-        DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_unread=0 WHERE msg_id=".intval($msg_id)." AND user_id=".$_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
-        DB_query("UPDATE {$_TABLES['pm_dist']} SET folder_name='sent' WHERE msg_id=".intval($msg_id)." AND user_id=".$msg['author_uid']." AND folder_name='outbox'");
+        DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_unread=0 WHERE msg_id=".(int) $msg_id." AND user_id=".(int) $_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
+        DB_query("UPDATE {$_TABLES['pm_dist']} SET folder_name='sent' WHERE msg_id=".(int) $msg_id." AND user_id=".(int) $msg['author_uid']." AND folder_name='outbox'");
         CACHE_remove_instance('stmenu');
     }
 
@@ -94,7 +94,7 @@ if ( DB_numRows($result) > 0 ) {
     $about      = '';
     $location   = '';
 
-    $sql = "SELECT username,fullname,email,homepage,sig,regdate,photo,about,location,emailfromuser FROM {$_TABLES['users']} AS user LEFT JOIN {$_TABLES['userinfo']} AS info ON user.uid=info.uid LEFT JOIN {$_TABLES['userprefs']} AS prefs ON info.uid=prefs.uid WHERE user.uid=".intval($msg['author_uid']);
+    $sql = "SELECT username,fullname,email,homepage,sig,regdate,photo,about,location,emailfromuser FROM {$_TABLES['users']} AS user LEFT JOIN {$_TABLES['userinfo']} AS info ON user.uid=info.uid LEFT JOIN {$_TABLES['userprefs']} AS prefs ON info.uid=prefs.uid WHERE user.uid=".(int) $msg['author_uid'];
     $result = DB_query($sql);
     if ( DB_numRows($result) > 0 ) {
         list($username,$fullname,$email,$homepage,$sig,$regdate,$photo,$about,$location,$emailfromuser) = DB_fetchArray($result);
@@ -106,7 +106,7 @@ if ( DB_numRows($result) > 0 ) {
     // are they a friend?
 
     if ( $msg['author_uid'] != $_USER['uid'] ) {
-        $friend = DB_count($_TABLES['pm_friends'],array('uid','friend_id'),array($_USER['uid'],intval($msg['author_uid'])));
+        $friend = DB_count($_TABLES['pm_friends'],array('uid','friend_id'),array((int) $_USER['uid'],(int) $msg['author_uid']));
 
         if ( $friend ) {
             $T->set_var('add_friend','<br /><strong>'.$LANG_PM00['in_friends_list'].'</strong><br />');

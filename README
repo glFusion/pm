@@ -1,7 +1,6 @@
 Private Message Plugin for the glFusion CMS
 Version: 1.2.1
 
-
 OVERVIEW
 --------
 The PM plugin allows members of your site to send private messages to each
@@ -11,9 +10,9 @@ SYSTEM REQUIREMENTS
 -------------------
 PM has the following system requirements:
 
-    * PHP 4.3.3 and higher.
-    * MySQL v3.23 or newer
-    * glFusion v1.2.0 or newer
+    * PHP 5.2.3 and higher.
+    * MySQL v4.1 or newer
+    * glFusion v1.3.0 or newer
 
 INSTALLATION
 ------------

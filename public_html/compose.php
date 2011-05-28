@@ -50,7 +50,7 @@ $display = '';
 function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
     global $_CONF, $_USER, $_TABLES, $LANG_PM_NOTIFY;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=". (int) $to_uid);
+    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $to_uid);
     if ( DB_numRows($result) == 0 ) {
         $sendEmail = 1;
     } else {
@@ -115,9 +115,9 @@ function PM_previewMessage( $msgID = 0 )
     $retval = '';
 
     $msg['datetime']   = time();
-    $msg['username_list'] = COM_stripslashes($_POST['username_list']);
-    $msg['subject']    = COM_stripslashes($_POST['subject']);
-    $msg['message']    = COM_stripslashes($_POST['message']);
+    $msg['username_list'] = $_POST['username_list'];
+    $msg['subject']    = $_POST['subject'];
+    $msg['message']    = $_POST['message'];
     $msg['source_uid'] = $_USER['uid'];
     $msg['target_uid'] = $_USER['uid'];
 
@@ -184,7 +184,7 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     $pm_users_grp_id = DB_getItem($_TABLES['groups'],'grp_id','grp_name="PM Users"');
     $groupList .= $pm_users_grp_id;
     // get all the groups that belong to this group:
-    $result = DB_query ("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $pm_users_grp_id AND ug_uid IS NULL");
+    $result = DB_query ("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = ".(int) $pm_users_grp_id." AND ug_uid IS NULL");
     $numrows = DB_numRows ($result);
     while ($A = DB_fetchArray($result) ) {
         $groupList .= ','.$A['ug_grp_id'];
@@ -193,7 +193,7 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
           ."FROM {$_TABLES['group_assignments']},{$_TABLES['users']} LEFT JOIN {$_TABLES['pm_userprefs']} "
           ." ON {$_TABLES['users']}.uid={$_TABLES['pm_userprefs']}.uid "
           ."WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.status=3 "
-          ."AND {$_TABLES['users']}.uid<>".$_USER['uid']." "
+          ."AND {$_TABLES['users']}.uid<>".(int) $_USER['uid']." "
           ."AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid "
           ."AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList})) "
           ."ORDER BY username ASC";
@@ -208,7 +208,7 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     $userselect .= '</select>';
 
     $friendselect = '<select id="combo_friend" name="combo_friend" size="5" style="width:10em;"> ';
-    $sql = "SELECT * FROM {$_TABLES['pm_friends']} WHERE uid=".$_USER['uid']." ORDER BY friend_name ASC";
+    $sql = "SELECT * FROM {$_TABLES['pm_friends']} WHERE uid=".(int) $_USER['uid']." ORDER BY friend_name ASC";
     $result = DB_query($sql);
     while ($friendRow = DB_fetchArray($result) ) {
         $friendselect .= '<option value="'.$friendRow['friend_name'].'">'.$friendRow['friend_name'].'</option>' .LB;
@@ -258,7 +258,7 @@ function PM_msgSend( )
         return array(false,$errArray);
     }
 
-    $toList = COM_stripslashes($_POST['username_list']);
+    $toList = $_POST['username_list'];
 
     $toArray = explode(',',$toList);
 
@@ -308,11 +308,11 @@ function PM_msgSend( )
         return array(false,$errArray);
     }
 
-    $subject = COM_stripslashes($_POST['subject']);
+    $subject = $_POST['subject'];
     if ( strlen($subject) < 4 ) {
         $errArray[] = $LANG_PM_ERROR['no_subject'];
     }
-    $message = COM_stripslashes($_POST['message']);
+    $message = $_POST['message'];
     if ( strlen($message) < 4 ) {
         $errArray[] = $LANG_PM_ERROR['no_message'];
     }
@@ -342,7 +342,7 @@ function PM_msgSend( )
 
     $sql  = "INSERT INTO {$_TABLES['pm_msg']} ";
     $sql .= "(parent_id,author_uid,author_name,author_ip,message_time,message_subject,message_text,to_address,bcc_address) ";
-    $sql .= "VALUES($parent_id,".$_USER['uid'].",'".DB_escapeString($_USER['username'])."','$REMOTE_ADDR',UNIX_TIMESTAMP(),'".DB_escapeString($subject)."','".DB_escapeString($message)."','".DB_escapeString($toList)."','')";
+    $sql .= "VALUES($parent_id,".(int) $_USER['uid'].",'".DB_escapeString($_USER['username'])."','".DB_escapeString($REMOTE_ADDR)."',UNIX_TIMESTAMP(),'".DB_escapeString($subject)."','".DB_escapeString($message)."','".DB_escapeString($toList)."','')";
 
     DB_query($sql);
 
@@ -353,7 +353,7 @@ function PM_msgSend( )
         $targetUserName = DB_escapeString($distributionList[$x]['username']);
         $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
         $sql .= "(msg_id,user_id,username,author_uid) ";
-        $sql .= "VALUES ('$lastmsg_id','$targetUID','$targetUserName',".$_USER['uid'].")";
+        $sql .= "VALUES (".(int) $lastmsg_id.",".(int) $targetUID.",'$targetUserName',".(int) $_USER['uid'].")";
         DB_query($sql);
 
         PM_notify($targetUserName,$targetUID,$_USER['username'],$subject,$message );
@@ -362,11 +362,11 @@ function PM_msgSend( )
     // insert a record for the user sending the message...
     $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
     $sql .= "(msg_id,user_id,username,author_uid,folder_name,pm_unread,pm_replied) ";
-    $sql .= "VALUES ('$lastmsg_id',".$_USER['uid'].",'".DB_escapeString($_USER['username'])."',".$_USER['uid'].",'outbox',0,0)";
+    $sql .= "VALUES (".(int)$lastmsg_id.",".(int) $_USER['uid'].",'".DB_escapeString($_USER['username'])."',".(int) $_USER['uid'].",'outbox',0,0)";
     DB_query($sql);
 
     // update original record to show it has been replied...
-    DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_replied=1 WHERE msg_id=".(int) $reply_msgid." AND user_id=".$_USER['uid']." AND folder_name NOT IN ('outbox','sent')");
+    DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_replied=1 WHERE msg_id=".(int) $reply_msgid." AND user_id=".(int) $_USER['uid']." AND folder_name NOT IN ('outbox','sent')");
 
     COM_updateSpeedlimit ('pm');
     CACHE_remove_instance('stmenu');
@@ -419,7 +419,7 @@ switch ( $mode ) {
             exit;
         }
         $reply_msgid = COM_applyFilter($_GET['msgid'],true);
-        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $reply_msgid." AND dist.user_id=".$_USER['uid'];
+        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $reply_msgid ." AND dist.user_id=".(int) $_USER['uid'];
         $result = DB_query($sql);
         if ( DB_numRows($result) < 1 ) {
             PM_alertMessage( $LANG_PM_ERROR['invalid_reply_id'] );
@@ -445,7 +445,7 @@ switch ( $mode ) {
             echo COM_refresh($_CONF['site_url'].'/pm/view.php?msgid='.(int) $reply_msgid.'&amp;msg=4');
             exit;
         }
-        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $reply_msgid." AND dist.user_id=".$_USER['uid'];
+        $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $reply_msgid." AND dist.user_id=".(int) $_USER['uid'];
         $result = DB_query($sql);
         if ( DB_numRows($result) < 1 ) {
             PM_alertMessage( $LANG_PM_ERROR['invalid_reply_id'] );
@@ -463,9 +463,9 @@ switch ( $mode ) {
         break;
     case 'preview' :
         $body        = PM_previewMessage();
-        $to          = COM_stripslashes($_POST['username_list']);
-        $subject     = COM_stripslashes($_POST['subject']);
-        $message     = COM_stripslashes($_POST['message']);
+        $to          = $_POST['username_list'];
+        $subject     = $_POST['subject'];
+        $message     = $_POST['message'];
         $msgid       = COM_applyFilter($_POST['msgid'],true);
         $reply_msgid = COM_applyFilter($_POST['reply_msgid'],true);
         $body       .= PM_msgEditor($msgid,$reply_msgid,$to,$subject,$message);
@@ -480,9 +480,9 @@ switch ( $mode ) {
         }
         list($rc,$errors) = PM_msgSend( );
         if ( !$rc ) {
-            $to          = COM_stripslashes($_POST['username_list']);
-            $subject     = COM_stripslashes($_POST['subject']);
-            $message     = COM_stripslashes($_POST['message']);
+            $to          = $_POST['username_list'];
+            $subject     = $_POST['subject'];
+            $message     = $_POST['message'];
             $msgid       = COM_applyFilter($_POST['msgid'],true);
             $reply_msgid = COM_applyFilter($_POST['reply_msgid'],true);
             $body        = PM_msgEditor($msgid,$reply_msgid,$to,$subject,$message,$errors);

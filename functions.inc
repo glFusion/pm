@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -76,16 +76,28 @@ function plugin_getuseroption_pm() {
     global $_CONF, $_PM_CONF, $_TABLES, $_USER, $LANG_PM00;
 
     if ( !COM_isAnonUser() && SEC_hasRights('pm.user')) {
-        $unread = DB_count($_TABLES['pm_dist'],array('user_id','folder_name','pm_unread'),array($_USER['uid'],'inbox',1));
+        $unread = DB_count($_TABLES['pm_dist'],array('user_id','folder_name','pm_unread'),array((int) $_USER['uid'],'inbox',1));
         return array($LANG_PM00['user_menu'], $_CONF['site_url'] . '/pm/index.php', $unread);
     }
+}
+
+function plugin_autotags_pm($op, $content = '', $autotag = '')
+{
+    if ($op == 'tagusage') {
+        $tagUsage = array(
+            array('namespace' => 'pm','usage' => 'message'),
+            array('namespace' => 'pm','usage' => 'subject')
+        );
+        return $tagUsage;
+    }
+    return;
 }
 
 function plugin_user_create_pm($uid)
 {
     global $_TABLES;
 
-    DB_save($_TABLES['pm_userprefs'],'uid,notify',"'".$uid."',1");
+    DB_save($_TABLES['pm_userprefs'],'uid,notify',"'".(int)$uid."',1");
 }
 
 function plugin_user_delete_pm($uid)
@@ -94,17 +106,17 @@ function plugin_user_delete_pm($uid)
 
     $sql  = "SELECT * FROM {$_TABLES['pm_msg']} msg ";
     $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
-    $sql .= "WHERE dist.user_id=".intval($uid);
+    $sql .= "WHERE dist.user_id=".(int) $uid;
 
     $result = DB_query($sql);
     while ($msg = DB_fetchArray($result) ) {
         $msg_id = $msg['msg_id'];
-        DB_delete($_TABLES['pm_dist'],array('msg_id','user_id'),array($msg_id,$uid));
-        if ( DB_count($_TABLES['pm_dist'],'msg_id',$msg_id) == 0 ) {
-            DB_delete($_TABLES['pm_msg'],'msg_id',$msg_id);
+        DB_delete($_TABLES['pm_dist'],array('msg_id','user_id'),array((int) $msg_id,(int) $uid));
+        if ( DB_count($_TABLES['pm_dist'],'msg_id',(int) $msg_id) == 0 ) {
+            DB_delete($_TABLES['pm_msg'],'msg_id',(int) $msg_id);
         }
     }
-    DB_query("DELETE FROM {$_TABLES['pm_friends']} WHERE uid=".intval($uid),1);
+    DB_query("DELETE FROM {$_TABLES['pm_friends']} WHERE uid=".(int) $uid,1);
 }
 
 /**
@@ -157,12 +169,12 @@ function plugin_dopluginsearch_pm($query, $datestart, $dateend, $topic, $type, $
 
     $sql  = "SELECT msg.msg_id AS id, msg.message_subject AS title,
                     message_text AS description, message_time AS date,
-                    dist.user_id AS owner_id, ";
+                    dist.user_id AS uid,0 AS hits, ";
     $sql .= "CONCAT('/pm/view.php?msgid=',msg.msg_id,'&amp;folder=',dist.folder_name) AS url ";
-    $sql .= "FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE dist.user_id=$uid ";
+    $sql .= "FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE dist.user_id=".(int) $uid." ";
 
     if (!empty ($author)) {
-        $sql .= "AND (msg.author_uid = ".intval($author).") ";
+        $sql .= "AND (msg.author_uid = ".(int) $author.") ";
     }
 
     // Search the public events
@@ -184,7 +196,7 @@ function plugin_templatesetvars_pm($templatename, &$template)
     if ( COM_isAnonUser() ) return;
 
     if ( !COM_isAnonUser() && $templatename == 'header' && SEC_hasRights('pm.user')) {
-        $unread = DB_count($_TABLES['pm_dist'],array('user_id','folder_name','pm_unread'),array($_USER['uid'],'inbox',1));
+        $unread = DB_count($_TABLES['pm_dist'],array('user_id','folder_name','pm_unread'),array((int) $_USER['uid'],'inbox',1));
         if ( $unread > 0 ) {
             $msg = $template->get_var('welcome_msg');
             $msg .= '</a> - ' . sprintf($LANG_PM00['newpm'], $unread );
@@ -218,12 +230,12 @@ function plugin_profileedit_pm($uid,$panel,$fieldset)
         case 'privacy' :
             switch ($fieldset) {
                 case 'privacy' :
-                    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid={$_USER['uid']}");
+                    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $_USER['uid']);
                     $nrows = DB_numRows($result);
                     if ($nrows == 0) {
                         // Insert a new blank record. Defaults are set in SQL Defintion for table.
-                        DB_query("INSERT INTO {$_TABLES['pm_userprefs']} (uid) VALUES ({$_USER['uid']})");
-                        $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid={$_USER['uid']}");
+                        DB_query("INSERT INTO {$_TABLES['pm_userprefs']} (uid) VALUES (".(int) $_USER['uid'].")");
+                        $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $_USER['uid']);
                     }
                     $A = DB_fetchArray($result);
                     $notify = $A['notify'];
@@ -269,7 +281,7 @@ function plugin_profilesave_pm( )
         $block = 0;
     }
 
-    DB_save($_TABLES['pm_userprefs'],'uid,notify,block',"'".$_USER['uid']."',".$notify.','.$block);
+    DB_save($_TABLES['pm_userprefs'],'uid,notify,block',"'".(int) $_USER['uid']."',".(int) $notify.','.(int) $block);
 }
 
 /*

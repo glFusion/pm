@@ -4,6 +4,8 @@ v1.2.1
 ------
 - Quotes in subjects did not display properly on reply
 - Improved error message when recipient blocks PM messages
+- General code / security clean up
+- Support for glFusion v1.3.0
 
 v1.2.0
 ------

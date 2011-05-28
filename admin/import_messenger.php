@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -81,7 +81,7 @@ while ($msg = DB_fetchArray($result) ) {
     // grab the dist records
 
     $subCount = 0;
-    $distResult = DB_query("SELECT * FROM {$_TABLES['messenger_dist']} WHERE msg_id=".intval($msg['id']));
+    $distResult = DB_query("SELECT * FROM {$_TABLES['messenger_dist']} WHERE msg_id=".(int) $msg['id']);
     while ($distRow = DB_fetchArray($distResult) ) {
         $pm[$index]['dist'][$subCount]['user_id'] = $distRow['target_uid'];
         $pm[$index]['to_address'] .= $userInfo[$distRow['target_uid']].',';
@@ -109,12 +109,12 @@ foreach ( $pm AS $pmRec ) {
     $sql  = "INSERT INTO {$_TABLES['pm_msg']} ";
     $sql .= "(parent_id,author_uid,author_name,author_ip,message_time,message_subject,message_text,to_address,bcc_address) ";
     $sql .= "VALUES( ".'0'.","
-                      .$pmRec['author_uid'].",'"
-                      .addslashes($pmRec['author_name'])."','',"
-                      .$pmRec['message_time'].",'"
-                      .addslashes($pmRec['message_subject'])."','"
-                      .addslashes($pmRec['message_text'])."','"
-                      .addslashes($pmRec['to_address'])."','')";
+                      .(int) $pmRec['author_uid'].",'"
+                      .DB_escapeString($pmRec['author_name'])."','',"
+                      .(int) $pmRec['message_time'].",'"
+                      .DB_escapeString($pmRec['message_subject'])."','"
+                      .DB_escapeString($pmRec['message_text'])."','"
+                      .DB_escapeString($pmRec['to_address'])."','')";
 
     DB_query($sql);
 
@@ -123,12 +123,12 @@ foreach ( $pm AS $pmRec ) {
     foreach($pmRec['dist'] AS $dist) {
         $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
         $sql .= "(msg_id,user_id,username,author_uid,pm_unread,folder_name) ";
-        $sql .= "VALUES ('$lastmsg_id','"
-                         .$dist['user_id']."',"
-                         ."'".$dist['username']."',"
-                         .$dist['author_uid'].","
-                         .$dist['pm_unread'].","
-                         ."'".$dist['folder_name']."'".")";
+        $sql .= "VALUES ('".DB_escapeString($lastmsg_id)."','"
+                         .(int) $dist['user_id']."',"
+                         ."'".DB_escapeString($dist['username'])."',"
+                         .(int) $dist['author_uid'].","
+                         .(int) $dist['pm_unread'].","
+                         ."'".DB_escapeString($dist['folder_name'])."'".")";
         DB_query($sql);
     }
 }
