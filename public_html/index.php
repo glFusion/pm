@@ -46,7 +46,7 @@ function PM_processMarked()
 
     $validOperations = array('delete_marked','archive_marked');
 
-    $operation = $_POST['mark_option'];
+    $operation = isset($_POST['mark_option']) ? $_POST['mark_option'] : '';
     if ( !in_array($operation,$validOperations) ) {
         return;
     }
@@ -55,7 +55,7 @@ function PM_processMarked()
         return;
     }
 
-    $markedMessages = $_POST['marked_msg_id'];
+    $markedMessages = isset($_POST['marked_msg_id']) ? $_POST['marked_msg_id'] : '';
     if (is_array($markedMessages) ) {
         foreach( $markedMessages AS $msg_id ) {
             if ( $operation == 'delete_marked' ) {
@@ -202,7 +202,7 @@ $sortDirSelect .= '</select>';
 
 switch ( $folder ) {
     case 'inbox' :
-        $totalRecs = DB_count($_TABLES['pm_dist'],array('user_id','folder_name'),array($_USER['uid'],'inbox') );
+        $totalRecs = DB_count($_TABLES['pm_dist'],array('user_id','folder_name'),array((int) $_USER['uid'],'inbox') );
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg " ;
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
@@ -225,7 +225,7 @@ switch ( $folder ) {
         $sql .= "WHERE dist.user_id=".(int) $_USER['uid']." AND dist.folder_name='archive' ";
         break;
     case 'outbox' :
-        $result = DB_query("SELECT COUNT(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON  msg.msg_id = dist.msg_id WHERE (msg.author_uid=".$_USER['uid']." AND dist.folder_name='outbox') ");
+        $result = DB_query("SELECT COUNT(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON  msg.msg_id = dist.msg_id WHERE (msg.author_uid=".(int)$_USER['uid']." AND dist.folder_name='outbox') ");
         list($totalRecs) = DB_fetchArray($result);
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
