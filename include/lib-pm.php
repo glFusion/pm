@@ -6,9 +6,7 @@
 // |                                                                          |
 // | PM plugin support functions                                              |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2014 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -102,6 +100,8 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
         return;
     }
 
+    $dt = new Date('now',$_USER['tzid']);
+
     $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
     $T->set_file (array ('message'=>'message_history.thtml'));
     $retval .= '<h1>'.$LANG_PM00['message_history'].'</h1>';
@@ -146,14 +146,14 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
         }
         $prevmsgtime = $msg['message_time'];
         $subject = htmlentities($msg['message_subject'], ENT_QUOTES, COM_getEncodingt());
+        $dt->setTimestamp($msg['message_time']);
 
         $formatted_msg_text = BBC_formatTextBlock($msg['message_text'],'text', $parsers);
-
         $T->set_var(array(
             'from'        => $msg['author_uid'],
             'to'          => $msg['user_id'],
             'subject'     => $subject,
-            'date'        => @strftime('%b %d %Y @ %H:%M', $msg['message_time'] ),
+            'date'        => $dt->format($dt->getUserFormat(),true),
             'msg_text'    => $formatted_msg_text,
             'from_name'   => $msg['author_name'],
             'to_name'     => $msg['to_address'],

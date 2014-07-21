@@ -6,9 +6,7 @@
 // |                                                                          |
 // | PM plugin main index page                                                |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2014 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -295,8 +293,9 @@ $sql = $sql . $timeLimit . $orderby . $limit;
 $result = DB_query($sql);
 $x = 0;
 $msgCounter = 0;
+$dt = new Date('now',$_USER['tzid']);
 while ($msg = DB_fetchArray($result) ) {
-    $userDate = COM_getUserDateTimeFormat($msg['message_time'] );
+    $userDate = $dt->format($dt->getUserFormat(),true);
 
     if ( $msg['author_name'] == '' ) {
         $fromUserName = 'unknown';
@@ -318,7 +317,8 @@ while ($msg = DB_fetchArray($result) ) {
         }
     }
 
-    $printDate = @strftime('%b %d %Y @ %H:%M', $msg['message_time'] );
+//    $printDate = @strftime('%b %d %Y @ %H:%M', $msg['message_time'] );
+    $printDate = $dt->format($dt->getUserFormat(),true);
     if ( $folder == 'outbox' || $folder == 'sent' ) {
         $toArray = array();
         $toArray = explode(',',$msg['to_address']);
@@ -340,7 +340,8 @@ while ($msg = DB_fetchArray($result) ) {
     }
     $T->set_var(array(
         'subject'       => $msg['message_subject'] == '' ? $LANG_PM00['no_subject'] : $msg['message_subject'],
-        'lastdate'      => @strftime('%a - %b %d %Y %H:%M',$msg['message_time']),
+//        'lastdate'      => @strftime('%a - %b %d %Y %H:%M',$msg['message_time']),
+        'lastdate'      => $dt->format($dt->getUserFormat(),true),
         'msg_id'        => $msg['msg_id'],
         'csscounter'    => ($x % 2) + 1,
         'icon_style'    => $icon_style,

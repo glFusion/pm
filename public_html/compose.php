@@ -6,9 +6,7 @@
 // |                                                                          |
 // | PM plugin message editor                                                 |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2014 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -146,12 +144,12 @@ function PM_previewMessage( $msgID = 0 )
 
     $parsers = array();
     $parsers[] = array(array('block','inline','link','listitem'), '_bbc_replacesmiley');
-
+    $dt = new Date($msg['datetime'],$_USER['tzid']);
     $T->set_var(array(
         'from'        => $msg['source_uid'],
         'to'          => $msg['target_uid'],
         'subject'     => $subject,
-        'date'        => @strftime('%b %d %Y @ %H:%M', $msg['datetime'] ),
+        'date'        => $dt->format($dt->getUserFormat(),true),
         'msg_text'    => PM_BBC_formatTextBlock($msg['message'],'text',$parsers),
         'avatar'      => USER_getPhoto($msg['source_uid'],$photo,'',128),
         'from_name'   => $username,

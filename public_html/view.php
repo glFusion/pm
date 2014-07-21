@@ -6,9 +6,7 @@
 // |                                                                          |
 // | PM plugin view message                                                   |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2014 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -129,12 +127,12 @@ if ( DB_numRows($result) > 0 ) {
     $parsers[] = array(array('block','inline','link','listitem'), '_bbc_replacesmiley');
 
     $formatted_msg_text = BBC_formatTextBlock($msg['message_text'],'text', $parsers);
-
+    $dt = new Date($msg['message_time'],$_USER['tzid']);
     $T->set_var(array(
         'from'          => $msg['author_uid'],
         'to'            => $msg['user_id'],
         'subject'       => $msg['message_subject'],
-        'date'          => @strftime('%b %d %Y @ %H:%M', $msg['message_time'] ),
+        'date'          => $dt->format($dt->getUserFormat(),true),
         'msg_text'      => $formatted_msg_text,
         'return_link'   => $_CONF['site_url'].'/pm/index.php?folder='.$folder.'&amp;page='.$page.'#msg'.$msg['msg_id'],
         'folder'        => $LANG_PM00[$folder],
