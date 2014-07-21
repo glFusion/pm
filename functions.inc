@@ -6,9 +6,7 @@
 // |                                                                          |
 // | Implement the glFusion Plugin API                                        |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2014 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -291,7 +289,7 @@ function plugin_profilesave_pm( )
 
 function plugin_getconfigelementhelp_pm($element)
 {
-    return array('http://www.glfusion.org/wiki/doku.php/pm:start#configuration_settings',2);
+    return array('http://www.glfusion.org/wiki/pm:start',2);
 }
 
 function plugin_profileicondisplay_pm($uid)

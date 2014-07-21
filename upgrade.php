@@ -6,9 +6,7 @@
 // |                                                                          |
 // | Upgrade routines                                                         |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2014 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -80,6 +78,7 @@ function pm_upgrade()
             DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='PM Admin'",1);
         case '1.2.0' :
         case '1.2.1' :
+        case '1.2.2' :
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");
             break;

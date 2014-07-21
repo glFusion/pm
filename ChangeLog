@@ -1,5 +1,9 @@
 ChangeLog
 
+v1.2.3
+------
+- Support for glFusion v1.4.x
+
 v1.2.1
 ------
 - Quotes in subjects did not display properly on reply
