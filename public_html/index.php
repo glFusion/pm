@@ -295,6 +295,7 @@ $x = 0;
 $msgCounter = 0;
 $dt = new Date('now',$_USER['tzid']);
 while ($msg = DB_fetchArray($result) ) {
+    $dt->setTimestamp($msg['message_time']);
     $userDate = $dt->format($dt->getUserFormat(),true);
 
     if ( $msg['author_name'] == '' ) {
