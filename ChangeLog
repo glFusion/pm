@@ -1,5 +1,9 @@
 ChangeLog
 
+v1.2.4
+------
+- Fixed incorrect date display on index page
+
 v1.2.3
 ------
 - Support for glFusion v1.4.x

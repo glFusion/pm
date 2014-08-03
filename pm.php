@@ -31,7 +31,7 @@ if (!defined ('GVERSION')) {
 
 $_PM_CONF['pi_name']           = 'pm';
 $_PM_CONF['pi_display_name']   = 'Private message';
-$_PM_CONF['pi_version']        = '1.2.3';
+$_PM_CONF['pi_version']        = '1.2.4';
 $_PM_CONF['gl_version']        = '1.4.0';
 $_PM_CONF['pi_url']            = 'http://www.glfusion.org';
 
