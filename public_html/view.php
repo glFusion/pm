@@ -78,7 +78,7 @@ if ( DB_numRows($result) > 0 ) {
     if ( ($folder == 'inbox' || $folder == 'archive') && $msg['pm_unread'] == 1 ) {
         DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_unread=0 WHERE msg_id=".(int) $msg_id." AND user_id=".(int) $_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
         DB_query("UPDATE {$_TABLES['pm_dist']} SET folder_name='sent' WHERE msg_id=".(int) $msg_id." AND user_id=".(int) $msg['author_uid']." AND folder_name='outbox'");
-        CACHE_remove_instance('stmenu');
+        CACHE_remove_instance('menu');
     }
 
     // get sender information
