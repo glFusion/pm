@@ -2,13 +2,11 @@
 // +--------------------------------------------------------------------------+
 // | PM Plugin - glFusion CMS                                                 |
 // +--------------------------------------------------------------------------+
-// | english.php                                                              |
+// | english_utf-8.php                                                        |
 // |                                                                          |
 // | English language file                                                    |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2015 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -42,12 +40,17 @@ $LANG_PM00 = array (
     'user_menu'         => 'Message Center',
     'title'             => 'Private Message',
     'compose_msg'       => 'Compose Message',
+    'compose'           => 'Compose',
     'reply_msg'         => 'Reply Message',
+    'reply'             => 'Reply',
     'preview_msg'       => 'Preview Message',
     'quote_msg'         => 'Quote Message',
+    'quote'             => 'Quote',
     'delete_msg'        => 'Delete Message',
+    'delete'            => 'Delete',
     'inbox'             => 'Inbox',
     'sent'              => 'Sent',
+    'date'              => 'Date',
     'archive'           => 'Archive',
     'outbox'            => 'Outbox',
     'all_messages'      => 'All Messages',
@@ -84,7 +87,7 @@ $LANG_PM00 = array (
     'mark_all'          => 'Mark All',
     'unmark_all'        => 'Unmark All',
     'delete_marked'     => 'Deleted Marked',
-    'archive_marked'    => 'Move marked to Saved messages',
+    'archive_marked'    => 'Save Marked',
     'message_history'   => 'Message History',
     'add_user'          => 'Add User',
     'add_friend'        => 'Add Friend',
@@ -105,6 +108,51 @@ $LANG_PM00 = array (
     'send_pm'           => 'Send Private Message',
     'error'             => ' Error',
     'newpm'             => '<b>You have %d new </b><a href="'.$_CONF['site_url'].'/pm/index.php"><b>private message(s)</b>',
+    'address_book'      => 'Address Book',
+    'site_users'        => 'Site Users',
+    'options'           => 'Options',
+    'FONTCOLOR' => 'Color',
+    'FONTSIZE' => 'Font',
+    'CLOSETAGS' => 'Close Tags',
+    'CODETIP' => 'Tip: Styles can be applied quickly to selected text',
+    'TINY' => 'Tiny',
+    'SMALL' => 'Small',
+    'NORMAL' => 'Normal',
+    'LARGE' => 'Large',
+    'HUGE' => 'Huge',
+    'DEFAULT' => 'Default',
+    'DKRED' => 'Dark Red',
+    'RED' => 'Red',
+    'ORANGE' => 'Orange',
+    'BROWN' => 'Brown',
+    'YELLOW' => 'Yellow',
+    'GREEN' => 'Green',
+    'OLIVE' => 'Olive',
+    'CYAN' => 'Cyan',
+    'BLUE' => 'Blue',
+    'DKBLUE' => 'Dark Blue',
+    'INDIGO' => 'Indigo',
+    'VIOLET' => 'Violet',
+    'WHITE' => 'White',
+    'BLACK' => 'Black',
+    'ID'    => 'ID',
+    'b_help' => 'Bold text: [b]text[/b]',
+    'i_help' => 'Italic text: [i]text[/i]',
+    'u_help' => 'Underline text: [u]text[/u]',
+    'q_help' => 'Quote text: [quote]text[/quote]',
+    'c_help' => 'Code display: [code]code[/code]',
+    'l_help' => 'List: [list]text[/list]',
+    'o_help' => 'Ordered list: [olist]text[/olist]',
+    'p_help' => '[img]http://image_url[/img]  or [img w=100 h=200][/img]',
+    'w_help' => 'Insert URL: [url]http://url[/url] or [url=http://url]URL text[/url]',
+    'a_help' => 'Close all open bbCode tags',
+    's_help' => 'Font color: [color=red]text[/color]  Tip: you can also use color=#FF0000',
+    'f_help' => 'Font size: [size=x-small]small text[/size]',
+    'h_help' => 'Click to view more detailed help',
+    't_help' => 'Use [file]#[/file] to embed an attached image in the post',
+    'e_help' => 'List item: [*]text',
+    'smiley' => 'Smileys',
+
 );
 
 $LANG_PM_NOTIFY = array(

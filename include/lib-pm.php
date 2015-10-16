@@ -34,7 +34,7 @@ if (!defined ('GVERSION')) {
 /*
  * Only allow logged-in users or users who have the pm.user permission
  */
- if ( COM_isAnonUser()  )  {
+if ( COM_isAnonUser()  )  {
     $display = COM_siteHeader();
     $display .= SEC_loginRequiredForm();
     $display .= COM_siteFooter();

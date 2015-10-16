@@ -16,6 +16,11 @@ function addfriend() {
 <input type="hidden" name="reply_msgid" value="{reply_msgid}" />
 <input type="hidden" name="msgid" value="{msgid}" />
 <div id="pm" class="pm-main">
+
+{!if preview_text}
+		{preview_text}
+{!endif}
+
   {# common header area - show where we are #}
   <h2>PM :: <strong>{$LANG_PM00[compose_msg]}</strong></h2>
   {# end of common header #}

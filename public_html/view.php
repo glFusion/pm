@@ -6,7 +6,7 @@
 // |                                                                          |
 // | PM plugin view message                                                   |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                        |
+// | Copyright (C) 2009-2015 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -126,6 +126,8 @@ if ( DB_numRows($result) > 0 ) {
     $parsers = array();
     $parsers[] = array(array('block','inline','link','listitem'), '_bbc_replacesmiley');
 
+    $message_history = PM_showHistory( $msg['msg_id'], 0 );
+
     $formatted_msg_text = BBC_formatTextBlock($msg['message_text'],'text', $parsers);
     $dt = new Date($msg['message_time'],$_USER['tzid']);
     $T->set_var(array(
@@ -148,13 +150,11 @@ if ( DB_numRows($result) > 0 ) {
         'homepage'      => $homepage,
         'location'      => $location,
         'email'         => $emailfromuser ? $_CONF['site_url'].'/profiles.php?uid='.$msg['author_uid'] : '',
+        'message_history'   => $message_history,
     ));
 
     $T->parse ('output', 'message');
     $retval .= $T->finish ($T->get_var('output'));
-
-    $retval .= PM_showHistory( $msg['msg_id'], 0 );
-
 } else {
     $retval = $LANG_PM_ERROR['message_not_found'];
 }

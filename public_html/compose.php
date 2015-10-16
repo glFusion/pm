@@ -6,7 +6,7 @@
 // |                                                                          |
 // | PM plugin message editor                                                 |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                        |
+// | Copyright (C) 2009-2015 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -115,7 +115,7 @@ function PM_previewMessage( $msgID = 0 )
     $msg['datetime']   = time();
     $msg['username_list'] = $_POST['username_list'];
     $msg['subject']    = $_POST['subject'];
-    $msg['message']    = $_POST['message'];
+    $msg['message']    = $_POST['comment'];
     $msg['source_uid'] = $_USER['uid'];
     $msg['target_uid'] = $_USER['uid'];
 
@@ -162,14 +162,19 @@ function PM_previewMessage( $msgID = 0 )
         'email'       => $emailfromuser ? $email : '',
     ));
 
+    if ( function_exists('msg_showsmilies') ) {
+        $T->set_var('smilies',msg_showsmilies());
+        $T->set_var('smilies_enabled',true);
+    }
+
     $T->parse ('output', 'message');
     $retval .= $T->finish ($T->get_var('output'));
     return $retval;
 }
 
-function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message='', $errors = array() )
+function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message='', $errors = array(), $preview_text = '' )
 {
-    global $_CONF, $_TABLES, $_USER;
+    global $_CONF, $_TABLES, $_USER, $LANG_PM00;
 
     $retval = '';
 
@@ -196,7 +201,7 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
           ."AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList})) "
           ."ORDER BY username ASC";
 
-    $userselect = '<select id="combo_user" name="to_name"> ';
+    $userselect = '<select id="combo_user" name="to_name" multiple="multiple"> ';
     $result = DB_query($sql);
     while ($userRow = DB_fetchArray($result) ) {
         if ( $userRow['block'] != 1 ) {
@@ -205,30 +210,70 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
     }
     $userselect .= '</select>';
 
+    $friendselect_options = '';
+
     $friendselect = '<select id="combo_friend" name="combo_friend" size="5" style="width:10em;"> ';
     $sql = "SELECT * FROM {$_TABLES['pm_friends']} WHERE uid=".(int) $_USER['uid']." ORDER BY friend_name ASC";
     $result = DB_query($sql);
     while ($friendRow = DB_fetchArray($result) ) {
         $friendselect .= '<option value="'.$friendRow['friend_name'].'">'.$friendRow['friend_name'].'</option>' .LB;
+        $friendselect_options .= '<option value="'.$friendRow['friend_name'].'">'.$friendRow['friend_name'].'</option>' .LB;
     }
     $friendselect .= '</select>';
 
     $additionalCodes = array();
 
-//    $additionalCodes = array(
-//                       array('name'=>'youtube','label'=>'YouTube','help'=>'Embed YouTube Video: [youtube=]text[/youtube]','start_tag'=>'[youtube=]','end_tag'=>'[/youtube]','select'=>''),
-//                    );
-
-    $bbcodeEditor = BBC_editor($message,'compose_form','message',$additionalCodes);
+    $bbcodeEditor = BBC_editor($message,'compose_form','comment',$additionalCodes);
 
     $T->set_var(array(
         'to'          => htmlentities($to, ENT_QUOTES, COM_getEncodingt()),
         'subject'     => htmlentities($subject, ENT_QUOTES, COM_getEncodingt()),
         'userselect'  => $userselect,
         'friendselect'=> $friendselect,
+        'friendselect_options' => $friendselect_options,
         'reply_msgid' => $reply_msgid,
         'msgid'       => $msgid,
-        'editor'        => $bbcodeEditor,
+        'msg_text'    => $message,
+        'editor'      => $bbcodeEditor,
+        'LANG_bhelp'   => $LANG_PM00['b_help'],
+        'LANG_ihelp'   => $LANG_PM00['i_help'],
+        'LANG_uhelp'   => $LANG_PM00['u_help'],
+        'LANG_qhelp'   => $LANG_PM00['q_help'],
+        'LANG_chelp'   => $LANG_PM00['c_help'],
+        'LANG_lhelp'   => $LANG_PM00['l_help'],
+        'LANG_ohelp'   => $LANG_PM00['o_help'],
+        'LANG_phelp'   => $LANG_PM00['p_help'],
+        'LANG_whelp'   => $LANG_PM00['w_help'],
+        'LANG_ahelp'   => $LANG_PM00['a_help'],
+        'LANG_shelp'   => $LANG_PM00['s_help'],
+        'LANG_fhelp'   => $LANG_PM00['f_help'],
+        'LANG_hhelp'   => $LANG_PM00['h_help'],
+        'LANG_thelp'   => $LANG_PM00['t_help'],
+        'LANG_ehelp'   => $LANG_PM00['e_help'],
+        'LANG_fontcolor'    => $LANG_PM00['FONTCOLOR'],
+        'LANG_fontsize'     => $LANG_PM00['FONTSIZE'],
+        'LANG_closetags'    => $LANG_PM00['CLOSETAGS'],
+        'LANG_codetip'      => $LANG_PM00['CODETIP'],
+        'LANG_tiny'         => $LANG_PM00['TINY'],
+        'LANG_small'        => $LANG_PM00['SMALL'],
+        'LANG_normal'       => $LANG_PM00['NORMAL'],
+        'LANG_large'        => $LANG_PM00['LARGE'],
+        'LANG_huge'         => $LANG_PM00['HUGE'],
+        'LANG_default'      => $LANG_PM00['DEFAULT'],
+        'LANG_dkred'        => $LANG_PM00['DKRED'],
+        'LANG_red'          => $LANG_PM00['RED'],
+        'LANG_orange'       => $LANG_PM00['ORANGE'],
+        'LANG_brown'        => $LANG_PM00['BROWN'],
+        'LANG_yellow'       => $LANG_PM00['YELLOW'],
+        'LANG_green'        => $LANG_PM00['GREEN'],
+        'LANG_olive'        => $LANG_PM00['OLIVE'],
+        'LANG_cyan'         => $LANG_PM00['CYAN'],
+        'LANG_blue'         => $LANG_PM00['BLUE'],
+        'LANG_dkblue'       => $LANG_PM00['DKBLUE'],
+        'LANG_indigo'       => $LANG_PM00['INDIGO'],
+        'LANG_violet'       => $LANG_PM00['VIOLET'],
+        'LANG_white'        => $LANG_PM00['WHITE'],
+        'LANG_black'        => $LANG_PM00['BLACK'],
     ));
     $error_message = '';
     if ( count($errors) > 0 ) {
@@ -237,6 +282,10 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
         }
     }
     $T->set_var('error_message',$error_message);
+
+    if ( $preview_text != '' ) {
+        $T->set_var('preview_text',$preview_text);
+    }
 
     $T->set_var('gltoken', SEC_createToken());
     $T->set_var('gltoken_name', CSRF_TOKEN);
@@ -310,7 +359,7 @@ function PM_msgSend( )
     if ( strlen($subject) < 4 ) {
         $errArray[] = $LANG_PM_ERROR['no_subject'];
     }
-    $message = $_POST['message'];
+    $message = $_POST['comment'];
     if ( strlen($message) < 4 ) {
         $errArray[] = $LANG_PM_ERROR['no_message'];
     }
@@ -460,13 +509,15 @@ switch ( $mode ) {
         $body .= PM_showHistory($reply_msgid,true);
         break;
     case 'preview' :
-        $body        = PM_previewMessage();
+
+        $preview_text = PM_previewMessage();
+
         $to          = $_POST['username_list'];
         $subject     = $_POST['subject'];
-        $message     = $_POST['message'];
+        $message     = $_POST['comment'];
         $msgid       = COM_applyFilter($_POST['msgid'],true);
         $reply_msgid = COM_applyFilter($_POST['reply_msgid'],true);
-        $body       .= PM_msgEditor($msgid,$reply_msgid,$to,$subject,$message);
+        $body        = PM_msgEditor($msgid,$reply_msgid,$to,$subject,$message,array(),$preview_text);
         $body       .= PM_showHistory($reply_msgid,true);
         break;
     case 'send' :
@@ -480,7 +531,7 @@ switch ( $mode ) {
         if ( !$rc ) {
             $to          = $_POST['username_list'];
             $subject     = $_POST['subject'];
-            $message     = $_POST['message'];
+            $message     = $_POST['comment'];
             $msgid       = COM_applyFilter($_POST['msgid'],true);
             $reply_msgid = COM_applyFilter($_POST['reply_msgid'],true);
             $body        = PM_msgEditor($msgid,$reply_msgid,$to,$subject,$message,$errors);

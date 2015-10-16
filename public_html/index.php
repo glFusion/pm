@@ -6,7 +6,7 @@
 // |                                                                          |
 // | PM plugin main index page                                                |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                        |
+// | Copyright (C) 2009-2015 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -34,7 +34,43 @@ if (!in_array('pm', $_PLUGINS)) {
     exit;
 }
 
+USES_lib_admin();
+
 require_once $_CONF['path'].'plugins/pm/include/lib-pm.php';
+
+function _pm_getListField_mailbox($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $_USER, $folder;
+
+    $retval = '';
+
+    $dt = new Date('now',$_USER['tzid']);
+
+    switch ($fieldname) {
+        case 'message_time' :
+            $dt->setTimestamp($fieldvalue);
+            $retval = $dt->format($dt->getUserFormat(),true);
+            if ( $A['pm_unread'] == 1 ) {
+                $retval = '<strong>'.$retval.'</strong>';
+            }
+            break;
+        case 'msg_id' :
+            $retval = '<input class="msg_checkbox" type="checkbox" name="marked_msg_id[]" value="'.$fieldvalue.'">';
+            break;
+        case 'message_subject' :
+        case 'author_name' :
+            $retval = '<a href="'.$_CONF['site_url'].'/pm/view.php?msgid='.$A['msg_id'].'&amp;folder='.$folder.'">'.$fieldvalue.'</a>';
+            if ( $A['pm_unread'] == 1 ) {
+                $retval = '<strong>'.$retval.'</strong>';
+            }
+            break;
+        default :
+            $retval = $fieldvalue;
+            break;
+    }
+
+    return $retval;
+}
 
 function PM_processMarked()
 {
@@ -90,6 +126,10 @@ function PM_processMarked()
 
 $display = '';
 
+if ( isset($_POST['mark_option']) ) {
+    $msg_header = PM_processMarked();
+}
+
 if ( isset($_POST['submit_mark']) ) {
     $msg_header = PM_processMarked();
 }
@@ -104,67 +144,11 @@ if ( isset($_GET['mode']) && $_GET['mode'] == 'delete' ) {
 
 $folder = PM_getFolder( 'folder' );
 
-if ( isset($_GET['st']) ) {
-    $st = COM_applyFilter($_GET['st'],true);
-} elseif (isset($_POST['st'])) {
-    $st = COM_applyFilter($_POST['st'],true);
-} else {
-    $st = 0;
-}
-
-if ( !in_array($st,array(0,1,7,14,30,90,180,365))) {
-    $st = 0;
-}
-
-if ( isset($_GET['sk'] ) ) {
-    $sk = COM_applyFilter($_GET['sk']);
-} elseif ( isset($_POST['sk']) ) {
-    $sk = COM_applyFilter($_POST['sk']);
-} else {
-    $sk = 't';
-}
-
-if ( !in_array($sk,array('a','t','s') ) ) {
-    $sk = 't';
-}
-
-if ( isset($_GET['sd'] ) ) {
-    $sd = COM_applyFilter($_GET['sd']);
-} elseif (isset($_POST['sd']) ) {
-    $sd = COM_applyFilter($_POST['sd']);
-} else {
-    $sd = 'd';
-}
-
-if ( !in_array($sd,array('a','d') ) ) {
-    $sd = 'd';
-}
-
-if ( isset($_GET['page']) ) {
-    $page = COM_applyFilter($_GET['page'],true);
-} elseif (isset($_POST['page']) ) {
-    $page = COM_applyFilter($_POST['page'],true);
-} else {
-    $page = 1;
-}
-
-$page = $page-1;
-if ( $page < 0 ) {
-    $page = 0;
-}
-
-if ( isset($_PM_CONF['messages_per_page']) ) {
-    $recordPerScreen = $_PM_CONF['messages_per_page'];
-} else {
-    $recordPerScreen = 15;
-}
-
 $retval = '';
 
 $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
 $T->set_file (array (
     'list'      =>  'pm_box.thtml',
-    'msg_record' => 'pm_message_record.thtml'
 ));
 
 // build folder selection list
@@ -175,56 +159,27 @@ $folderSelect .= '<option'. ($folder == 'sent'    ? ' selected="selected" ' : ' 
 $folderSelect .= '<option'. ($folder == 'archive' ? ' selected="selected" ' : ' ') . 'value="archive">' . $LANG_PM00['archive'] . '</option>'.LB;
 $folderSelect .= '</select>'.LB;
 
-// build time select
-$timeSelect  = '<select id="st" name="st">'.LB;
-$timeSelect .= '<option'. ($st == 0 ? ' selected="selected" ' : ' ')   . ' value="0">'. $LANG_PM00['all_messages'].'</option>'.LB;
-$timeSelect .= '<option'. ($st == 1 ? ' selected="selected" ' : ' ')   . ' value="1">'. $LANG_PM00['one_day'].'</option>'.LB;
-$timeSelect .= '<option'. ($st == 7 ? ' selected="selected" ' : ' ')   . ' value="7">'. $LANG_PM00['seven_days'].'</option>'.LB;
-$timeSelect .= '<option'. ($st == 14 ? ' selected="selected" ' : ' ')  . ' value="14">'. $LANG_PM00['two_weeks'].'</option>'.LB;
-$timeSelect .= '<option'. ($st == 30 ? ' selected="selected" ' : ' ')  . ' value="30">'.$LANG_PM00['one_month'].'</option>'.LB;
-$timeSelect .= '<option'. ($st == 90 ? ' selected="selected" ' : ' ')  . ' value="90">'. $LANG_PM00['three_months'].'</option>'.LB;
-$timeSelect .= '<option'. ($st == 180 ? ' selected="selected" ' : ' ') . ' value="180">'.$LANG_PM00['six_months'].'</option>'.LB;
-$timeSelect .= '<option'. ($st == 365 ? ' selected="selected" ' : ' ') . ' value="365">'.$LANG_PM00['one_year'].'</option>'.LB;
-$timeSelect .= '</select>'.LB;
-
-$sortSelect  = '<select id="sk" name="sk">'.LB;
-$sortSelect .= '<option'. ($sk == 'a' ? ' selected="selected" ' : ' ') . ' value="a">'.$LANG_PM00['author'].'</option>'.LB;
-$sortSelect .= '<option'. ($sk == 't' ? ' selected="selected" ' : ' ') . ' value="t">'.$LANG_PM00['post_time'].'</option>'.LB;
-$sortSelect .= '<option'. ($sk == 's' ? ' selected="selected" ' : ' ') . ' value="s">'.$LANG_PM00['subject'].'</option>'.LB;
-$sortSelect .= '</select>';
-
-$sortDirSelect  = '<select id="sd" name="sd">'.LB;
-$sortDirSelect .= '<option'. ($sd == 'a' ? ' selected="selected" ' : ' ') . ' value="a">'.$LANG_PM00['ascending'].'</option>'.LB;
-$sortDirSelect .= '<option'. ($sd == 'd' ? ' selected="selected" ' : ' ') . ' value="d">'.$LANG_PM00['descending'].'</option>'.LB;
-$sortDirSelect .= '</select>';
 
 switch ( $folder ) {
     case 'inbox' :
-        $totalRecs = DB_count($_TABLES['pm_dist'],array('user_id','folder_name'),array((int) $_USER['uid'],'inbox') );
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg " ;
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
         $sql .= "WHERE dist.user_id=".$_USER['uid']." AND dist.folder_name='inbox' ";
         break;
     case 'sent' :
-        $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.author_uid=".(int) $_USER['uid']." AND dist.folder_name='sent'");
-        list($totalRecs) = DB_fetchArray($result);
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
         $sql .= "WHERE msg.author_uid=".(int) $_USER['uid']." AND dist.folder_name='sent' ";
         break;
     case 'archive' :
-        $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON  msg.msg_id = dist.msg_id WHERE dist.author_uid =".(int) $_USER['uid']." AND dist.folder_name='archive' ");
-        list($totalRecs) = DB_fetchArray($result);
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
         $sql .= "WHERE dist.user_id=".(int) $_USER['uid']." AND dist.folder_name='archive' ";
         break;
     case 'outbox' :
-        $result = DB_query("SELECT COUNT(*) as count FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON  msg.msg_id = dist.msg_id WHERE (msg.author_uid=".(int)$_USER['uid']." AND dist.folder_name='outbox') ");
-        list($totalRecs) = DB_fetchArray($result);
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
@@ -232,179 +187,77 @@ switch ( $folder ) {
         break;
 }
 
-// calculate limits
 
-$start = $page * $recordPerScreen;
-$end   = $recordPerScreen;
-$numpages = ceil($totalRecs / $recordPerScreen);
-$limit = ' LIMIT '.$start.','.$end;
+$T->set_var(array(
+    'compose_link'  => $_CONF['site_url'] . '/pm/compose.php?mode=new',
+    'lang_compose'  => $LANG_PM00['compose'],
+    'ab_link'       => $_CONF['site_url'].'/pm/friends.php',
+    'lang_ab'       => $LANG_PM00['address_book'],
+));
 
-// query range
-$date_range = '';
+$menu_arr = array (
+    array('url' => $_CONF['site_url'] . '/pm/compose.php?mode=new',
+          'text' => $LANG_PM00['compose']),
+    array('url' => $_CONF['site_url'].'/pm/friends.php',
+          'text' => $LANG_PM00['address_book']),
+);
 
-// sort by
+$msg_menu = ADMIN_createMenu($menu_arr,
+                $LANG_PM00['folder']. ' ' . $folderSelect . '<input type="submit" value="'.$LANG_PM00['go'].'">',
+                $_CONF['site_url'].'/pm/images/pm48.png');
 
-switch ($sk) {
-    case 'a' :
-        if ( $folder == 'inbox' || $folder == 'archive') {
-            $orderby = ' ORDER BY author_name';
-        } else {
-            $orderby = ' ORDER BY username';
-        }
-        break;
-    case 't' :
-        $orderby = ' ORDER BY message_time';
-        break;
-    case 's' :
-        $orderby = ' ORDER BY message_subject';
-        break;
-    default :
-        $orderby = ' ORDER BY message_time';
-        break;
-}
+$header_arr = array(      # display 'text' and use table field 'field'
+    array('text' => '<input type="checkbox" id="selectall">', 'field' => 'msg_id', 'sort' => false, 'align' => 'center'),
+    array('text' => $LANG_PM00['from'], 'field' => 'author_name', 'sort' => true, 'align' => 'left'),
+    array('text' => $LANG_PM00['subject'], 'field' => 'message_subject', 'sort' => true, 'align' => 'left'),
+    array('text' => $LANG_PM00['date'],    'field' => 'message_time', 'sort'=> true, 'align' => 'right'),
+);
+$defsort_arr = array('field' => 'message_time', 'direction' => 'desc');
 
-// direction
+$text_arr = array(
+    'has_extras' => true,
+    'form_url'   => $_CONF['site_url'] . '/pm/index.php'
+);
 
-switch ($sd) {
-    case 'a' :
-        $orderby = $orderby .' ASC';
-        break;
-    case 'd' :
-        $orderby = $orderby .' DESC';
-        break;
-    default :
-        $orderby = $orderby .' DESC';
-        break;
-}
+$oselect = '
+    <div style="margin-top:10px;">
+    <input type="hidden" name="current_folder" value="'.$folder.'">
+	<select name="mark_option" onchange="this.form.submit();">
+		<option selected="selected" disalbed="disabled" value="">'.$LANG_PM00['options'].'</option>
+		<option value="delete_marked" onclick="return confirm(\''.$LANG_PM00['delete_confirm'].'\');">'.$LANG_PM00['delete_marked'].'</option>
+		<option value="archive_marked">'.$LANG_PM00['archive_marked'].'</option>
+	</select></div>';
 
-// time
-switch ($st) {
-    case 0 :
-        $timeLimit = '';
-        break;
-    default :
-        $min_post_time = time() - ($st * 86400);
-        $timeLimit = " AND msg.message_time >= ". $min_post_time;
-        break;
-}
+$form_arr = array(
+    'bottom' => $oselect
+);
 
-$sql = $sql . $timeLimit . $orderby . $limit;
+$query_arr = array(
+    'table' => $_TABLES['pm_msg'],
+    'sql' => $sql,
+    'query_fields' => array('message_subject'),
+    'default_filter' => ''
+);
 
-$result = DB_query($sql);
-$x = 0;
-$msgCounter = 0;
-$dt = new Date('now',$_USER['tzid']);
-while ($msg = DB_fetchArray($result) ) {
-    $dt->setTimestamp($msg['message_time']);
-    $userDate = $dt->format($dt->getUserFormat(),true);
-
-    if ( $msg['author_name'] == '' ) {
-        $fromUserName = 'unknown';
-    } else {
-        $fromUserName = $msg['author_name'];
-    }
-
-    if ( $msg['pm_unread'] == 1 ) {
-        $icon_style = 'pm-new';
-    } else {
-        $icon_style = 'pm-read';
-
-        if ( $msg['pm_replied'] ) {
-            $icon_style = 'pm-reply';
-        }
-
-        if ( $msg['pm_forwarded'] ) {
-            $icon_style = 'pm-forward';
-        }
-    }
-
-//    $printDate = @strftime('%b %d %Y @ %H:%M', $msg['message_time'] );
-    $printDate = $dt->format($dt->getUserFormat(),true);
-    if ( $folder == 'outbox' || $folder == 'sent' ) {
-        $toArray = array();
-        $toArray = explode(',',$msg['to_address']);
-        $to_address = '';
-        if ( is_array($toArray) ) {
-            foreach ($toArray AS $to ) {
-                $to_address .= $to . ', ';
-            }
-        } else {
-            $to_address = $msg['to_address'];
-        }
-        $T->set_var(array(
-            'from'          => $to_address
-        ));
-    } else {
-        $T->set_var(array(
-            'from'          => '<a href="'.$_CONF['site_url'].'/users.php?mode=profile&amp;uid='.$msg['author_uid'].'">'.$fromUserName.'</a>',
-        ));
-    }
-    $T->set_var(array(
-        'subject'       => $msg['message_subject'] == '' ? $LANG_PM00['no_subject'] : $msg['message_subject'],
-//        'lastdate'      => @strftime('%a - %b %d %Y %H:%M',$msg['message_time']),
-        'lastdate'      => $dt->format($dt->getUserFormat(),true),
-        'msg_id'        => $msg['msg_id'],
-        'csscounter'    => ($x % 2) + 1,
-        'icon_style'    => $icon_style,
-        'msg_class'     => $msg['pm_unread'] == 1 ? 'unread' : 'read',
-        'found_on_page' => $page+1,
-        'folder'        => $folder,
-        'lang_by'       => $msg['author_uid'] == $_USER['uid'] ? $LANG_PM00['to'] : $LANG_PM00['by'],
-    ));
-    $T->parse ('msg_records', 'msg_record',true);
-    $x++;
-    $msgCounter++;
-}
-
-if ( $msgCounter == 0 ) {
-    $T->set_var('msg_records','<tr><td style="font-size:1.2em;font-weight:bold;text-align:center;padding-top:10px;padding-bottom:10px;">'.$LANG_PM00['no_messages'].'</td></tr>',false);
-}
-
-if ( $folder == 'inbox' ) {
-    $result = DB_query("SELECT COUNT(msg_id) AS unread FROM {$_TABLES['pm_dist']} WHERE user_id=".(int) $_USER['uid']." AND pm_unread=1 AND folder_name='inbox'");
-    if ( DB_numRows($result) > 0 ) {
-        list($unReadCount) = DB_fetchArray($result);
-    } else {
-        $unReadCount = 0;
-    }
-    $unReadText = '('.$unReadCount.')';
-} else {
-    $unReadText = '';
-}
-
+$msg_list =  ADMIN_list('mailbox','_pm_getListField_mailbox',
+                      $header_arr, $text_arr, $query_arr, $defsort_arr,'','','',$form_arr);
 
 $T->set_var(array(
     'pm_home'       => $LANG_PM00['pm_index'],
     'folder'        => $folder,
     'folder_name'   => $LANG_PM00[$folder],
     'newpost_link'  => $LANG_PM00['compose_msg'],
-    'pagination'    => COM_printPageNavigation($_CONF['site_url'].'/pm/index.php?folder='.$folder.'&amp;st='.$st.'&amp;sk='.$sk.'&amp;sd='.$sd,$page+1, $numpages),
     'lang_inbox'    => $LANG_PM00['inbox'],
     'lang_sent'     => $LANG_PM00['sent'],
     'lang_archive'  => $LANG_PM00['archive'],
     'lang_outbox'   => $LANG_PM00['outbox'],
     'folder_select' => $folderSelect,
-    'time_select'   => $timeSelect,
-    'sort_select'   => $sortSelect,
-    'sort_dir_select' => $sortDirSelect,
     'current_folder'  => $folder,
     'not_archive'   => ($folder == 'archive' || $folder == 'outbox' ? '' : 'archive'),
-    'unread_text'   => $unReadText,
-
+    'message_menu' => $msg_menu,
+    'message_list' => $msg_list,
 ));
 
-if ( !isset($_PM_CONF['messages_per_folder']) ) {
-    $allowedMessages = 50;
-} else {
-    $allowedMessages = $_PM_CONF['messages_per_folder'];
-}
-if ( $allowedMessages < 1 ) {
-    $allowedMessages = 50;
-}
-
-$T->set_var('page_messages',$msgCounter);
-$T->set_var('total_messages',$totalRecs);
-$T->set_var('percent_full', intval(($totalRecs / $allowedMessages)*100));
 
 $T->parse ('output', 'list');
 $retval .= $T->finish ($T->get_var('output'));

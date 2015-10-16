@@ -1,5 +1,5 @@
 Private Message Plugin for the glFusion CMS
-Version: 1.2.4
+Version: 2.0.0
 
 OVERVIEW
 --------
@@ -10,9 +10,9 @@ SYSTEM REQUIREMENTS
 -------------------
 PM has the following system requirements:
 
-    * PHP 5.2.3 and higher.
+    * PHP 5.3.0 and higher.
     * MySQL v4.1 or newer
-    * glFusion v1.4.0 or newer
+    * glFusion v1.5.0 or newer
 
 INSTALLATION
 ------------

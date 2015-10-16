@@ -1,5 +1,9 @@
 ChangeLog
 
+v2.0.0
+------
+- Updated styles to match new glFusion v1.5.0+ UIKIT theme
+
 v1.2.4
 ------
 - Fixed incorrect date display on index page

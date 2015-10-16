@@ -6,7 +6,7 @@
 // |                                                                          |
 // | Implement the glFusion Plugin API                                        |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                        |
+// | Copyright (C) 2009-2015 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -301,7 +301,7 @@ function plugin_profileicondisplay_pm($uid)
     if ( $uid > 1 && !COM_isAnonUser() && SEC_hasRights('pm.user') ) {
 
         $retval = array(
-            'url' => $_CONF['site_url'].'/pm/compose.php?mode=new&amp;uid='.$uid,
+            'url' => $_CONF['site_url'].'/pm/compose.php?mode=new&amp;uid='.(int)$uid,
             'text' => $LANG_PM00['title'],
             'icon' => $_CONF['site_url'].'/pm/images/pm-profile.png',
         );

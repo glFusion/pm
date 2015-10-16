@@ -2,9 +2,7 @@
 // +--------------------------------------------------------------------------+
 // | PM Plugin for glFusion CMS                                               |
 // +--------------------------------------------------------------------------+
-// | pm.php                                                                   |
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                        |
+// | Copyright (C) 2009-2015 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -31,8 +29,8 @@ if (!defined ('GVERSION')) {
 
 $_PM_CONF['pi_name']           = 'pm';
 $_PM_CONF['pi_display_name']   = 'Private message';
-$_PM_CONF['pi_version']        = '1.2.4';
-$_PM_CONF['gl_version']        = '1.4.0';
+$_PM_CONF['pi_version']        = '2.0.0';
+$_PM_CONF['gl_version']        = '1.5.0';
 $_PM_CONF['pi_url']            = 'http://www.glfusion.org';
 
 $_PM_table_prefix = $_DB_table_prefix . 'pm_';
