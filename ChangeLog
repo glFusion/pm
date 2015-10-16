@@ -2,6 +2,7 @@ ChangeLog
 
 v2.0.0
 ------
+- Fixed error where user menu would not reflect proper unread message count
 - Updated styles to match new glFusion v1.5.0+ UIKIT theme
 
 v1.2.4
