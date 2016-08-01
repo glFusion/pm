@@ -6,7 +6,7 @@
 // |                                                                          |
 // | PM plugin main index page                                                |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2015 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -146,7 +146,7 @@ $folder = PM_getFolder( 'folder' );
 
 $retval = '';
 
-$T = new Template($_CONF['path'] . 'plugins/pm/templates/');
+$T = new Template(pm_get_template_path());
 $T->set_file (array (
     'list'      =>  'pm_box.thtml',
 ));

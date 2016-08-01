@@ -1,79 +1,75 @@
 {# begin {templatelocation} #}
-
 <div class="pm-main">
-  {# common header area - show where we are #}
-  <h2>{$LANG_PM00[pm]} :: <strong>{$LANG_PM00[preview_msg]}</strong></h2>
-  {# end of common header #}
+	<div class="uk-alert uk-alert-large" data-uk-alert>
+		<a href="" class="uk-alert-close uk-close"></a>
+		<h2 class="uk-h2">{subject}</h2>
 
-  {# area specific header #}
-  <div style="clear:both;"></div>
+		<div class="uk-grid uk-width-1-1 uk-margin-remove">
+			<div class="uk-width-1-10 uk-text-large">{$LANG_PM00[from]}</div>
+			<div class="uk-width-9-10 uk-text-large">
+				{from_name}
+			</div>
+		</div>
+		<div class="uk-grid uk-width-1-1 uk-margin-remove">
+			<div class="uk-width-1-10">{$LANG_PM00[sent]}</div>
+			<div class="uk-width-9-10">{date}</div>
+		</div>
+		<div class="uk-grid uk-width-1-1 uk-margin-remove">
+			<div class="uk-width-1-10">{$LANG_PM00[to]}</div>
+			<div class="uk-width-9-10">{to_name}</div>
+		</div>
 
-  <h2><strong>{subject}</strong></h2>
-  {# end of header area #}
-  <div style="clear:both;"></div>
-  {# area content #}
-  <table style="width:100%;">
-    <tr>
-      <td style="width:76%;vertical-align:top;">
-        <table  style="width:100%;">
-          <tr>
-            <td class="pluginRow2">
-              <p class="author">
-                <strong>{$LANG_PM00[sent]}:</strong>
-                {date}
-                <br />
-                <strong>{$LANG_PM00[from]}:</strong>
-                {from_name}
-                <br />
-                <strong>{$LANG_PM00[to]}:</strong>
-                {to_name}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td class="msgbody">
-              {msg_text}
-              {!if signature}
-              <div id="sig{user_id}" class="pm-signature">
-                <em>{signature}</em>
-              </div>
-              {!endif}
-            </td>
-          </tr>
-        </table>
-      </td>
-      <td style="vertical-align:top;padding:5px;border-left:1px solid #cccccc;">
-        <div class="profile-image" style="text-align:center;">{avatar}</div>
-        <div>{from_name}</div>
-        <div>{rank}</div>
-        <br />
-        {!if registered}
-          <div><strong>{$LANG_PM00[registered]}:</strong>&nbsp;{registered}</div>
-        {!endif}
-        {!if location}
-          <div><strong>{$LANG_PM00[location]}:</strong>&nbsp;{location}</div>
-        {!endif}
-        <div>
-          <img src="images/pm.png" alt="{$LANG_PM00[send_pm']}" />
-          {!if homepage}
-            <img src="images/home.png" alt="{$LANG_PM00[homepage]}"/>
-          {!endif}
-          {!if email}
-            <img src="images/email.png" alt="{$LANG_PM00[email]}"/>
-          {!endif}
-        </div>
-      </td>
-    </tr>
-  </table>
-  {# end of area content #}
+		<hr>
 
-  <div style="clear:both;"></div>
+		<div class="uk-grid">
+			<div class="uk-width-medium-8-10 uk-width-small-10-10" style="padding-right:10px;">
+				<div class="uk-text-break topic_comment_area">
 
-  {# area specific footer #}
-  {# end of area specific footer #}
+					{msg_text}
 
-  {# general footer #}
+				</div> {# end of comment area #}
+			</div> {# end of 8-10 #}
 
-  {# end of general footer #}
+			<div class="uk-width-medium-2-10 uk-hidden-small uk-align-center uk-text-center" style="border-left:1px solid #ccc;">
+				<div class="uk-thumbnail uk-overlay-toggle">
+					<div class="uk-overlay">
+						{avatar}
+						<div class="uk-overlay-area">
+							<div class="uk-overlay-area-content">
+								<a href="{site_url}/users.php?mode=profile&amp;uid={from_uid}">
+									<i class="uk-icon-user"></i>
+								</a>
+								&nbsp;
+{!if email}
+								<a href="{email}" rel="nofollow">
+									<i class="uk-icon-envelope" title="Email"></i>
+								</a>
+								&nbsp;
+{!endif}
+{!if homepage}
+								<a href="{homepage}" rel="nofollow">
+									<i class="uk-icon-home" title="{$LANG_PM00[homepage]}"></i>
+								</a>
+{!endif}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<h4 class="uk-margin-bottom-remove">
+					<a href="{site_url}/users.php?mode=profile&amp;uid={from_uid}" class="authorname">
+						<b>{from_name}</b>
+					</a>
+				</h4>
+
+				<div>{rank}</div>
+				<div class="uk-text-muted uk-text-small">
+{!if registered}
+					{$LANG_PM00[registered]}:&nbsp;{registered}<br>
+{!endif}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {# end {templatelocation} #}

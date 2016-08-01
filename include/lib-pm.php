@@ -6,7 +6,7 @@
 // |                                                                          |
 // | PM plugin support functions                                              |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2014 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -53,7 +53,7 @@ function PM_alertMessage( $msgText = '' )
 
     $display = COM_siteHeader('menu',$LANG_PM00['title']);
 
-    $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
+    $T = new Template(pm_get_template_path());
     $T->set_file (array ('message'=>'pm_alertmsg.thtml'));
     $T->set_var(array(
         'message_title' =>  $LANG_PM00['title'] . $LANG_PM00['error'],
@@ -102,7 +102,7 @@ function PM_showHistory( $msg_id = 0, $compose = 0 )
 
     $dt = new Date('now',$_USER['tzid']);
 
-    $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
+    $T = new Template(pm_get_template_path());
     $T->set_file (array ('message'=>'message_history.thtml'));
     $retval .= '<h1>'.$LANG_PM00['message_history'].'</h1>';
 

@@ -1,0 +1,66 @@
+{# begin {templatelocation} #}
+<script language="javascript" type="text/javascript">
+function adduser() {
+  var dropdownIndex = document.getElementById('combo_user').selectedIndex;
+  var dropdownValue = document.getElementById('combo_user')[dropdownIndex].value
+  document.compose_form.username_list.value +=  dropdownValue + ',';
+  document.compose_form.combo_user.value = '';
+}
+function addfriend() {
+  var dropdownIndex = document.getElementById('combo_friend').selectedIndex;
+  var dropdownValue = document.getElementById('combo_friend')[dropdownIndex].value
+  document.compose_form.username_list.value +=  dropdownValue + ',';
+}
+</script>
+<form id="compose_form" name="compose_form" action="{site_url}/pm/compose.php" method="post">
+<input type="hidden" name="reply_msgid" value="{reply_msgid}" />
+<input type="hidden" name="msgid" value="{msgid}" />
+<div id="pm" class="pm-main">
+
+{!if preview_text}
+		{preview_text}
+{!endif}
+
+  {# common header area - show where we are #}
+  <h2>PM :: <strong>{$LANG_PM00[compose_msg]}</strong></h2>
+  {# end of common header #}
+  <div style="clear:both;"></div>
+  <hr />
+
+  {!if error_message}
+    <div style="padding-top:5px;padding-bottom:5px;background-color:#ff3300;">
+    {error_message}
+    </div>
+  {!endif}
+
+  <table style="width:100%;border:none;padding-bottom:0;margin-bottom:0;" class="bg1">
+    <tr>
+      <td style="width:10%;text-align:left;vertical-align:top;">
+        To:
+      </td>
+      <td style="vertical-align:top;">
+        <textarea tabindex="1" id="username_list" class="inputbox" rows="2" cols="50" name="username_list">{to}</textarea>
+      </td>
+      <td style="vertical-align:top;text-align:left;">
+        {userselect}&nbsp;<input type="button" value="{$LANG_PM00[add_user]}" onclick="adduser();" />
+      </td>
+      <td style="vertical-align:top;text-align:left;">
+        {friendselect}&nbsp;<input style="vertical-align:top;" type="button" value="{$LANG_PM00[add_friend]}" onclick="addfriend();" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {$LANG_PM00[subject]}:
+      </td>
+      <td colspan="3">
+        <input tabindex="2" id="subject" class="inputbox autowidth" type="text" value="{subject}" maxlength="60" size="45" name="subject"/>
+      </td>
+    </tr>
+  </table>
+  {editor}
+</div>
+<input type="hidden" name="{gltoken_name}" value="{gltoken}" />
+<input type="submit" name="send" value="{$LANG_PM00[send]}" tabindex="4" />
+<input type="submit" name="preview" value="{$LANG_PM00[preview]}" tabindex="5" />
+<input type="submit" name="cancel" value="{$LANG_PM00[cancel]}" tabindex="6" />
+</form>

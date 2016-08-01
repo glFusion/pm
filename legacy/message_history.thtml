@@ -1,0 +1,57 @@
+{# begin {templatelocation} #}
+
+<div class="pm-main" style="width:90%;">
+
+  <hr />
+
+  {# area specific header #}
+  <div style="clear:both;"></div>
+  <h2><strong>{subject}</strong></h2>
+  {# end of header area #}
+  <div style="clear:both;"></div>
+  {# area content #}
+  <table style="width:100%;">
+    <tr>
+      <td style="width:76%;vertical-align:top;">
+        <table  style="width:100%;">
+          <tr>
+            <td class="pluginRow2">
+              <p class="author">
+                <strong>{$LANG_PM00[sent]}:</strong>
+                {date}
+                <br />
+                <strong>{$LANG_PM00[from]}:</strong>
+                {from_name}
+                <br />
+                <strong>{$LANG_PM00[to]}:</strong>
+                {to_name}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="msgbody">
+              {msg_text}
+              {!if signature}
+              <div id="sig{user_id}" class="signature">
+                {signature}
+              </div>
+              {!endif}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  {# end of area content #}
+
+  <div style="clear:both;"></div>
+
+  {# area specific footer #}
+  {# end of area specific footer #}
+
+  {# general footer #}
+
+  {# end of general footer #}
+</div>
+
+{# end {templatelocation} #}

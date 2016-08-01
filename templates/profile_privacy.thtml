@@ -1,8 +1,16 @@
-  <tr>
-    <td style="width:100px;"><label for="pmblock">{lang_pmblock}:</label></td>
-    <td><input type="checkbox" id="pmblock" name="pmblock" {pmblock_checked}{xhtml}></td>
-  </tr>
-  <tr>
-    <td style="width:100px;"><label for="pmnotify">{lang_pmnotify}:</label></td>
-    <td><input type="checkbox" id="pmnotify" name="pmnotify" {pmnotify_checked}{xhtml}></td>
-  </tr>
+<div class="uk-form-row">
+	<div class="uk-form-label">
+		{lang_pmblock}
+	</div>
+	<div class="uk-form-controls">
+		<input type="checkbox" id="pmblock" name="pmblock" {pmblock_checked}>
+	</div>
+</div>
+<div class="uk-form-row">
+	<div class="uk-form-label">
+		{lang_pmnotify}
+	</div>
+	<div class="uk-form-controls">
+		<input type="checkbox" id="pmnotify" name="pmnotify" {pmnotify_checked}>
+	</div>
+</div>

@@ -6,7 +6,7 @@
 // |                                                                          |
 // | PM plugin view message                                                   |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2015 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -98,7 +98,7 @@ if ( DB_numRows($result) > 0 ) {
         list($username,$fullname,$email,$homepage,$sig,$regdate,$photo,$about,$location,$emailfromuser) = DB_fetchArray($result);
     }
 
-    $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
+    $T = new Template(pm_get_template_path());
     $T->set_file (array ('message'=>'message.thtml'));
 
     // are they a friend?

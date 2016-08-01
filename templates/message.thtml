@@ -1,111 +1,157 @@
 {# begin {templatelocation} #}
 <script type="text/javascript" src="{site_url}/pm/javascript/ajax_addfriend.js"></script>
 <script language="javascript" type="text/javascript">
-    var site_url = '{site_url}';
+	var site_url = '{site_url}';
 </script>
-<div id="pm" class="pm-main">
-  {# common header area - show where we are #}
-  <h2>{$LANG_PM00[pm]} :: {$LANG_PM00[view_msg]}: <strong>{folder}</strong></h2>
-  {# end of common header #}
 
-  {# area specific header #}
-  <div class="rightside">
-    <a class="left" href="{return_link}">
-      <strong>{$LANG_PM00[return_to]} {folder}</strong>
-    </a>
-  </div>
-  <div style="clear:both;"></div>
+<div id="pm">
+	<nav class="uk-navbar uk-margin-bottom">
+		<div class="uk-navbar-brand uk-hidden-small"><i class="uk-icon-comments uk-icon-medium"></i></div>
+		<ul class="uk-navbar-nav uk-hidden-small">
+			<li>
+				<a href="{site_url}/pm/compose.php?mode=new" class="uk-navbar-nav-subtitle uk-text-center">
+					<i class="uk-icon-file-o uk-icon-small" title="{$LANG_PM00[compose]}"></i>
+					<div>{$LANG_PM00[compose]}</div>
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/compose.php?mode=reply&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-center">
+					<i class="uk-icon-mail-reply uk-icon-small" title="{$LANG_PM00[reply]}"></i>
+					<div>{$LANG_PM00[reply]}</div>
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/compose.php?mode=quote&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-center">
+					<i class="uk-icon-quote-right uk-icon-small" title="{$LANG_PM00[quote]}"></i>
+					<div>{$LANG_PM00[quote]}</div>
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/index.php?mode=delete&amp;msgid={msg_id}&amp;folder={folder_id}" onclick="return confirm('{$LANG_PM00[delete_confirm]}');" class="uk-navbar-nav-subtitle uk-text-center">
+					<i class="uk-icon-trash uk-icon-small" title="{$LANG_PM00[delete]}"></i>
+					<div>{$LANG_PM00[delete]}</div>
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/friends.php" class="uk-navbar-nav-subtitle uk-text-center">
+					<i class="uk-icon-book uk-icon-small" title="{$LANG_PM00[address_book]}"></i>
+					<div>{$LANG_PM00[address_book]}</div>
+				</a>
+			</li>
+		</ul>
+		<div class="uk-navbar-flip">
+			<ul class="uk-navbar-nav">
+				<li><a href="{return_link}">{$LANG_PM00[return_to]} {folder}</a></li>
+			</ul>
+		</div>
 
-  <h2><strong>{subject}</strong></h2>
-  <span class="floatright buttons">
-    <button type="button" name="submit" onclick="window.location.href='{site_url}/pm/compose.php?mode=new'">
-    {$LANG_PM00[compose_msg]}
-    </button>
-    <button type="button" name="submit" onclick="window.location.href='{site_url}/pm/compose.php?mode=reply&amp;msgid={msg_id}'">
-    {$LANG_PM00[reply_msg]}
-    </button>
-  </span>
-  <div style="clear:both;"></div>
-  {# end of header area #}
+{# small screen menu #}
+	<div class="uk-button-dropdown uk-navbar-content uk-visible-small" data-uk-dropdown="{mode:'click'}">
+		<a class="uk-navbar-toggle"></a>
+		<div class="uk-dropdown">
+			<ul class="uk-nav uk-nav-dropdown">
+			<li>
+				<a href="{site_url}/pm/compose.php?mode=new" class="uk-navbar-nav-subtitle uk-text-left">
+					{$LANG_PM00[compose]}
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/compose.php?mode=reply&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-left">
+					{$LANG_PM00[reply]}
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/compose.php?mode=quote&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-left">
+					{$LANG_PM00[quote]}
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/index.php?mode=delete&amp;msgid={msg_id}&amp;folder={folder_id}" onclick="return confirm('{$LANG_PM00[delete_confirm]}');" class="uk-navbar-nav-subtitle uk-text-left">
+					{$LANG_PM00[delete]}
+				</a>
+			</li>
+			<li>
+				<a href="{site_url}/pm/friends.php" class="uk-navbar-nav-subtitle uk-text-left">
+					{$LANG_PM00[address_book]}
+				</a>
+			</li>
+			</ul>
+		</div>
+	</div>
+{# end of small screen menu #}
+	</nav>
+	<div class="uk-panel uk-panel-box uk-margin-bottom">
+		<h1 class="uk-panel-title">{subject}</h1>
+		<div class="uk-grid uk-width-1-1 uk-margin-remove">
+			<div class="uk-width-medium-1-10 uk-text-large">{$LANG_PM00[from]}</div>
+			<div class="uk-width-medium-9-10 uk-text-large">
+				{from_name}
+			</div>
+		</div>
+		<div class="uk-grid uk-width-1-1 uk-margin-remove">
+			<div class="uk-width-medium-1-10">{$LANG_PM00[date]}</div>
+			<div class="uk-width-medium-9-10">{date}</div>
+		</div>
+		<div class="uk-grid uk-width-1-1 uk-margin-remove">
+			<div class="uk-width-medium-1-10">{$LANG_PM00[to]}</div>
+			<div class="uk-width-medium-9-10">{to_name}</div>
+		</div>
+		<hr>
+		<div class="uk-grid">
+			<div class="uk-width-medium-8-10 uk-width-small-10-10" style="padding-right:10px;">
+				<div class="uk-text-break topic_comment_area">
+					{msg_text}
+				</div>
+			</div>
+			<div class="uk-width-medium-2-10 uk-hidden-small uk-align-center uk-text-center" style="border-left:1px solid #ccc;">
+				<div class="uk-thumbnail uk-overlay-toggle">
+					<div class="uk-overlay">
+						{avatar}
+						<div class="uk-overlay-area">
+							<div class="uk-overlay-area-content">
+								<a href="{site_url}/users.php?mode=profile&amp;uid={from_uid}">
+									<i class="uk-icon-user"></i>
+								</a>
+								&nbsp;
+{!if email}
+								<a href="{email}" rel="nofollow">
+									<i class="uk-icon-envelope" title="Email"></i>
+								</a>
+								&nbsp;
+{!endif}
+{!if homepage}
+								<a href="{homepage}" rel="nofollow">
+									<i class="uk-icon-home" title="{$LANG_PM00[homepage]}"></i>
+								</a>
+{!endif}
+							</div>
+						</div>
+					</div>
+				</div>
 
-  {# area content #}
-  <table style="width:100%;">
-    <tr>
-      <td style="width:76%;vertical-align:top;">
-        <table  style="width:100%;" cellpadding="0" cellspacing="0">
-          <tr>
-            <td class="pluginRow2">
-              <p class="author">
-                <strong>{$LANG_PM00[sent]}:</strong>
-                {date}
-                <br />
-                <strong>{$LANG_PM00[from]}:</strong>
-                {from_name}
-                <br />
-                <strong>{$LANG_PM00[to]}:</strong>
-                {to_name}
-              </p>
-            </td>
-            <td style="vertical-align:middle;text-align:right;" class="pluginRow2 msgdetails">
-              <a title="{$LANG_PM00[delete_msg]}" href="index.php?mode=delete&amp;msgid={msg_id}&amp;folder={folder_id}" onclick="return confirm('{$LANG_PM00[delete_confirm]}');">
-                <img style="vertical-align:middle;" src="{site_url}/pm/images/delete_button.png" alt="delete" />
-              </a>
-              &nbsp;&nbsp;
-              <a title="{$LANG_PM00[quote_msg]}" href="compose.php?mode=quote&amp;msgid={msg_id}">
-                <img style="vertical-align:middle;" src="{site_url}/pm/images/quote_button.png" alt="quote" />
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td class="msgbody">
-              {msg_text}
-              {!if signature}
-              <div id="sig{user_id}" class="pm-signature">
-                <em>{signature}</em>
-              </div>
-              {!endif}
-            </td>
-          </tr>
-        </table>
-      </td>
-      <td style="vertical-align:top;padding:5px;border-left:1px solid #cccccc;">
-        <div class="profile-image" style="text-align:center;">{avatar}</div>
-        <div><a href="{site_url}/users.php?mode=profile&amp;uid={from_uid}">{from_name}</a></div>
-        <div>{rank}</div>
-        <div>{add_friend}</div>
-        <br />
-        {!if registered}
-          <div><strong>{$LANG_PM00[registered]}:</strong>&nbsp;{registered}</div>
-        {!endif}
-        {!if location}
-          <div><strong>{$LANG_PM00[location]}:</strong>&nbsp;{location}</div>
-        {!endif}
-        <div>
-          <a href="{site_url}/pm/compose.php?mode=new&amp;uid={from_uid}"><img src="images/pm.png" alt="{$LANG_PM00[pm]}" /></a>
-          {!if homepage}
-            <a href="{homepage}"><img src="images/home.png" alt="{$LANG_PM00[homepage]}"/></a>
-          {!endif}
-          {!if email}
-            <a href="{email}"><img src="images/email.png" alt="{$LANG_PM00[email]}"/></a>
-          {!endif}
-        </div>
+				<h4 class="uk-margin-bottom-remove">
+					<a href="{site_url}/users.php?mode=profile&amp;uid={from_uid}" class="authorname">
+						<b>{from_name}</b>
+					</a>
+				</h4>
 
+				<div>{rank}</div>
+				<div class="uk-text-muted uk-text-small">
+					{!if registered}
+					{$LANG_PM00[registered]}:&nbsp;{registered}<br>
+					{!endif}
+				</div>
+			</div>
+		</div>
+	</div>
 
-      </td>
-    </tr>
-  </table>
-  {# end of area content #}
-
-  <div style="clear:both;"></div>
-
-  {# area specific footer #}
-
-  {# end of area specific footer #}
-
-  {# general footer #}
-
-  {# end of general footer #}
-
+{!if message_history}
+	<div class="uk-panel uk-panel-box uk-panel-box-primary">
+		<div class="uk-panel-title">
+			{$LANG_PM00[message_history]}
+		</div>
+		{message_history}
+	</div>
+{!endif}
 </div>
-
 {# end {templatelocation} #}

@@ -1,0 +1,28 @@
+{# begin {templatelocation} #}
+<form id="index_form" action="{site_url}/pm/index.php" method="post">
+<div id="pm" class="pm-main">
+  {message_menu}
+
+  <div style="clear:both;"></div>
+  {message_list}
+
+</div>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+    document.getElementById('compose_button').style.display='';
+    document.getElementById('compose_link').style.display='none';
+//]]>
+</script>
+
+<script>
+$(document).ready(function(){
+    $("#selectall").change(function(){
+      $(".msg_checkbox").prop('checked', $(this).prop("checked"));
+      });
+});
+</script>
+
+
+{# end of header area #}

@@ -6,7 +6,7 @@
 // |                                                                          |
 // | Implement the glFusion Plugin API                                        |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2015 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -239,7 +239,7 @@ function plugin_profileedit_pm($uid,$panel,$fieldset)
                     $notify = $A['notify'];
                     $block  = $A['block'];
 
-                    $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
+                    $T = new Template(pm_get_template_path());
                     $T->set_file (array ('privacy'=>'profile_privacy.thtml'));
                     $T->set_var(array(
                         'lang_pmnotify'     => $LANG_PM_NOTIFY['pm_notify'],
@@ -308,4 +308,17 @@ function plugin_profileicondisplay_pm($uid)
     }
     return $retval;
 }
+
+function pm_get_template_path()
+{
+    global $_CONF, $_SYSTEM;
+
+    if ( isset($_SYSTEM['framework']) && $_SYSTEM['framework'] == 'uikit') {
+        $template_path = $_CONF['path'] . 'plugins/pm/templates/';
+    } else {
+        $template_path = $_CONF['path'] . 'plugins/pm/legacy/';
+    }
+    return $template_path;
+}
+
 ?>

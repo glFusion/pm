@@ -6,7 +6,7 @@
 // |                                                                          |
 // | PM plugin message editor                                                 |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2015 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -64,7 +64,7 @@ function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
     $privateMessage = PM_FormatForEmail( $pm_message,'text');
 
    // build the template...
-    $T = new Template($_CONF['path'] . 'plugins/pm/templates');
+    $T = new Template(pm_get_template_path());
     $T->set_file ('email', 'pm_notify.thtml');
 
     $T->set_var(array(
@@ -139,7 +139,7 @@ function PM_previewMessage( $msgID = 0 )
     // clean things up a little...
     $subject = htmlentities($msg['subject'], ENT_QUOTES, COM_getEncodingt());
 
-    $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
+    $T = new Template(pm_get_template_path());
     $T->set_file (array ('message'=>'message_preview.thtml'));
 
     $parsers = array();
@@ -178,7 +178,7 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
 
     $retval = '';
 
-    $T = new Template($_CONF['path'] . 'plugins/pm/templates/');
+    $T = new Template(pm_get_template_path());
     $T->set_file (array (
         'compose'    =>  'compose.thtml',
     ));
