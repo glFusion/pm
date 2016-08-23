@@ -1,6 +1,9 @@
 Please view this file on the master branch, on other branches it's out of date.
 
-v2.1.0 (unreleased)
+v2.1.1 (August 23, 2016)
+  - Fixed error where smileys did not show up when enabled
+
+v2.1.0 (August 1, 2016)
   - Updated for UIKIT based themes
 
 v2.0.0

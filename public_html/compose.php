@@ -287,6 +287,11 @@ function PM_msgEditor($msgid = 0, $reply_msgid = 0,$to='', $subject='', $message
         $T->set_var('preview_text',$preview_text);
     }
 
+    if ( function_exists('msg_showsmilies') ) {
+        $T->set_var('smilies',msg_showsmilies());
+        $T->set_var('smilies_enabled',true);
+    }
+
     $T->set_var('gltoken', SEC_createToken());
     $T->set_var('gltoken_name', CSRF_TOKEN);
 
