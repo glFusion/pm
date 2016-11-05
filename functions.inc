@@ -128,7 +128,7 @@ function plugin_searchtypes_pm()
 {
     global $LANG_PM00;
 
-    $tmp = '';
+    $tmp = array();
 
     if ( !COM_isAnonUser() && SEC_hasRights('pm.user')) {
         $tmp['pm'] = $LANG_PM00['pm'];
