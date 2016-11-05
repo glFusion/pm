@@ -83,6 +83,9 @@ function pm_upgrade()
         case '1.2.4' :
         case '2.0.0' :
         case '2.1.0' :
+        case '2.1.1' :
+            DB_query("ALTER TABLE {$_TABLES['pm_dist']} CHANGE `folder_name` `folder_name` VARCHAR(191) NOT NULL default 'inbox'");
+            DB_query("ALTER TABLE {$_TABLES['pm_msg']} CHANGE `author_ip` `author_ip` VARCHAR(128) NULL DEFAULT NULL;");
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");
             break;

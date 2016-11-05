@@ -36,7 +36,7 @@ $_SQL['pm_msg'] = "CREATE TABLE {$_TABLES['pm_msg']} (
   parent_id mediumint(8) NOT NULL default '0',
   author_uid mediumint(8) NOT NULL default '0',
   author_name varchar(254) NOT NULL default '',
-  author_ip varchar(254) NOT NULL default '',
+  author_ip varchar(128) NOT NULL default '',
   message_time int(11) unsigned NOT NULL DEFAULT '0',
   message_subject varchar(254) NOT NULL default '',
   message_text mediumtext NOT NULL,
@@ -58,7 +58,7 @@ $_SQL['pm_dist'] = "CREATE TABLE {$_TABLES['pm_dist']} (
   pm_unread tinyint(1) unsigned NOT NULL DEFAULT '1',
   pm_replied tinyint(1) unsigned NOT NULL DEFAULT '0',
   pm_forwarded tinyint(1) unsigned NOT NULL DEFAULT '0',
-  folder_name varchar(254) NOT NULL default 'inbox',
+  folder_name varchar(191) NOT NULL default 'inbox',
   KEY msg_id (msg_id),
   KEY author_uid (author_uid),
   KEY usr_flder_id (user_id,folder_name)
