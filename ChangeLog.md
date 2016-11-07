@@ -1,4 +1,6 @@
-Please view this file on the master branch, on other branches it's out of date.
+
+v2.1.2 (unrelease)
+  - Updated field / index sizes to appropriate lengths
 
 v2.1.1 (August 23, 2016)
   - Fixed error where smileys did not show up when enabled

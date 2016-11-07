@@ -6,7 +6,7 @@
 // |                                                                          |
 // | Contains all the SQL necessary to install the PM plugin                  |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -58,7 +58,7 @@ $_SQL['pm_dist'] = "CREATE TABLE {$_TABLES['pm_dist']} (
   pm_unread tinyint(1) unsigned NOT NULL DEFAULT '1',
   pm_replied tinyint(1) unsigned NOT NULL DEFAULT '0',
   pm_forwarded tinyint(1) unsigned NOT NULL DEFAULT '0',
-  folder_name varchar(191) NOT NULL default 'inbox',
+  folder_name varchar(128) NOT NULL default 'inbox',
   KEY msg_id (msg_id),
   KEY author_uid (author_uid),
   KEY usr_flder_id (user_id,folder_name)
