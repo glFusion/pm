@@ -252,20 +252,7 @@ function PM_siteHeader($title='', $meta='')
     global $_PM_CONF;
 
     $retval = '';
-
-    switch( $_PM_CONF['displayblocks'] ) {
-        case 0 : // left only
-        case 2 :
-            $retval .= COM_siteHeader('menu',$title,$meta);
-            break;
-        case 1 : // right only
-        case 3 :
-            $retval .= COM_siteHeader('none',$title,$meta);
-            break;
-        default :
-            $retval .= COM_siteHeader('menu',$title,$meta);
-            break;
-    }
+    $retval .= COM_siteHeader('menu',$title,$meta);
     return $retval;
 }
 
@@ -273,20 +260,7 @@ function PM_siteFooter() {
     global $_CONF, $_PM_CONF;
 
     $retval = '';
-
-    switch( $_PM_CONF['displayblocks'] ) {
-        case 0 : // left only
-        case 3 : // none
-            $retval .= COM_siteFooter();
-            break;
-        case 1 : // right only
-        case 2 : // left and right
-            $retval .= COM_siteFooter( true );
-            break;
-        default :
-            $retval .= COM_siteFooter();
-            break;
-    }
+    $retval .= COM_siteFooter();
     return $retval;
 }
 ?>
