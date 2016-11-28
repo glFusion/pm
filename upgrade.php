@@ -90,6 +90,7 @@ function pm_upgrade()
             DB_query("ALTER TABLE {$_TABLES['pm_msg']} DROP INDEX `author_ip`, ADD INDEX `author_ip` (author_ip);");
 
         case '2.1.2' :
+            DB_query("ALTER TABLE {$_TABLES['pm_dist']} CHANGE `folder_name` `folder_name` VARCHAR(128) NOT NULL default 'inbox'");
 
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");
