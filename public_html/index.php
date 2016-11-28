@@ -55,7 +55,7 @@ function _pm_getListField_mailbox($fieldname, $fieldvalue, $A, $icon_arr)
             }
             break;
         case 'msg_id' :
-            $retval = '<input class="msg_checkbox" type="checkbox" name="marked_msg_id[]" value="'.$fieldvalue.'">';
+            return $fieldvalue;
             break;
         case 'message_subject' :
         case 'author_name' :
@@ -72,19 +72,14 @@ function _pm_getListField_mailbox($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
-function PM_processMarked()
+function PM_processMarked($operation)
 {
     global $_CONF, $_PM_CONF, $_TABLES, $_USER;
 
     $markedMessages = array();
 
-    $validOperations = array('delete_marked','archive_marked');
-
-    $operation = isset($_POST['mark_option']) ? $_POST['mark_option'] : '';
-    if ( !in_array($operation,$validOperations) ) {
-        return;
-    }
     $current_folder = COM_applyFilter($_POST['current_folder']);
+
     if ( !in_array($current_folder,array('inbox','sent','archive','outbox') ) ) {
         return;
     }
@@ -125,13 +120,14 @@ function PM_processMarked()
  */
 
 $display = '';
+$msg_header = '';
 
-if ( isset($_POST['mark_option']) ) {
-    $msg_header = PM_processMarked();
+if ( isset($_POST['delete_marked']) ) {
+    $msg_header = PM_processMarked('delete_marked');
 }
 
-if ( isset($_POST['submit_mark']) ) {
-    $msg_header = PM_processMarked();
+if ( isset($_POST['archive_marked']) ) {
+    $msg_header = PM_processMarked('archive_marked');
 }
 
 if ( isset($_GET['mode']) && $_GET['mode'] == 'delete' ) {
@@ -158,7 +154,6 @@ $folderSelect .= '<option'. ($folder == 'outbox'  ? ' selected="selected" ' : ' 
 $folderSelect .= '<option'. ($folder == 'sent'    ? ' selected="selected" ' : ' ') . 'value="sent">'    . $LANG_PM00['sent']    . '</option>'.LB;
 $folderSelect .= '<option'. ($folder == 'archive' ? ' selected="selected" ' : ' ') . 'value="archive">' . $LANG_PM00['archive'] . '</option>'.LB;
 $folderSelect .= '</select>'.LB;
-
 
 switch ( $folder ) {
     case 'inbox' :
@@ -207,7 +202,6 @@ $msg_menu = ADMIN_createMenu($menu_arr,
                 $_CONF['site_url'].'/pm/images/pm48.png');
 
 $header_arr = array(      # display 'text' and use table field 'field'
-    array('text' => '<input type="checkbox" id="selectall">', 'field' => 'msg_id', 'sort' => false, 'align' => 'center'),
     array('text' => $LANG_PM00['from'], 'field' => 'author_name', 'sort' => true, 'align' => 'left'),
     array('text' => $LANG_PM00['subject'], 'field' => 'message_subject', 'sort' => true, 'align' => 'left'),
     array('text' => $LANG_PM00['date'],    'field' => 'message_time', 'sort'=> true, 'align' => 'right'),
@@ -215,8 +209,11 @@ $header_arr = array(      # display 'text' and use table field 'field'
 $defsort_arr = array('field' => 'message_time', 'direction' => 'desc');
 
 $text_arr = array(
-    'has_extras' => true,
-    'form_url'   => $_CONF['site_url'] . '/pm/index.php'
+        'form_url'      => $_CONF['site_url'] . '/pm/index.php',
+        'help_url'      => '',
+        'has_search'    => true,
+        'has_limit'     => true,
+        'has_paging'    => true,
 );
 
 $oselect = '
@@ -224,12 +221,42 @@ $oselect = '
     <input type="hidden" name="current_folder" value="'.$folder.'">
 	<select name="mark_option" onchange="this.form.submit();">
 		<option selected="selected" disalbed="disabled" value="">'.$LANG_PM00['options'].'</option>
-		<option value="delete_marked" onclick="return confirm(\''.$LANG_PM00['delete_confirm'].'\');">'.$LANG_PM00['delete_marked'].'</option>
+		<option value="delete_marked" onclick="return confirm(\''.$LANG_PM00['delete_confirm'].'\');return false;">'.$LANG_PM00['delete_marked'].'</option>
 		<option value="archive_marked">'.$LANG_PM00['archive_marked'].'</option>
 	</select></div>';
 
+
+$formfields = '
+        <input type="hidden" name="current_folder" value="'.$folder.'">
+        <input type="hidden" name="folder" value="'.$folder.'">
+';
+
 $form_arr = array(
-    'bottom' => $oselect
+    'top' => $formfields,
+);
+
+$actions = '<input name="archive_marked" type="image" src="'
+        . $_CONF['layout_url'] . '/images/admin/accept.' . $_IMAGE_TYPE
+        . '" style="vertical-align:bottom;" title="' . "Archive Messages"
+        . '" onclick="return confirm(\'' . $LANG_PM00['archive_confirm'] . '\');"'
+        . ' value="' . $LANG_PM00['archive_marked'] . '" '
+        . '/>&nbsp;' . $LANG_PM00['archive_marked'];
+
+$actions .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+
+$actions .= '<input name="delete_marked" type="image" src="'
+        . $_CONF['layout_url'] . '/images/admin/delete.' . $_IMAGE_TYPE
+        . '" style="vertical-align:bottom;" title="' . "delete them"
+        . '" onclick="return confirm(\'' . $LANG_PM00['delete_confirm'] . '\');"'
+        . ' value="' . $LANG_PM00['delete_marked'] . '" '
+        . '/>&nbsp;' . $LANG_PM00['delete_marked'];
+
+$option_arr = array('chkselect' => true,
+        'chkfield' => 'msg_id',
+        'chkname' => 'marked_msg_id',
+        'chkminimum' => 0,
+        'chkall' => true,
+        'chkactions' => $actions
 );
 
 $query_arr = array(
@@ -240,7 +267,7 @@ $query_arr = array(
 );
 
 $msg_list =  ADMIN_list('mailbox','_pm_getListField_mailbox',
-                      $header_arr, $text_arr, $query_arr, $defsort_arr,'','','',$form_arr);
+                      $header_arr, $text_arr, $query_arr, $defsort_arr,'','',$option_arr,$form_arr);
 
 $T->set_var(array(
     'pm_home'       => $LANG_PM00['pm_index'],
@@ -267,9 +294,8 @@ $styleLink = '<link rel="stylesheet" type="text/css" href="'.$_CONF['site_url'].
 $display = PM_siteHeader($LANG_PM00['title'],$styleLink);
 if ( isset($_GET['msg']) ) {
     $msg_header = COM_applyFilter ($_GET['msg'], true);
-} else {
-    $msg_header = 0;
 }
+
 if ( $msg_header > 0 ) {
     $display .= COM_showMessage ($msg_header, 'pm');
 }
