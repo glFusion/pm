@@ -1,5 +1,12 @@
 
-v2.1.2 (unrelease)
+v2.1.3 (unreleased)
+ - Fixed selecting messages for delete / archive
+ - Fixed typos
+ - Fixed folder list to always display correct set of folders
+ - Fixed returning from action (i.e.; delete/archive) to wrong folder
+ - Cleaned up user interface a bit
+
+v2.1.2
   - Updated field / index sizes to appropriate lengths
 
 v2.1.1 (August 23, 2016)
