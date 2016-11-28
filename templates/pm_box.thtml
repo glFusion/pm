@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
-<form id="index_form" action="{site_url}/pm/index.php" method="post">
-	<input type="hidden" name="current_folder" value="{folder}">
+<form class="uk-form" id="index_form" action="{site_url}/pm/index.php" method="post">
+	<input type="hidden" name="folder" value="{folder}">
 	<div id="pm" class="pm-main">
 		<nav class="uk-navbar uk-margin-bottom">
 			<div class="uk-navbar-brand uk-hidden-small">
@@ -43,7 +43,7 @@
 {!endif}
 {!!if {folder} == 'sent' !!}
 								<li><a href="{site_url}/pm/index.php?folder=inbox">{$LANG_PM00[inbox]}</a></li>
-								<li><a href="{site_url}/pm/index.php?folder=sent">{$LANG_PMG00[outbox]}</a></li>
+								<li><a href="{site_url}/pm/index.php?folder=outbox">{$LANG_PM00[outbox]}</a></li>
 								<li><a href="{site_url}/pm/index.php?folder=archive">{$LANG_PM00[archive]}</a></li>
 {!endif}
 {!!if {folder} == 'archive' !!}
