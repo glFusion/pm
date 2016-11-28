@@ -2,11 +2,11 @@
 // +--------------------------------------------------------------------------+
 // | PM Plugin - glFusion CMS                                                 |
 // +--------------------------------------------------------------------------+
-// | english_utf-8.php                                                        |
+// | english.php                                                              |
 // |                                                                          |
 // | English language file                                                    |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2015 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -86,7 +86,7 @@ $LANG_PM00 = array (
     'move_to_folder'    => 'Move To folder',
     'mark_all'          => 'Mark All',
     'unmark_all'        => 'Unmark All',
-    'delete_marked'     => 'Deleted Marked',
+    'delete_marked'     => 'Delete Marked',
     'archive_marked'    => 'Save Marked',
     'message_history'   => 'Message History',
     'add_user'          => 'Add User',
@@ -95,6 +95,7 @@ $LANG_PM00 = array (
     'preview'           => 'Preview',
     'cancel'            => 'Cancel',
     'submit'            => 'Submit',
+    'archive_confirm'   => 'Are you sure you watn to archive the selected messages?',
     'batch_confirm'     => 'Are you sure you want to move or delete the selected messages?',
     'delete_confirm'    => 'Are you sure you want to delete this message?',
     'no_messages'       => 'There are no messages in this folder',

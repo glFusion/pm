@@ -7,9 +7,7 @@
 // | German language file                                                     |
 // | Modifiziert: August 09 Tony Kluever									  |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -99,6 +97,7 @@ $LANG_PM00 = array (
     'cancel'            => 'Abbruch',
     'submit'            => 'Abschicken',
     'batch_confirm'     => 'Möchtets Du die asugewählten Nachrichten wirklich verschieben oder löschen?',
+    'archive_confirm'   => 'Are you sure you watn to archive the selected messages?',
     'delete_confirm'    => 'Möchtest Du die Nachricht wirklich löschen?',
     'no_messages'       => 'Es sind keine Nachrichten in diesem Ordner',
     'manage_friends'    => 'Freunde verwalten',
@@ -113,6 +112,7 @@ $LANG_PM00 = array (
 	'newpm'				=> '<b>Du hast %d neue </b><a href="'.$_CONF['site_url'].'/pm/index.php"><b>private Nachricht(en)</b>',
     'address_book'      => 'Address Book',
     'site_users'        => 'Site Users',
+    'options'           => 'Options',
     'FONTCOLOR' => 'Color',
     'FONTSIZE' => 'Font',
     'CLOSETAGS' => 'Close Tags',
@@ -154,6 +154,7 @@ $LANG_PM00 = array (
     't_help' => 'Use [file]#[/file] to embed an attached image in the post',
     'e_help' => 'List item: [*]text',
     'smiley' => 'Smileys',
+
 );
 
 $LANG_PM_NOTIFY = array(

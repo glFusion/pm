@@ -6,9 +6,7 @@
 // |                                                                          |
 // | Dutch language file                                                      |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -52,6 +50,7 @@ $LANG_PM00 = array (
     'delete'            => 'Delete',
     'inbox'             => 'Inbox',
     'sent'              => 'Sent',
+    'date'              => 'Date',
     'archive'           => 'Archief',
     'outbox'            => 'Outbox',
     'all_messages'      => 'Alle Berichten',
@@ -96,6 +95,7 @@ $LANG_PM00 = array (
     'preview'           => 'Bekijk',
     'cancel'            => 'Annuleer',
     'submit'            => 'Uitvoeren',
+    'archive_confirm'   => 'Are you sure you watn to archive the selected messages?',
     'batch_confirm'     => 'Are you sure you want to move or delete the selected messages?',
     'delete_confirm'    => 'Are you sure you want to delete this message?',
     'no_messages'       => 'Er zijn geen berichten in deze folder',
@@ -111,6 +111,7 @@ $LANG_PM00 = array (
     'newpm'             => '<b>You have %d new </b><a href="'.$_CONF['site_url'].'/pm/index.php"><b>private message(s)</b>',
     'address_book'      => 'Address Book',
     'site_users'        => 'Site Users',
+    'options'           => 'Options',
     'FONTCOLOR' => 'Color',
     'FONTSIZE' => 'Font',
     'CLOSETAGS' => 'Close Tags',

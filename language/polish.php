@@ -6,9 +6,7 @@
 // |                                                                          |
 // | Polish language file                                                     |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -98,6 +96,7 @@ $LANG_PM00 = array (
     'cancel'            => 'Zrezygnuj',
     'submit'            => 'Wyslij',
     'batch_confirm'     => 'Czy na pewno chcesz przeniesc lub usunac wybrane wiadomosci?',
+    'archive_confirm'   => 'Are you sure you watn to archive the selected messages?',
     'delete_confirm'    => 'Czy na pewno chcesz usunac ta wiadomosc?',
     'no_messages'       => 'Brak wiadomosci w tym folderze',
     'manage_friends'    => 'Zarzadzanie Znajomi',
@@ -112,6 +111,7 @@ $LANG_PM00 = array (
     'newpm'             => '<b>You have %d new </b><a href="'.$_CONF['site_url'].'/pm/index.php"><b>private message(s)</b>',
     'address_book'      => 'Address Book',
     'site_users'        => 'Site Users',
+    'options'           => 'Options',
     'FONTCOLOR' => 'Color',
     'FONTSIZE' => 'Font',
     'CLOSETAGS' => 'Close Tags',

@@ -6,9 +6,7 @@
 // |                                                                          |
 // | Swedish language file                                                    |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2011 by the following authors:                        |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -98,6 +96,7 @@ $LANG_PM00 = array (
     'cancel'            => 'Avbryt',
     'submit'            => 'Skicka',
     'batch_confirm'     => 'Är du säker på att du vill flytta eller radera de valda meddelandena',
+    'archive_confirm'   => 'Are you sure you watn to archive the selected messages?',
     'delete_confirm'    => 'Är du säker på att du vill radera detta meddelande?',
     'no_messages'       => 'Det finns inga meddelande i denna katalog',
     'manage_friends'    => 'Hantera vänner',
@@ -112,6 +111,7 @@ $LANG_PM00 = array (
     'newpm'             => '<b>Du har %d nytt/nya </b><a href="'.$_CONF['site_url'].'/pm/index.php"><b>privata meddelande(n)</b>',
     'address_book'      => 'Address Book',
     'site_users'        => 'Site Users',
+    'options'           => 'Options',
     'FONTCOLOR' => 'Color',
     'FONTSIZE' => 'Font',
     'CLOSETAGS' => 'Close Tags',
