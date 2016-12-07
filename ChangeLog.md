@@ -1,3 +1,8 @@
+## v2.1.4 (December 7, 2016)
+  - Fixed spelling error in delete / save confirmation error
+  - Smiley insertion fix
+  - Fixed issue where archive / delete buttons did not work in Firefox
+
 ## v2.1.3 (December 4, 2016)
   - Fixed selecting messages for delete / archive
   - Fixed typos
