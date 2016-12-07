@@ -122,11 +122,11 @@ function PM_processMarked($operation)
 $display = '';
 $msg_header = '';
 
-if ( isset($_POST['delete_marked']) ) {
+if ( isset($_POST['delete_marked_x']) ) {
     $msg_header = PM_processMarked('delete_marked');
 }
 
-if ( isset($_POST['archive_marked']) ) {
+if ( isset($_POST['archive_marked_x']) ) {
     $msg_header = PM_processMarked('archive_marked');
 }
 
@@ -215,15 +215,6 @@ $text_arr = array(
         'has_limit'     => true,
         'has_paging'    => true,
 );
-
-$oselect = '
-    <div style="margin-top:10px;">
-    <input type="hidden" name="current_folder" value="'.$folder.'">
-	<select name="mark_option" onchange="this.form.submit();">
-		<option selected="selected" disalbed="disabled" value="">'.$LANG_PM00['options'].'</option>
-		<option value="delete_marked" onclick="return confirm(\''.$LANG_PM00['delete_confirm'].'\');return false;">'.$LANG_PM00['delete_marked'].'</option>
-		<option value="archive_marked">'.$LANG_PM00['archive_marked'].'</option>
-	</select></div>';
 
 
 $formfields = '
