@@ -6,7 +6,7 @@
 // |                                                                          |
 // | Implement the glFusion Plugin API                                        |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2016 by the following authors:                        |
+// | Copyright (C) 2009-2017 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -228,12 +228,12 @@ function plugin_profileedit_pm($uid,$panel,$fieldset)
         case 'privacy' :
             switch ($fieldset) {
                 case 'privacy' :
-                    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $_USER['uid']);
+                    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $uid);
                     $nrows = DB_numRows($result);
                     if ($nrows == 0) {
                         // Insert a new blank record. Defaults are set in SQL Defintion for table.
-                        DB_query("INSERT INTO {$_TABLES['pm_userprefs']} (uid) VALUES (".(int) $_USER['uid'].")");
-                        $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $_USER['uid']);
+                        DB_query("INSERT INTO {$_TABLES['pm_userprefs']} (uid) VALUES (".(int) $uid.")");
+                        $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $uid);
                     }
                     $A = DB_fetchArray($result);
                     $notify = $A['notify'];
@@ -260,13 +260,15 @@ function plugin_profileedit_pm($uid,$panel,$fieldset)
     return $retval;
 }
 
-function plugin_profilesave_pm( )
+function plugin_profilesave_pm( $uid = 0 )
 {
     global $_CONF, $_TABLES, $_PM_CONF, $_USER;
 
     if ( COM_isAnonUser() ) {
         return;
     }
+
+    if ( $uid == 0 ) $uid = $_USER['uid'];
 
     if ( isset($_POST['pmnotify']) ) {
         $notify = 1;
@@ -279,7 +281,7 @@ function plugin_profilesave_pm( )
         $block = 0;
     }
 
-    DB_save($_TABLES['pm_userprefs'],'uid,notify,block',"'".(int) $_USER['uid']."',".(int) $notify.','.(int) $block);
+    DB_save($_TABLES['pm_userprefs'],'uid,notify,block',"'".(int) $uid."',".(int) $notify.','.(int) $block);
 }
 
 /*
