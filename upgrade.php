@@ -6,7 +6,7 @@
 // |                                                                          |
 // | Upgrade routines                                                         |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2016 by the following authors:                        |
+// | Copyright (C) 2009-2017 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -91,6 +91,9 @@ function pm_upgrade()
 
         case '2.1.2' :
             DB_query("ALTER TABLE {$_TABLES['pm_dist']} CHANGE `folder_name` `folder_name` VARCHAR(128) NOT NULL default 'inbox'",1);
+
+        case '2.1.3' :
+        case '2.1.4' :
 
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");

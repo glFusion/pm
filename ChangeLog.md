@@ -1,3 +1,6 @@
+## v2.1.5
+  - Fixed error where admin edits of another user profile did not capture the user's PM settings
+
 ## v2.1.4 (December 7, 2016)
   - Fixed spelling error in delete / save confirmation error
   - Smiley insertion fix
