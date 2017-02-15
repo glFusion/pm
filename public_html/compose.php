@@ -445,7 +445,7 @@ switch ( $mode ) {
         COM_clearSpeedlimit ($_PM_CONF['post_speedlimit'], 'pm');
         $last = COM_checkSpeedlimit ('pm');
         if ($last > 0) {
-            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=4&amp;plugin=pm');
+            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=4');
             exit;
         }
         if ( isset($_GET['uid']) ) {
@@ -467,7 +467,7 @@ switch ( $mode ) {
         COM_clearSpeedlimit ($_PM_CONF['post_speedlimit'], 'pm');
         $last = COM_checkSpeedlimit ('pm');
         if ($last > 0) {
-            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=4&amp;plugin=pm');
+            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=4');
             exit;
         }
         $reply_msgid = COM_applyFilter($_GET['msgid'],true);
@@ -494,7 +494,7 @@ switch ( $mode ) {
         $reply_msgid = COM_applyFilter($_GET['msgid'],true);
         $last = COM_checkSpeedlimit ('pm');
         if ($last > 0) {
-            echo COM_refresh($_CONF['site_url'].'/pm/view.php?msgid='.(int) $reply_msgid.'&amp;msg=4&amp;plugin=pm');
+            echo COM_refresh($_CONF['site_url'].'/pm/view.php?msgid='.(int) $reply_msgid.'&amp;msg=4');
             exit;
         }
         $sql = "SELECT * FROM {$_TABLES['pm_msg']} msg LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id WHERE msg.msg_id=".(int) $reply_msgid." AND dist.user_id=".(int) $_USER['uid'];
@@ -529,7 +529,7 @@ switch ( $mode ) {
         COM_clearSpeedlimit ($_PM_CONF['post_speedlimit'], 'pm');
         $last = COM_checkSpeedlimit ('pm');
         if ($last > 0) {
-            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=4&amp;plugin=pm');
+            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=4');
             exit;
         }
         list($rc,$errors) = PM_msgSend( );
@@ -541,7 +541,7 @@ switch ( $mode ) {
             $reply_msgid = COM_applyFilter($_POST['reply_msgid'],true);
             $body        = PM_msgEditor($msgid,$reply_msgid,$to,$subject,$message,$errors);
         } else {
-            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=1&amp;plugin=pm');
+            echo COM_refresh($_CONF['site_url'].'/pm/index.php?msg=1');
             exit;
         }
         break;
