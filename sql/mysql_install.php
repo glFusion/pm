@@ -47,7 +47,8 @@ $_SQL['pm_msg'] = "CREATE TABLE {$_TABLES['pm_msg']} (
   KEY message_time (message_time),
   KEY author_uid (author_uid),
   KEY parent_id (parent_id)
-) ENGINE=MyISAM;";
+) ENGINE=MyISAM
+";
 
 $_SQL['pm_dist'] = "CREATE TABLE {$_TABLES['pm_dist']} (
   msg_id mediumint(8) NOT NULL default '0',
@@ -62,7 +63,8 @@ $_SQL['pm_dist'] = "CREATE TABLE {$_TABLES['pm_dist']} (
   KEY msg_id (msg_id),
   KEY author_uid (author_uid),
   KEY usr_flder_id (user_id,folder_name)
-) ENGINE=MyISAM;";
+) ENGINE=MyISAM
+";
 
 $_SQL['pm_friends'] = "CREATE TABLE {$_TABLES['pm_friends']} (
   uid mediumint(9) NOT NULL,
@@ -70,12 +72,14 @@ $_SQL['pm_friends'] = "CREATE TABLE {$_TABLES['pm_friends']} (
   friend_name varchar(255) NOT NULL,
   PRIMARY KEY (uid,friend_id),
   KEY uid (uid)
-) ENGINE=MyISAM;";
+) ENGINE=MyISAM
+";
 
 $_SQL['pm_userprefs'] = "CREATE TABLE {$_TABLES['pm_userprefs']} (
   uid mediumint(9) NOT NULL,
   notify tinyint(4) NOT NULL DEFAULT '1',
   block tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (uid)
-) ENGINE=MyISAM;";
+) ENGINE=MyISAM
+";
 ?>
