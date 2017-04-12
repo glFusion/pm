@@ -1,3 +1,6 @@
+## v2.1.6
+  - Fixed template error where HTML labels were not properly implemented
+
 ## v2.1.5
   - Fixed error where admin edits of another user profile did not capture the user's PM settings
 
