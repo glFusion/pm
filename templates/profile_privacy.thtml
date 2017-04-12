@@ -1,15 +1,15 @@
 <div class="uk-form-row">
-	<div class="uk-form-label">
+	<label class="uk-form-label" for="pmblock">
 		{lang_pmblock}
-	</div>
+	</label>
 	<div class="uk-form-controls">
 		<input type="checkbox" id="pmblock" name="pmblock" {pmblock_checked}>
 	</div>
 </div>
 <div class="uk-form-row">
-	<div class="uk-form-label">
+	<label class="uk-form-label" for="pmnotify">
 		{lang_pmnotify}
-	</div>
+	</label>
 	<div class="uk-form-controls">
 		<input type="checkbox" id="pmnotify" name="pmnotify" {pmnotify_checked}>
 	</div>
