@@ -78,7 +78,7 @@ function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
     $T->parse('output','email');
     $message = $T->finish($T->get_var('output'));
 
-    $html2txt = new html2text($privateMessage,false);
+    $html2txt = new Html2Text\Html2Text($privateMessage,false);
     $messageText = $html2txt->get_text();
 
     $to = array($to_email,$to_user);
@@ -92,8 +92,6 @@ function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
 
 function PM_FormatForEmail( $str, $postmode='html' ) {
     global $_CONF;
-
-    USES_lib_html2text();
 
     $parsers = array();
     $parsers[] = array(array('block','inline','link','listitem'));
