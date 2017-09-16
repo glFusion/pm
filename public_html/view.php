@@ -124,7 +124,7 @@ if ( DB_numRows($result) > 0 ) {
     }
 
     $parsers = array();
-    $parsers[] = array(array('block','inline','link','listitem'), '_bbc_replacesmiley');
+    $parsers[] = array(array ('block', 'inline', 'listitem'), '_bbc_replacesmiley');
 
     $message_history = PM_showHistory( $msg['msg_id'], 0 );
 

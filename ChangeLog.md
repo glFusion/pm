@@ -1,6 +1,7 @@
 ## 2.2.0
   - Updated to support glFusion v1.7.0+ classes
   - Removed search integration - searching now internal to plugin
+  - Minor tweaks to bbcode formatting
 
 ## v2.1.6
   - Fixed template error where HTML labels were not properly implemented

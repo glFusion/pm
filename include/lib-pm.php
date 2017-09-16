@@ -222,7 +222,7 @@ function PM_BBC_formatTextBlock($str,$postmode='text',$parsers=array())
 
 
 function _bbc_replacesmiley($str) {
-    global $_CONF,$_TABLES,$CONF_FORUM;
+    global $_CONF,$_TABLES;
 
     if (function_exists('msg_showsmilies') ) {
         $str = msg_replaceEmoticons($str);
