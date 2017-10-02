@@ -1,12 +1,12 @@
-## 2.2.0
+## 2.2.0 (October 6, 2017)
   - Updated to support glFusion v1.7.0+ classes
   - Removed search integration - searching now internal to plugin
   - Minor tweaks to bbcode formatting
 
-## v2.1.6
+## v2.1.6 (April 12, 2017)
   - Fixed template error where HTML labels were not properly implemented
 
-## v2.1.5
+## v2.1.5 (unreleased)
   - Fixed error where admin edits of another user profile did not capture the user's PM settings
 
 ## v2.1.4 (December 7, 2016)
