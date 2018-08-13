@@ -1,3 +1,7 @@
+## 2.2.1
+  - Fixed incorrect hover text for Link
+  - HTML 5 Updates
+
 ## 2.2.0 (October 6, 2017)
   - Updated to support glFusion v1.7.0+ classes
   - Removed search integration - searching now internal to plugin
