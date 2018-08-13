@@ -1,5 +1,5 @@
 {# begin {templatelocation} #}
-<script type="text/javascript">
+<script>
 	var site_url = '{site_url}';
 	$(window).load(function() {
 		$("#toggleV").click(function() {
@@ -8,7 +8,7 @@
 		$("#smileys").hide();
 	});
 </script>
-<script type="text/javascript" src="{site_url}/pm/javascript/editor.js"></script>
+<script src="{site_url}/pm/javascript/editor.js"></script>
 <form class="uk-form uk-form-horizontal" id="forumpost" name="forumpost" action="{site_url}/pm/compose.php" method="post">
 	<input type="hidden" name="reply_msgid" value="{reply_msgid}">
 	<input type="hidden" name="msgid" value="{msgid}">
@@ -118,7 +118,7 @@
 					{#	<li><a data-htmleditor-button="image" title="Image" data-uk-tooltip=""><i class="uk-icon-picture-o"></i></a></li> #}
 					<li><a data-htmleditor-button="blockquote" title="{$LANG_PM00[q_help]}" data-uk-tooltip="" onclick="bbstyle(6);return false;"><i class="uk-icon-quote-right"></i></a></li>
 					<li><a data-htmleditor-button="code" title="{$LANG_PM00[c_help]}" data-uk-tooltip="" onclick="bbstyle(8);return false;"><i class="uk-icon-code"></i></a></li>
-					<li><a data-htmleditor-button="listUl" title="{$LANG_PM00[l_help]}" data-uk-tooltip="" onclick="bbstyle(10);return false;"><i class="uk-icon-list-ul"></i></a></li>
+					<li><a data-htmleditor-button="listUl" title="{$LANG_PM00[w_help]}" data-uk-tooltip="" onclick="bbstyle(10);return false;"><i class="uk-icon-list-ul"></i></a></li>
 					<li><a data-htmleditor-button="listOl" title="{$LANG_PM00[o_help]}" data-uk-tooltip="" onclick="bbstyle(12);return false;"><i class="uk-icon-list-ol"></i></a></li>
 					<li><a data-htmleditor-button="listitem" title="{$LANG_PM00[e_help]}" data-uk-tooltip="" onclick="bbstyle(-1);return false;"><i class="uk-icon-list"></i></a></li>
 {!if smilies_enabled}
