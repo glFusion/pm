@@ -1,5 +1,5 @@
 {# begin {templatelocation} #}
-<script type="text/javascript" src="{site_url}/pm/javascript/pm.js"></script>
+<script src="{site_url}/pm/javascript/pm.js"></script>
 <script language="javascript" type="text/javascript">
 function adduser() {
   var dropdownIndex = document.getElementById('combo_user').selectedIndex;

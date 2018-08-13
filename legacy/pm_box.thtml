@@ -9,7 +9,7 @@
 </div>
 </form>
 
-<script type="text/javascript">
+<script>
 //<![CDATA[
     document.getElementById('compose_button').style.display='';
     document.getElementById('compose_link').style.display='none';

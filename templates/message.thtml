@@ -1,5 +1,5 @@
 {# begin {templatelocation} #}
-<script type="text/javascript" src="{site_url}/pm/javascript/ajax_addfriend.js"></script>
+<script src="{site_url}/pm/javascript/ajax_addfriend.js"></script>
 <script language="javascript" type="text/javascript">
 	var site_url = '{site_url}';
 </script>
