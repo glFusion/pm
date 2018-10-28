@@ -1,37 +1,39 @@
-## 2.2.1
+# Private Messages Plugin ChangeLog
+
+## v2.2.1
   - Fixed incorrect hover text for Link
   - HTML 5 Updates
 
-## 2.2.0 (October 6, 2017)
+## v2.2.0
   - Updated to support glFusion v1.7.0+ classes
   - Removed search integration - searching now internal to plugin
   - Minor tweaks to bbcode formatting
 
-## v2.1.6 (April 12, 2017)
+## v2.1.6
   - Fixed template error where HTML labels were not properly implemented
 
-## v2.1.5 (unreleased)
+## v2.1.5
   - Fixed error where admin edits of another user profile did not capture the user's PM settings
 
-## v2.1.4 (December 7, 2016)
+## v2.1.4
   - Fixed spelling error in delete / save confirmation error
   - Smiley insertion fix
   - Fixed issue where archive / delete buttons did not work in Firefox
 
-## v2.1.3 (December 4, 2016)
+## v2.1.3
   - Fixed selecting messages for delete / archive
   - Fixed typos
   - Fixed folder list to always display correct set of folders
   - Fixed returning from action (i.e.; delete/archive) to wrong folder
   - Cleaned up user interface a bit
 
-## v2.1.2 (unreleased)
+## v2.1.2
   - Updated field / index sizes to appropriate lengths
 
-## v2.1.1 (August 23, 2016)
+## v2.1.1
   - Fixed error where smileys did not show up when enabled
 
-## v2.1.0 (August 1, 2016)
+## v2.1.0
   - Updated for UIKIT based themes
 
 ## v2.0.0
