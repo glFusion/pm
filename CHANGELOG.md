@@ -1,5 +1,10 @@
 # Private Messages Plugin ChangeLog
 
+## v2.2.2
+
+- Language file updates
+- glFusion v2 support for configSelect
+
 ## v2.2.1
 
 - Fixed incorrect hover text for Link
