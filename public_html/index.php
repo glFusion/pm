@@ -33,6 +33,7 @@ if (!in_array('pm', $_PLUGINS)) {
     COM_404();
     exit;
 }
+PM_checkAccess();
 
 USES_lib_admin();
 

@@ -33,6 +33,7 @@ if (!in_array('pm', $_PLUGINS)) {
     COM_404();
     exit;
 }
+PM_checkAccess();
 
 /*
  * Only allow logged-in users or users who have the pm.user permission

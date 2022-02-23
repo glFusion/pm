@@ -14,12 +14,14 @@
 					<div>{$LANG_PM00[compose]}</div>
 				</a>
 			</li>
+{!if can_reply}
 			<li>
 				<a href="{site_url}/pm/compose.php?mode=reply&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-center">
 					<i class="uk-icon-mail-reply uk-icon-small" title="{$LANG_PM00[reply]}"></i>
 					<div>{$LANG_PM00[reply]}</div>
 				</a>
 			</li>
+{!endif}
 			<li>
 				<a href="{site_url}/pm/compose.php?mode=quote&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-center">
 					<i class="uk-icon-quote-right uk-icon-small" title="{$LANG_PM00[quote]}"></i>

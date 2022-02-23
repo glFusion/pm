@@ -33,6 +33,7 @@ if (!in_array('pm', $_PLUGINS)) {
     COM_404();
     exit;
 }
+PM_checkAccess();
 
 USES_lib_user();
 USES_lib_bbcode();
@@ -44,65 +45,6 @@ require_once $_CONF['path'].'plugins/pm/include/lib-pm.php';
  */
 
 $display = '';
-
-function PM_notify($to_user,$to_uid,$from_user,$pm_subject, $pm_message ) {
-    global $_CONF, $_USER, $_TABLES, $LANG_PM_NOTIFY;
-
-    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $to_uid);
-    if ( DB_numRows($result) == 0 ) {
-        $sendEmail = 1;
-    } else {
-        $row = DB_fetchArray($result);
-        $sendEmail = $row['notify'];
-    }
-    if ( $sendEmail != 1 ) {
-        return;
-    }
-
-    $to_email = DB_getItem($_TABLES['users'],'email','username="'.DB_escapeString($to_user).'"');
-
-    $privateMessage = PM_FormatForEmail( $pm_message,'text');
-
-   // build the template...
-    $T = new Template(pm_get_template_path());
-    $T->set_file ('email', 'pm_notify.thtml');
-
-    $T->set_var(array(
-        'to_username'       => $to_user,
-        'from_username'     => $from_user,
-        'msg_subject'       => $pm_subject,
-        'site_name'         => $_CONF['site_name'] . ' - ' . $_CONF['site_slogan'],
-        'site_url'          => $_CONF['site_url'],
-        'pm_text'           => $privateMessage,
-    ));
-    $T->parse('output','email');
-    $message = $T->finish($T->get_var('output'));
-
-    $html2txt = new Html2Text\Html2Text($privateMessage,false);
-    $messageText = $html2txt->get_text();
-
-    $to = array($to_email,$to_user);
-    $from = array($_CONF['noreply_mail'],$_CONF['site_name']);
-    $subject =  $_CONF['site_name'] .' - '. $LANG_PM_NOTIFY['new_pm_notification'];
-
-    COM_mail( $to, $subject, $message, $from, true,0,'',$messageText);
-
-    return true;
-}
-
-function PM_FormatForEmail( $str, $postmode='html' ) {
-    global $_CONF;
-
-    $parsers = array();
-    $parsers[] = array(array('block','inline','link','listitem'));
-
-    $str = PM_BBC_formatTextBlock($str,'text',$parsers);
-
-    // we don't have a stylesheet for email, so replace our div with the style...
-    $str = str_replace('<div class="quotemain">','<div style="border: 1px dotted #000;border-left: 4px solid #8394B2;color:#465584;  padding: 4px;  margin: 5px auto 8px auto;">',$str);
-
-    return $str;
-}
 
 function PM_previewMessage( $msgID = 0 )
 {

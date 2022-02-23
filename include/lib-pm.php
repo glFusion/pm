@@ -31,21 +31,6 @@ if (!defined ('GVERSION')) {
     die ('This file can not be used on its own!');
 }
 
-/*
- * Only allow logged-in users or users who have the pm.user permission
- */
-if ( COM_isAnonUser()  )  {
-    $display = COM_siteHeader();
-    $display .= SEC_loginRequiredForm();
-    $display .= COM_siteFooter();
-    echo $display;
-    exit;
-}
-
-if ( !SEC_hasRights('pm.user') ) {
-    echo COM_refresh($_CONF['site_url']);
-    exit;
-}
 
 function PM_alertMessage( $msgText = '' )
 {
@@ -263,4 +248,233 @@ function PM_siteFooter() {
     $retval .= COM_siteFooter();
     return $retval;
 }
-?>
+
+function PM_FormatForEmail( $str, $postmode='html' )
+{
+    global $_CONF;
+
+    USES_lib_bbcode();
+
+    $parsers = array();
+    $parsers[] = array(array('block','inline','link','listitem'));
+    $str = PM_BBC_formatTextBlock($str,'text',$parsers);
+
+    // we don't have a stylesheet for email, so replace our div with the style...
+    $str = str_replace('<div class="quotemain">','<div style="border: 1px dotted #000;border-left: 4px solid #8394B2;color:#465584;  padding: 4px;  margin: 5px auto 8px auto;">',$str);
+
+    return $str;
+}
+
+
+function PM_notify($to_user, $to_uid, $from_user, $pm_subject, $pm_message, $force=false)
+{
+    global $_CONF, $_USER, $_TABLES, $LANG_PM_NOTIFY;
+
+    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $to_uid);
+    if (DB_numRows($result) == 0) {
+        $sendEmail = 1;
+    } else {
+        $row = DB_fetchArray($result);
+        $sendEmail = $force || $row['notify'];
+    }
+    if (!$sendEmail) {
+        return;
+    }
+
+    $to_email = DB_getItem($_TABLES['users'],'email','username="'.DB_escapeString($to_user).'"');
+    //$privateMessage = PM_FormatForEmail( $pm_message,'text');
+
+   // build the template...
+    $T = new Template(pm_get_template_path());
+    $T->set_file ('email', 'pm_notify.thtml');
+
+    $T->set_var(array(
+        'to_username'       => $to_user,
+        'from_username'     => $from_user,
+        'msg_subject'       => $pm_subject,
+        'site_name'         => $_CONF['site_name'] . ' - ' . $_CONF['site_slogan'],
+        'site_url'          => $_CONF['site_url'],
+        'pm_text'           => $pm_message,
+    ));
+    $T->parse('output','email');
+    $message = $T->finish($T->get_var('output'));
+
+    $html2txt = new Html2Text\Html2Text($pm_message,false);
+    $messageText = $html2txt->get_text();
+
+    $to = array($to_email,$to_user);
+    $from = array($_CONF['noreply_mail'],$_CONF['site_name']);
+    $subject =  $_CONF['site_name'] .' - '. $LANG_PM_NOTIFY['new_pm_notification'];
+
+    COM_mail( $to, $subject, $message, $from, true,0,'',$messageText);
+
+    return true;
+}
+
+
+/**
+ * Send a private message, either by a system event or from a user.
+ *
+ * Parameter array consists of:
+ *   - to : (int)Single or array of user IDs
+ *   - bcc : (int)Single or array of user IDs
+ *   - subject : (string)
+ *   - message : (string)
+ *   - author_id : (int) Sending user ID, zero for a system message
+ * @param   array   $A  Array of message properties
+ */
+function PM_sendmessage(array $A)
+{
+    global $_CONF, $_PM_CONF, $_TABLES, $_USER, $LANG_PM_ERROR;
+
+    $errArray = array();
+    $toList = array();
+    $to_str = '';
+    $to_users = array();
+    if (isset($A['to'])) {
+        $toList = $A['to'];
+        if (!is_array($toList)) {
+            $toList = array($toList);
+        }
+        if (!empty($toList)) {
+            $to_str = DB_escapeString(implode(',', $toList));
+            $sql = "SELECT u.uid, u.username, up.block
+                FROM {$_TABLES['users']} AS u
+                LEFT JOIN {$_TABLES['pm_userprefs']} AS up
+                ON u.uid=up.uid
+                WHERE u.uid IN ($to_str)";
+            $result = DB_query($sql);
+            if (DB_numRows($result) > 0) {
+                $to_users = DB_fetchAll($result, false);
+            }
+        }
+    }
+
+    $bccList = array();
+    $bcc_str = '';
+    $bcc_users = array();
+    if (isset($A['bcc'])) {
+        $bccList = $A['bcc'];
+        if (!is_array($bccList)) {
+            $bccList = array($bccList);
+        }
+        if (!empty($bccList)) {
+            $bcc_str = DB_escapeString(implode(',', $bccList));
+            $sql = "SELECT u.uid, u.username, up.block
+                FROM {$_TABLES['users']} AS u
+                LEFT JOIN {$_TABLES['pm_userprefs']} AS up
+                ON u.uid=up.uid
+                WHERE u.uid IN ($bcc_str)";
+            $result = DB_query($sql);
+            if (DB_numRows($result) > 0) {
+                $bcc_users = DB_fetchAll($result, false);
+            }
+        }
+    }
+
+    if (!empty($to_users) || !empty($bcc_users)) {
+        $to_address = array();
+        foreach ($to_users as $user) {
+            $to_address[] = $user['username'];
+        }
+        $to_address = implode(',', $to_address);
+
+        $bcc_address = array();
+        foreach ($bcc_users as $user) {
+            $bcc_address[] = $user['username'];
+        }
+        $bcc_address = implode(',', $bcc_address);
+
+        $subject = $A['subject'];
+        if ( strlen($subject) < 4 ) {
+            $errArray[] = $LANG_PM_ERROR['no_subject'];
+        }
+        $message = $A['message'];
+        if ( strlen($message) < 4 ) {
+            $errArray[] = $LANG_PM_ERROR['no_message'];
+        }
+        if ( count($errArray) > 0 ) {
+            return array(false,$errArray);
+        }
+
+        if (isset($A['author_id'])) {
+            $author_id = (int)$A['author_id'];
+            $author_name = DB_getItem($_TABLES['users'], 'username', "uid=$author_id");
+            $remote_addr = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $author_id = 0;
+            $author_name = 'System Message';
+            $remote_addr = '0.0.0.0';
+        }
+        $remote_addr = DB_escapeString($remote_addr);
+
+        // do a little cleaning...
+        $subject = strip_tags($subject);
+        $parent_id = 0;
+        $reply_msgid = 0;
+        $pm_replied = 0;
+
+        // Add the message record
+        $sql  = "INSERT INTO {$_TABLES['pm_msg']} SET
+            parent_id = $parent_id,
+            author_uid = $author_id,
+            author_name = '" . DB_escapeString($author_name) . "',
+            author_ip = '$remote_addr',
+            message_time = UNIX_TIMESTAMP(),
+            message_subject = '" . DB_escapeString($subject) . "',
+            message_text = '" . DB_escapeString($message) . "',
+            to_address = '" . DB_escapeString($to_address) . "',
+            bcc_address = '" . DB_escapeString($bcc_address) . "'";
+        DB_query($sql);
+        $lastmsg_id = DB_insertID();
+
+        // Format the message once for email
+        $message = PM_FormatForEmail($message, 'text');
+
+        // Add a mailbox record for each recipient and notify
+        foreach ($to_users as $user) {
+            $sql = "INSERT INTO {$_TABLES['pm_dist']} SET
+                msg_id = $lastmsg_id,
+                user_id = {$user['uid']},
+                username = '" . DB_escapeString($user['username']) . "',
+                author_uid = $author_id,
+                pm_bcc = 0";
+            DB_query($sql);
+            PM_notify($user['username'], $user['uid'], $author_name, $subject, $message, $author_id == 0);
+        }
+        foreach ($bcc_users as $user) {
+            $sql = "INSERT INTO {$_TABLES['pm_dist']} SET
+                msg_id = $lastmsg_id,
+                user_id = {$user['uid']},
+                username = '" . DB_escapeString($user['username']) . "',
+                author_uid = $author_id,
+                pm_bcc = 1";
+            DB_query($sql);
+            PM_notify($user['username'], $user['uid'], $author_name, $subject, $message, $author_id == 0);
+        }
+    }
+
+    // Add an outbox message for the author, if not a system-generated message.
+    if ($author_id > 0) {
+        $sql  = "INSERT INTO {$_TABLES['pm_dist']} SET
+            msg_id = $lastmsg_id,
+            user_id = $author_id,
+            username = '" . DB_escapeString($author_name) . "',
+            author_uid = $author_id,
+            folder_name = 'outbox',
+            pm_unread = 0,
+            pm_replied = 0";
+        DB_query($sql);
+
+        // update original record to show it has been replied...
+        DB_query(
+            "UPDATE {$_TABLES['pm_dist']} SET pm_replied=1
+            WHERE msg_id =" . (int)$reply_msgid .
+            " AND user_id= $author_id AND folder_name NOT IN ('outbox','sent')"
+        );
+        COM_updateSpeedlimit ('pm');
+    }
+    CACHE_remove_instance('stmenu');
+    return array(true,'');
+}
+

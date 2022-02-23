@@ -33,6 +33,7 @@ if (!in_array('pm', $_PLUGINS)) {
     COM_404();
     exit;
 }
+PM_checkAccess();
 
 USES_lib_user();
 USES_lib_bbcode();
@@ -74,7 +75,6 @@ $sql .= "WHERE msg.msg_id=".(int) $msg_id." AND user_id=".(int) $_USER['uid']." 
 $result = DB_query($sql);
 if ( DB_numRows($result) > 0 ) {
     $msg = DB_fetchArray($result);
-
     if ( ($folder == 'inbox' || $folder == 'archive') && $msg['pm_unread'] == 1 ) {
         DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_unread=0 WHERE msg_id=".(int) $msg_id." AND user_id=".(int) $_USER['uid']." AND folder_name='".DB_escapeString($folder)."'");
         DB_query("UPDATE {$_TABLES['pm_dist']} SET folder_name='sent' WHERE msg_id=".(int) $msg_id." AND user_id=".(int) $msg['author_uid']." AND folder_name='outbox'");
@@ -91,6 +91,7 @@ if ( DB_numRows($result) > 0 ) {
     $photo      = '';
     $about      = '';
     $location   = '';
+    $emailfromuser = 0;
 
     $sql = "SELECT username,fullname,email,homepage,sig,regdate,photo,about,location,emailfromuser FROM {$_TABLES['users']} AS user LEFT JOIN {$_TABLES['userinfo']} AS info ON user.uid=info.uid LEFT JOIN {$_TABLES['userprefs']} AS prefs ON info.uid=prefs.uid WHERE user.uid=".(int) $msg['author_uid'];
     $result = DB_query($sql);
@@ -151,6 +152,7 @@ if ( DB_numRows($result) > 0 ) {
         'location'      => $location,
         'email'         => $emailfromuser ? $_CONF['site_url'].'/profiles.php?uid='.$msg['author_uid'] : '',
         'message_history'   => $message_history,
+        'can_reply'     => $msg['author_uid'] > 0,
     ));
 
     $T->parse ('output', 'message');

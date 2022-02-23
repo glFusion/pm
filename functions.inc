@@ -253,4 +253,44 @@ function pm_get_template_path()
     return $template_path;
 }
 
-?>
+
+/**
+ * Send a private message, either by a system event or from a user.
+ *
+ * Parameter array consists of:
+ *   - to : (int)Single or array of user IDs
+ *   - bcc : (int)Single or array of user IDs
+ *   - subject : (string)
+ *   - message : (string)
+ *   - author_id : (int) Sending user ID, zero for a system message
+ * @param   array   $A  Array of message properties
+ */
+function plugin_sendmessage_pm(array $A)
+{
+    require_once __DIR__ . '/include/lib-pm.php';
+    return PM_sendmessage($A);
+}
+
+
+/**
+ * Check that the current user has access to use the PM plugin.
+ * Redirects to the login page or home page if access is denied.
+ *
+ * @return  void
+ */
+function PM_checkAccess() : void
+{
+    if ( COM_isAnonUser()  )  {
+        $display = COM_siteHeader();
+        $display .= SEC_loginRequiredForm();
+        $display .= COM_siteFooter();
+        echo $display;
+        exit;
+    }
+
+    if ( !SEC_hasRights('pm.user') ) {
+        echo COM_refresh($_CONF['site_url']);
+        exit;
+    }
+}
+
