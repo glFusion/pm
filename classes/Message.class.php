@@ -356,14 +356,14 @@ class Message
                 author_uid = {$this->author_uid},
                 folder_name = 'outbox',
                 pm_unread = 0,
-                pm_replied = 0)";
+                pm_replied = 0";
             DB_query($sql);
 
             // update original record to show it has been replied...
             DB_query(
                 "UPDATE {$_TABLES['pm_dist']} SET pm_replied=1
                 WHERE msg_id = " . (int)$reply_msgid .
-                " AND user_id= {$this->author_id}
+                " AND user_id= {$this->author_uid}
                 AND folder_name NOT IN ('outbox','sent')"
             );
             COM_updateSpeedlimit ('pm');
