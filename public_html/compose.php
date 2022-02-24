@@ -251,118 +251,16 @@ function PM_msgSend( )
     }
 
     $toList = $_POST['username_list'];
-
     $toArray = explode(',',$toList);
-
-    $counter = 0;
-
-    $errArray = array();
-    $distributionList = array();
-
-    $toList = '';
-    foreach ( $toArray AS $to ) {
-        $to = trim(COM_applyFilter($to));
-        if ( $to == '' ) {
-            continue;
-        }
-        $sql = "SELECT {$_TABLES['users']}.uid, block FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['pm_userprefs']} "
-              ." ON {$_TABLES['users']}.uid={$_TABLES['pm_userprefs']}.uid "
-              ." WHERE {$_TABLES['users']}.username='".DB_escapeString($to)."'";
-
-        $result = DB_query($sql);
-        if ( DB_numRows($result) < 1 ) {
-            $errArray[] = $LANG_PM_ERROR['unknown_user']. ': '.$to;
-        } else {
-            list($toUID,$block) = DB_fetchArray($result);
-            if ( $block == 1 ) {
-                $errArray[] = $LANG_PM_ERROR['private_user']. ': '.$to;
-            } else {
-                $distributionList[$counter]['uid'] = $toUID;
-                $distributionList[$counter]['username'] = $to;
-                if ( $counter > 0 ) {
-                    $toList .= ','.$to;
-                } else {
-                    $toList .= $to;
-                }
-                $counter++;
-            }
-        }
-    }
-    if ( $counter == 0 && count($errArray) == 0 ) {
-        $errArray[] = $LANG_PM_ERROR['no_to_address'];
-    }
-    if ( count($errArray) > 0 ) {
-        return array(false,$errArray);
-    }
-
-    if ( $counter > $_PM_CONF['max_recipients'] ) {
-        $errArray[] = sprintf($LANG_PM_ERROR['too_many_recipients'], $_PM_CONF['max_recipients']);
-        return array(false,$errArray);
-    }
-
-    $subject = $_POST['subject'];
-    if ( strlen($subject) < 4 ) {
-        $errArray[] = $LANG_PM_ERROR['no_subject'];
-    }
-    $message = $_POST['comment'];
-    if ( strlen($message) < 4 ) {
-        $errArray[] = $LANG_PM_ERROR['no_message'];
-    }
-    if ( count($errArray) > 0 ) {
-        return array(false,$errArray);
-    }
-
-    // do a little cleaning...
-    $subject = strip_tags($subject);
-
-    $parent_id = 0;
-
-    $reply_msgid = COM_applyFilter($_POST['reply_msgid'],true);
-
-    if ( $reply_msgid > 0 ) {
-        $pm_replied = 1;
-        $parent_id = DB_getItem($_TABLES['pm_msg'],'parent_id','msg_id='.(int) $reply_msgid );
-        if ( $parent_id == 0 ) {
-            $parent_id = $reply_msgid;
-        }
-    } else {
-        $pm_replied = 0;
-    }
-
-    $msgCount = count($distributionList);
-    $REMOTE_ADDR = $_SERVER['REMOTE_ADDR'];
-
-    $sql  = "INSERT INTO {$_TABLES['pm_msg']} ";
-    $sql .= "(parent_id,author_uid,author_name,author_ip,message_time,message_subject,message_text,to_address,bcc_address) ";
-    $sql .= "VALUES($parent_id,".(int) $_USER['uid'].",'".DB_escapeString($_USER['username'])."','".DB_escapeString($REMOTE_ADDR)."',UNIX_TIMESTAMP(),'".DB_escapeString($subject)."','".DB_escapeString($message)."','".DB_escapeString($toList)."','')";
-
-    DB_query($sql);
-
-    $lastmsg_id = DB_insertID();
-    // insert a record for each recipient
-    for($x=0;$x<$msgCount;$x++) {
-        $targetUID = (int) $distributionList[$x]['uid'];
-        $targetUserName = DB_escapeString($distributionList[$x]['username']);
-        $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
-        $sql .= "(msg_id,user_id,username,author_uid) ";
-        $sql .= "VALUES (".(int) $lastmsg_id.",".(int) $targetUID.",'$targetUserName',".(int) $_USER['uid'].")";
-        DB_query($sql);
-
-        PM_notify($targetUserName,$targetUID,$_USER['username'],$subject,$message );
-    }
-
-    // insert a record for the user sending the message...
-    $sql  = "INSERT INTO {$_TABLES['pm_dist']} ";
-    $sql .= "(msg_id,user_id,username,author_uid,folder_name,pm_unread,pm_replied) ";
-    $sql .= "VALUES (".(int)$lastmsg_id.",".(int) $_USER['uid'].",'".DB_escapeString($_USER['username'])."',".(int) $_USER['uid'].",'outbox',0,0)";
-    DB_query($sql);
-
-    // update original record to show it has been replied...
-    DB_query("UPDATE {$_TABLES['pm_dist']} SET pm_replied=1 WHERE msg_id=".(int) $reply_msgid." AND user_id=".(int) $_USER['uid']." AND folder_name NOT IN ('outbox','sent')");
+    $PM = new PM\Message;
+    $PM->withToUserNames($toArray)
+       ->withSubject($_POST['subject'])
+       ->withMessage($_POST['comment'])
+       ->withParentId($_POST['reply_msgid'])
+       ->send();
 
     COM_updateSpeedlimit ('pm');
     CACHE_remove_instance('stmenu');
-
     return array(true,'');
 }
 
