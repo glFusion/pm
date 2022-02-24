@@ -31,6 +31,35 @@ if (!defined ('GVERSION')) {
     die ('This file can not be used on its own!');
 }
 
+spl_autoload_register(function ($class)
+{
+    // project-specific namespace prefix
+    $prefix = 'PM\\';
+
+    // does the class use the namespace prefix?
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        // no, move to the next registered autoloader
+        return;
+    }
+
+    // base directory for the namespace prefix
+    $base_dir = __DIR__ . '/classes/';
+
+    // get the relative class name
+    $relative_class = substr($class, $len);
+
+    // replace the namespace prefix with the base directory, replace namespace
+    // separators with directory separators in the relative class name, append
+    // with .php
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.class.php';
+
+    // if the file exists, require it
+    if (file_exists($file)) {
+        require $file;
+    }
+});
+
 // Initialize the configuration
 
 require_once $_CONF['path_system'] . 'classes/config.class.php';
@@ -267,8 +296,31 @@ function pm_get_template_path()
  */
 function plugin_sendmessage_pm(array $A)
 {
-    require_once __DIR__ . '/include/lib-pm.php';
-    return PM_sendmessage($A);
+    $PM = new PM\Message;
+    $PM->withSubject($A['subject'])
+        ->withMessage($A['message']);
+
+    if (isset($A['to'])) {
+        $toList = $A['to'];
+        if (!is_array($toList)) {
+            $toList = array($toList);
+        }
+        $PM->withToUsers($toList);
+    }
+
+    if (isset($A['bcc'])) {
+        $bccList = $A['bcc'];
+        if (!is_array($bccList)) {
+            $bccList = array($bccList);
+        }
+        $PM->withBccUsers($bccList);
+    }
+
+    if (isset($A['author_id'])) {
+        $PM->withAuthorUid((int)$A['author_id']);
+    }
+    $PM->send();
+    return;
 }
 
 
@@ -280,6 +332,8 @@ function plugin_sendmessage_pm(array $A)
  */
 function PM_checkAccess() : void
 {
+    global $_CONF;
+
     if ( COM_isAnonUser()  )  {
         $display = COM_siteHeader();
         $display .= SEC_loginRequiredForm();
