@@ -249,7 +249,7 @@ function PM_siteFooter() {
     return $retval;
 }
 
-function PM_FormatForEmail( $str, $postmode='html' )
+function XXPM_FormatForEmail( $str, $postmode='html' )
 {
     global $_CONF;
 
@@ -266,7 +266,7 @@ function PM_FormatForEmail( $str, $postmode='html' )
 }
 
 
-function PM_notify($to_user, $to_uid, $from_user, $pm_subject, $pm_message, $force=false)
+function XXPM_notify($to_user, $to_uid, $from_user, $pm_subject, $pm_message, $force=false)
 {
     global $_CONF, $_USER, $_TABLES, $LANG_PM_NOTIFY;
 
@@ -323,7 +323,7 @@ function PM_notify($to_user, $to_uid, $from_user, $pm_subject, $pm_message, $for
  *   - author_id : (int) Sending user ID, zero for a system message
  * @param   array   $A  Array of message properties
  */
-function PM_sendmessage(array $A)
+function XXPM_sendmessage(array $A)
 {
     global $_CONF, $_PM_CONF, $_TABLES, $_USER, $LANG_PM_ERROR;
 
