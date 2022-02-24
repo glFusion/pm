@@ -51,7 +51,7 @@ class Friend
         $is_friend = $friends ? 1 : 0;
         $retval = array();
         $sql = "SELECT * FROM {$_TABLES['pm_friends']}
-            WHERE uid = $uid"; // AND is_friend = $is_friend";
+            WHERE uid = $uid AND is_friend = $is_friend";
         $res = DB_query($sql);
         if ($res && DB_numRows($res) > 0) {
             while ($A = DB_fetchArray($res, false)) {

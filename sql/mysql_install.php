@@ -70,6 +70,7 @@ $_SQL['pm_friends'] = "CREATE TABLE {$_TABLES['pm_friends']} (
   uid mediumint(9) NOT NULL,
   friend_id mediumint(9) NOT NULL,
   friend_name varchar(255) NOT NULL,
+  is_friend tinyint(1) NOT NULL default 1
   PRIMARY KEY (uid,friend_id),
   KEY uid (uid)
 ) ENGINE=MyISAM
@@ -82,4 +83,3 @@ $_SQL['pm_userprefs'] = "CREATE TABLE {$_TABLES['pm_userprefs']} (
   PRIMARY KEY (uid)
 ) ENGINE=MyISAM
 ";
-?>
