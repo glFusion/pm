@@ -65,6 +65,9 @@ function _pm_getListField_mailbox($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = '<strong>'.$retval.'</strong>';
             }
             break;
+        case 'to_address':
+            $retval = COM_truncate($fieldvalue, 15, '...');
+            break;
         default :
             $retval = $fieldvalue;
             break;
@@ -158,24 +161,32 @@ $folderSelect .= '</select>'.LB;
 
 switch ( $folder ) {
     case 'inbox' :
+        $tofrom = $LANG_PM00['from'];
+        $tofrom_field = 'author_name';
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg " ;
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
         $sql .= "WHERE dist.user_id=".$_USER['uid']." AND dist.folder_name='inbox' ";
         break;
     case 'sent' :
+        $tofrom = $LANG_PM00['to'];
+        $tofrom_field = 'username';
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
         $sql .= "WHERE msg.author_uid=".(int) $_USER['uid']." AND dist.folder_name='sent' ";
         break;
     case 'archive' :
+        $tofrom = $LANG_PM00['from'];
+        $tofrom_field = 'author_name';
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
         $sql .= "WHERE dist.user_id=".(int) $_USER['uid']." AND dist.folder_name='archive' ";
         break;
     case 'outbox' :
+        $tofrom = $LANG_PM00['to'];
+        $tofrom_field = 'to_address';
         $sql  = "SELECT * ";
         $sql .= "FROM {$_TABLES['pm_msg']} msg ";
         $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
@@ -203,7 +214,7 @@ $msg_menu = ADMIN_createMenu($menu_arr,
                 $_CONF['site_url'].'/pm/images/pm48.png');
 
 $header_arr = array(      # display 'text' and use table field 'field'
-    array('text' => $LANG_PM00['from'], 'field' => 'author_name', 'sort' => true, 'align' => 'left'),
+    array('text' => $tofrom, 'field' => $tofrom_field, 'sort' => true, 'align' => 'left'),
     array('text' => $LANG_PM00['subject'], 'field' => 'message_subject', 'sort' => true, 'align' => 'left'),
     array('text' => $LANG_PM00['date'],    'field' => 'message_time', 'sort'=> true, 'align' => 'right'),
 );
