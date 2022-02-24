@@ -42,7 +42,7 @@ $langfile = $_CONF['path'] . 'plugins/pm/language/' . $_CONF['language'] . '.php
 if (file_exists ($langfile)) {
     require_once $langfile;
 } else {
-    require_once $_CONF['path'].'plugins/pm/language/english.php';
+    require_once $_CONF['path'].'plugins/pm/language/english_utf-8.php';
 }
 
 function plugin_chkVersion_pm() {

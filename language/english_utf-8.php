@@ -153,7 +153,7 @@ $LANG_PM00 = array (
     't_help' => 'Use [file]#[/file] to embed an attached image in the post',
     'e_help' => 'List item: [*]text',
     'smiley' => 'Smileys',
-
+    'system_message' => 'System Message',
 );
 
 $LANG_PM_NOTIFY = array(
