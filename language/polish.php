@@ -80,6 +80,7 @@ $LANG_PM00 = array(
     'sort_by' => 'Sortuj wg',
     'view_msg' => 'Wyswietl Wiadomosci',
     'return_to' => 'Wróc do',
+    'sent'              => 'Sent',
     'from' => 'Do',
     'registered' => 'Dolaczyl',
     'location' => 'Localizacja',
@@ -137,7 +138,7 @@ $LANG_PM00 = array(
     'VIOLET' => 'Violet',
     'WHITE' => 'White',
     'BLACK' => 'Black',
-    'ID' => 'ID',
+    'ID'    => 'ID',
     'b_help' => 'Bold text: [b]text[/b]',
     'i_help' => 'Italic text: [i]text[/i]',
     'u_help' => 'Underline text: [u]text[/u]',
@@ -153,7 +154,34 @@ $LANG_PM00 = array(
     'h_help' => 'Click to view more detailed help',
     't_help' => 'Use [file]#[/file] to embed an attached image in the post',
     'e_help' => 'List item: [*]text',
-    'smiley' => 'Smileys'
+    'smiley' => 'Smileys',
+
+);
+
+$LANG_PM_NOTIFY = array(
+    'pm_notify'         => 'PM Notifications',
+    'new_pm_notification' => 'New Private Message Notification',
+    'hello'             => 'Hello',
+    'subject'           => 'Subject',
+    'new_pm_text'       => 'You have a new Private Message from',
+    'disclaimer'        => 'You are receiving this because you allow Private Message notifications.  To change your privacy settings, please use the My Account option at ' . $_CONF['site_url'] ,
+    'sincerely'         => 'Thanks!',
+    'support'           => 'Support',
+    'pm_block'          => 'Block other users from sending me PMs',
+    'notify_header'     => 'Private Message Notification from ',
+);
+
+$LANG_PM_ERROR = array(
+    'token_failure'     => 'Security Token Failure',
+    'message_not_found' => 'Message not found',
+    'no_to_address'     => 'No to address specified',
+    'no_subject'        => 'Subject must not be blank and must be greater than 4 characters in length.',
+    'no_message'        => 'Message body must not be blank and must be greater than 4 characters in length.',
+    'unknown_user'      => 'Unable to locate user:',
+    'too_many_recipients' => 'You have included too many recipients - Maximum %s allowed.',
+    'invalid_msg_id'    => 'Invalid Message ID',
+    'invalid_reply_id'  => 'Invalid Reply ID',
+    'private_user'      => 'User does not allow PM messages',
 );
 
 // Localization of the Admin Configuration UI
@@ -161,14 +189,12 @@ $LANG_configsections['pm'] = array(
     'label' => 'Prywatne wiadomosci',
     'title' => '	Prywatne wiadomosci Konfiguracja'
 );
-
 $LANG_confignames['pm'] = array(
     'messages_per_page' => 'Wiadomosci na stronie',
     'post_speedlimit' => 'Posting Speedlimit (seconds)',
     'max_recipients' => 'Maksymalna liczba adresatów na wiadomosc',
     'displayblocks' => 'Display glFusion Blocks'
 );
-
 $LANG_configsubgroups['pm'] = array(
     'sg_main' => 'Glówne Ustawienia'
 );
@@ -177,11 +203,10 @@ $LANG_fs['pm'] = array(
     'pm_general' => 'PM Ustawienia ogólne'
 );
 
-// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['pm'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
+$LANG_configSelect['pm'] = array(
+    0 => array(1 => 'True', 0 => 'False'),
+    1 => array(true => 'True', false => 'False'),
+    2 => array(0 => 'Left Blocks', 1 => 'Right Blocks', 2 => 'Left & Right Blocks', 3 => 'None')
 );
 $PLG_pm_MESSAGE1 = 'Wiadomosci zostaly wyslane.';
 $PLG_pm_MESSAGE2 = 'Wiadomosci zostaly usuniete.';

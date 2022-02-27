@@ -100,6 +100,9 @@ function pm_upgrade()
         case '2.2.0' :
             // no changes
 
+        case '2.2.1' :
+            // no changes
+
         default:
             DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_PM_CONF['pi_version']."',pi_gl_version='".$_PM_CONF['gl_version']."' WHERE pi_name='pm' LIMIT 1");
             break;

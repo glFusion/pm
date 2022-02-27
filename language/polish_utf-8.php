@@ -2,9 +2,9 @@
 // +--------------------------------------------------------------------------+
 // | PM Plugin - glFusion CMS                                                 |
 // +--------------------------------------------------------------------------+
-// | english_utf-8.php                                                        |
+// | polish_utf8.php                                                               |
 // |                                                                          |
-// | English language file                                                    |
+// | Polish language file                                                     |
 // +--------------------------------------------------------------------------+
 // | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
@@ -32,86 +32,86 @@ if (!defined ('GVERSION')) {
 }
 
 $LANG_PM00 = array (
-    'menulabel'         => 'Prive Berichten',
+    'menulabel' => 'Prywatne Wiadomosci',
     'plugin'            => 'pm',
-    'admin_menu'        => 'PM Configuratie',
+    'admin_menu'        => 'PM Admin',
     'pm_index'          => 'PM Index',
     'pm'                => 'PM',
-    'user_menu'         => 'Berichten Center',
-    'title'             => 'Prive Bericht',
-    'compose_msg'       => 'Schrijf een Bericht',
-    'compose'           => 'Compose',
-    'reply_msg'         => 'Beantwoord Bericht',
-    'reply'             => 'Reply',
-    'preview_msg'       => 'Bekijk Bericht',
-    'quote_msg'         => 'Quote Bericht',
-    'quote'             => 'Quote',
-    'delete_msg'        => 'Verwijder Bericht',
-    'delete'            => 'Delete',
-    'inbox'             => 'Inbox',
-    'sent'              => 'Verzonden',
-    'date'              => 'Date',
-    'archive'           => 'Archief',
-    'outbox'            => 'Outbox',
-    'all_messages'      => 'Alle Berichten',
-    'one_day'           => '1 Dag',
-    'seven_days'        => '7 Dagen',
-    'two_weeks'         => '2 Weken',
-    'one_month'         => '1 Maand',
-    'three_months'      => '3 Maanden',
-    'six_months'        => '6 Maanden',
-    'one_year'          => '1 Jaar',
-    'author'            => 'Auteur',
-    'post_time'         => 'Post Time',
-    'subject'           => 'Onderwerp',
-    'ascending'         => 'Oplopend',
-    'descending'        => 'Aflopend',
-    'no_subject'        => 'Geen onderwerp beschikbaar...',
-    'by'                => 'Door',
-    'to'                => 'Aan',
-    'folder'            => 'Folder',
-    'view_folder'       => 'Bekijk folder',
-    'go'                => 'Ga',
-    'messages'          => 'BERICHTEN',
-    'select'            => 'SELECTEER',
-    'display'           => 'Toon',
-    'sort_by'           => 'Sorteer Op',
-    'view_msg'          => 'Bekijk Bericht Van',
-    'return_to'         => 'Return To',
+    'user_menu' => 'Skrzynka Odbiorcza',
+    'title' => 'Wiadomosc Prywatna',
+    'compose_msg' => 'Nowa wiadomosc',
+    'compose' => 'Compose',
+    'reply_msg' => 'Odpowiedz',
+    'reply' => 'Reply',
+    'preview_msg' => 'Podglad Wiadomosci',
+    'quote_msg' => 'Cytuj Wiadomosc',
+    'quote' => 'Quote',
+    'delete_msg' => 'Usun Wiadomosc',
+    'delete' => 'Delete',
+    'inbox' => 'Skrzynka Odbiorcza',
+    'sent' => 'Wyslany',
+    'date' => 'Date',
+    'archive' => 'Archiwum',
+    'outbox' => 'Skrzynka Nadawcza',
+    'all_messages' => 'Wszystkie Wiadomosci',
+    'one_day' => '1 Dzien',
+    'seven_days' => '7 Dni',
+    'two_weeks' => '2 Tygodnie',
+    'one_month' => '1 Miesiac',
+    'three_months' => '3 Miesiace',
+    'six_months' => '6 Miesiecy',
+    'one_year' => '1 Rok',
+    'author' => 'Autor',
+    'post_time' => 'Czas Posta',
+    'subject' => 'Temat',
+    'ascending' => 'Rosnaco',
+    'descending' => 'Malejaco',
+    'no_subject' => 'Brak tematów...',
+    'by' => 'Przez',
+    'to' => 'Do',
+    'folder' => 'Folder',
+    'view_folder' => 'Zobacz folder',
+    'go' => 'Go',
+    'messages' => 'WIADOMOSC',
+    'select' => 'WYBIERZ',
+    'display' => 'Wyswietl',
+    'sort_by' => 'Sortuj wg',
+    'view_msg' => 'Wyswietl Wiadomosci',
+    'return_to' => 'Wróc do',
     'sent'              => 'Sent',
-    'from'              => 'Van',
-    'registered'        => 'Geregistreerd op',
-    'location'          => 'Location',
-    'homepage'          => 'Homepage',
-    'move_to_folder'    => 'Verplaats naar Folder',
-    'mark_all'          => 'Mark All',
-    'unmark_all'        => 'Unmark All',
-    'delete_marked'     => 'Deleted Marked',
-    'archive_marked'    => 'Move marked to Saved messages',
-    'message_history'   => 'Berichten Historie',
-    'add_user'          => 'Voeg een Gebruiker toe',
-    'add_friend'        => 'Voeg een Vriend(in) toe',
-    'send'              => 'Verstuur',
-    'preview'           => 'Bekijk',
-    'cancel'            => 'Annuleer',
-    'submit'            => 'Uitvoeren',
-    'archive_confirm'   => 'Are you sure you want to archive the selected messages?',
-    'batch_confirm'     => 'Are you sure you want to move or delete the selected messages?',
-    'delete_confirm'    => 'Are you sure you want to delete this message?',
-    'no_messages'       => 'Er zijn geen berichten in deze folder',
-    'manage_friends'    => 'Beheer uw Vrienden',
-    'friend_help'       => 'Friends enable you quick access to members you communicate with frequently.',
-    'your_friends'      => 'Uw vrienden',
-    'your_friends_help' => 'To remove usernames select them and click submit.',
-    'add_new_friend'    => 'Voeg Nieuwe Vrienden toe',
-    'add_new_friend_help' => 'You may enter several usernames separated by a comma.',
-    'in_friends_list'   => 'Is Uw Vriend(in)',
-    'send_pm'           => 'Verstuur een Prive Bericht',
-    'error'             => ' Error',
-    'newpm'             => '<b>You have %d new </b><a href="'.$_CONF['site_url'].'/pm/index.php"><b>private message(s)</b>',
-    'address_book'      => 'Address Book',
-    'site_users'        => 'Site Users',
-    'options'           => 'Options',
+    'from' => 'Do',
+    'registered' => 'Dolaczyl',
+    'location' => 'Localizacja',
+    'homepage' => 'Strona Domowa',
+    'move_to_folder' => 'Przenies do folderu',
+    'mark_all' => 'Zaznacz wszystkie',
+    'unmark_all' => 'Odznacz wszystkie',
+    'delete_marked' => 'Usunieto Oznaczono',
+    'archive_marked' => 'Przenies zaznaczone do zapisanych wiadomosci',
+    'message_history' => 'Historia wiadomosci',
+    'add_user' => 'Dodaj uzytkownika',
+    'add_friend' => 'Dodaj przyjaciela',
+    'send' => 'Wyslac',
+    'preview' => 'Podglad',
+    'cancel' => 'Zrezygnuj',
+    'submit' => 'Wyslij',
+    'archive_confirm' => 'Are you sure you want to archive the selected messages?',
+    'batch_confirm' => 'Czy na pewno chcesz przeniesc lub usunac wybrane wiadomosci?',
+    'delete_confirm' => 'Czy na pewno chcesz usunac ta wiadomosc?',
+    'no_messages' => 'Brak wiadomosci w tym folderze',
+    'manage_friends' => 'Zarzadzanie Znajomi',
+    'friend_help' => 'Znajomi umozliwiaja szybki kontakt.',
+    'your_friends' => 'Twoi znajomi',
+    'your_friends_help' => 'Aby usunac uzytkownika zaznacz i kliknij.',
+    'add_new_friend' => 'Dodawanie nowych przyjaciól',
+    'add_new_friend_help' => 'Mozna podac kilka nazw uzytkowników oddzielone przecinkiem.',
+    'in_friends_list' => 'Jest twoim przyjacielem',
+    'send_pm' => 'Send Private Message',
+    'error' => ' Error',
+    'newpm' => "<b>You have %d new </b><a href=\"{$_CONF['site_url']}/pm/index.php\"><b>private message(s)</b>",
+    'address_book' => 'Address Book',
+    'site_users' => 'Site Users',
+    'options' => 'Options',
     'FONTCOLOR' => 'Color',
     'FONTSIZE' => 'Font',
     'CLOSETAGS' => 'Close Tags',
@@ -184,21 +184,21 @@ $LANG_PM_ERROR = array(
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['pm'] = array(
-    'label'                 => 'Prive Berichten',
-    'title'                 => 'Configuratie Prive Berichten'
+    'label' => 'Prywatne wiadomosci',
+    'title' => '	Prywatne wiadomosci Konfiguracja'
 );
 $LANG_confignames['pm'] = array(
-    'messages_per_page'     => 'Berichten per pagina',
-    'post_speedlimit'       => 'Posting Speedlimit (seconds)',
-    'max_recipients'        => 'Max aantal ontvangers per bericht',
-    'displayblocks'         => 'Display glFusion Blocks',
+    'messages_per_page' => 'Wiadomosci na stronie',
+    'post_speedlimit' => 'Posting Speedlimit (seconds)',
+    'max_recipients' => 'Maksymalna liczba adresatów na wiadomosc',
+    'displayblocks' => 'Display glFusion Blocks'
 );
 $LANG_configsubgroups['pm'] = array(
-    'sg_main'               => 'Hoofd Instellingen',
+    'sg_main' => 'Glówne Ustawienia'
 );
 
 $LANG_fs['pm'] = array(
-    'pm_general'            => 'PM Algemene Instellingen',
+    'pm_general' => 'PM Ustawienia ogólne'
 );
 
 $LANG_configSelect['pm'] = array(
@@ -206,10 +206,10 @@ $LANG_configSelect['pm'] = array(
     1 => array(true => 'True', false => 'False'),
     2 => array(0 => 'Left Blocks', 1 => 'Right Blocks', 2 => 'Left & Right Blocks', 3 => 'None')
 );
-
-$PLG_pm_MESSAGE1 = 'Message(s) successfully sent.';
-$PLG_pm_MESSAGE2 = 'Message(s) successfully deleted.';
+$PLG_pm_MESSAGE1 = 'Wiadomosci zostaly wyslane.';
+$PLG_pm_MESSAGE2 = 'Wiadomosci zostaly usuniete.';
 $PLG_pm_MESSAGE3 = 'Message(s) successfully archived.';
 $PLG_pm_MESSAGE4 = 'Private Message Speedlimit Hit - Please wait a minute before sending another message.';
-$PLG_pm_MESSAGE5 = 'Friends List Updated.';
+$PLG_pm_MESSAGE5 = 'Aktualizacja listy przyjaciól.';
+
 ?>

@@ -45,6 +45,14 @@ if (file_exists ($langfile)) {
     require_once $_CONF['path'].'plugins/pm/language/english.php';
 }
 
+if (version_compare(GVERSION,'2.0.0','lt')) {
+    if (isset($LANG_configSelect['pm']) && !isset($LANG_configselects['pm'])) {
+        foreach ($LANG_configSelect['pm'] AS $cfgItem) {
+            $LANG_configselects['pm'][] = array_flip($cfgItem);
+        }
+    }
+}
+
 function plugin_chkVersion_pm() {
     global $_PM_CONF;
 
