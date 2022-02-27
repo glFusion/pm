@@ -4,6 +4,7 @@
 
 - Language file updates
 - glFusion v2 support for configSelect
+- New Czech translation
 
 ## v2.2.1
 
