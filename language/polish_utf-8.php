@@ -2,10 +2,9 @@
 // +--------------------------------------------------------------------------+
 // | PM Plugin - glFusion CMS                                                 |
 // +--------------------------------------------------------------------------+
-// | German_utf-8.php                                                         |
+// | polish.php                                                               |
 // |                                                                          |
-// | German language file                                                     |
-// | Modifiziert: August 09 Tony Kluever									  |
+// | Polish language file                                                     |
 // +--------------------------------------------------------------------------+
 // | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
@@ -35,82 +34,82 @@ if (!defined ('GVERSION')) {
 ###############################################################################
 
 $LANG_PM00 = array(
-    'menulabel' => 'Private-Nachrichten',
+    'menulabel' => 'Prywatne Wiadomosci',
     'plugin' => 'pm',
-    'admin_menu' => 'PN-Admin',
-    'pm_index' => 'PN-Index',
-    'pm' => 'PN',
-    'user_menu' => 'Nachrichtenzentale',
-    'title' => 'Private Nachrichte',
-    'compose_msg' => 'Nachricht schreiben',
+    'admin_menu' => 'PM Admin',
+    'pm_index' => 'PM Index',
+    'pm' => 'PM',
+    'user_menu' => 'Skrzynka Odbiorcza',
+    'title' => 'Wiadomosc Prywatna',
+    'compose_msg' => 'Nowa wiadomosc',
     'compose' => 'Compose',
-    'reply_msg' => 'Nachricht beantworten',
+    'reply_msg' => 'Odpowiedz',
     'reply' => 'Reply',
-    'preview_msg' => 'Nachrichtenvorschau',
-    'quote_msg' => 'Nachricht zitieren',
+    'preview_msg' => 'Podglad Wiadomosci',
+    'quote_msg' => 'Cytuj Wiadomosc',
     'quote' => 'Quote',
-    'delete_msg' => 'Nachricht löschen',
+    'delete_msg' => 'Usun Wiadomosc',
     'delete' => 'Delete',
-    'inbox' => 'Eingang',
-    'sent' => 'Gesendet',
+    'inbox' => 'Skrzynka Odbiorcza',
+    'sent' => 'Wyslany',
     'date' => 'Date',
-    'archive' => 'Archiv',
-    'outbox' => 'Ausgang',
-    'all_messages' => 'Alle Nachrichten',
-    'one_day' => '1 Tag',
-    'seven_days' => '7 Tage',
-    'two_weeks' => '2 Wochen',
-    'one_month' => '1 Monat',
-    'three_months' => '3 Monate',
-    'six_months' => '6 Monate',
-    'one_year' => '1 Jahr',
+    'archive' => 'Archiwum',
+    'outbox' => 'Skrzynka Nadawcza',
+    'all_messages' => 'Wszystkie Wiadomosci',
+    'one_day' => '1 Dzien',
+    'seven_days' => '7 Dni',
+    'two_weeks' => '2 Tygodnie',
+    'one_month' => '1 Miesiac',
+    'three_months' => '3 Miesiace',
+    'six_months' => '6 Miesiecy',
+    'one_year' => '1 Rok',
     'author' => 'Autor',
-    'post_time' => 'Abgesendet:',
-    'subject' => 'Betreff',
-    'ascending' => 'Aufsteigend',
-    'descending' => 'Absteigend',
-    'no_subject' => 'Kein Betreff vorhanden...',
-    'by' => 'Von',
-    'to' => 'An',
-    'folder' => 'Ordner',
-    'view_folder' => 'Ordner anzeigen',
-    'go' => 'Los',
-    'messages' => 'NACHRICHTEN',
-    'select' => 'AUSWÄHLEN',
-    'display' => 'Anzeige',
-    'sort_by' => 'Sortiert nach',
-    'view_msg' => 'Nachricht anzeigen von',
-    'return_to' => 'Zurück nach',
-    'from' => 'Von',
-    'registered' => 'Registriert',
-    'location' => 'Ort',
-    'homepage' => 'Homepage',
-    'move_to_folder' => 'Verschiebe in Ordner',
-    'mark_all' => 'Alle markieren',
-    'unmark_all' => 'Alle demarkieren',
-    'delete_marked' => 'Markierte gelöscht',
-    'archive_marked' => 'Markierte zu gespeicherten Nachrichten verschieben',
-    'message_history' => 'Nachrichtenverlauf',
-    'add_user' => 'Benutzer hinzufügen',
-    'add_friend' => 'Freund hizufügen',
-    'send' => 'Senden',
-    'preview' => 'Vorschau',
-    'cancel' => 'Abbruch',
-    'submit' => 'Abschicken',
+    'post_time' => 'Czas Posta',
+    'subject' => 'Temat',
+    'ascending' => 'Rosnaco',
+    'descending' => 'Malejaco',
+    'no_subject' => 'Brak tematów...',
+    'by' => 'Przez',
+    'to' => 'Do',
+    'folder' => 'Folder',
+    'view_folder' => 'Zobacz folder',
+    'go' => 'Go',
+    'messages' => 'WIADOMOSC',
+    'select' => 'WYBIERZ',
+    'display' => 'Wyswietl',
+    'sort_by' => 'Sortuj wg',
+    'view_msg' => 'Wyswietl Wiadomosci',
+    'return_to' => 'Wróc do',
+    'from' => 'Do',
+    'registered' => 'Dolaczyl',
+    'location' => 'Localizacja',
+    'homepage' => 'Strona Domowa',
+    'move_to_folder' => 'Przenies do folderu',
+    'mark_all' => 'Zaznacz wszystkie',
+    'unmark_all' => 'Odznacz wszystkie',
+    'delete_marked' => 'Usunieto Oznaczono',
+    'archive_marked' => 'Przenies zaznaczone do zapisanych wiadomosci',
+    'message_history' => 'Historia wiadomosci',
+    'add_user' => 'Dodaj uzytkownika',
+    'add_friend' => 'Dodaj przyjaciela',
+    'send' => 'Wyslac',
+    'preview' => 'Podglad',
+    'cancel' => 'Zrezygnuj',
+    'submit' => 'Wyslij',
     'archive_confirm' => 'Are you sure you want to archive the selected messages?',
-    'batch_confirm' => 'Möchtets Du die asugewählten Nachrichten wirklich verschieben oder löschen?',
-    'delete_confirm' => 'Möchtest Du die Nachricht wirklich löschen?',
-    'no_messages' => 'Es sind keine Nachrichten in diesem Ordner',
-    'manage_friends' => 'Freunde verwalten',
-    'friend_help' => 'Freunde ermöglicht Dir einen schnellen Zugriff zu Mitgliedern, mit denen Du oft kommunizierst.',
-    'your_friends' => 'Deine Freunde',
-    'your_friends_help' => 'Um Benutzernamen zu entfernen, wähle sie aus und klicke auf Abschicken.',
-    'add_new_friend' => 'Neue Freunde hinzufügen',
-    'add_new_friend_help' => 'Du kannst mehrere Benutzernamen eingeben, getrennt von einem Komma.',
-    'in_friends_list' => 'ist Dein Freund',
-    'send_pm' => 'Private Nachricht senden',
-    'error' => 'Fehler',
-    'newpm' => "<b>Du hast %d neue </b><a href=\"{$_CONF['site_url']}/pm/index.php\"><b>private Nachricht(en)</b>",
+    'batch_confirm' => 'Czy na pewno chcesz przeniesc lub usunac wybrane wiadomosci?',
+    'delete_confirm' => 'Czy na pewno chcesz usunac ta wiadomosc?',
+    'no_messages' => 'Brak wiadomosci w tym folderze',
+    'manage_friends' => 'Zarzadzanie Znajomi',
+    'friend_help' => 'Znajomi umozliwiaja szybki kontakt.',
+    'your_friends' => 'Twoi znajomi',
+    'your_friends_help' => 'Aby usunac uzytkownika zaznacz i kliknij.',
+    'add_new_friend' => 'Dodawanie nowych przyjaciól',
+    'add_new_friend_help' => 'Mozna podac kilka nazw uzytkowników oddzielone przecinkiem.',
+    'in_friends_list' => 'Jest twoim przyjacielem',
+    'send_pm' => 'Send Private Message',
+    'error' => ' Error',
+    'newpm' => "<b>You have %d new </b><a href=\"{$_CONF['site_url']}/pm/index.php\"><b>private message(s)</b>",
     'address_book' => 'Address Book',
     'site_users' => 'Site Users',
     'options' => 'Options',
@@ -155,27 +154,38 @@ $LANG_PM00 = array(
     't_help' => 'Use [file]#[/file] to embed an attached image in the post',
     'e_help' => 'List item: [*]text',
     'smiley' => 'Smileys'
+    'system_message' => 'System Message',
+    'block_user' => 'Block User',
+    'block_confirm' => 'Are you sure you want to block these users?',
+    'block' => 'Block',
+    'blocked' => 'Blocked',
+    'friend' => 'Friend',
+    'friends' => 'Friends',
+    'friend_added' => 'Added a friend.',
+    'friend_removed' => 'Removed from the address book.',
+    'user_blocked' => 'Blocked the sender',
+    'user_unblocked' => 'The sender has been un-blocked.',
 );
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['pm'] = array(
-    'label' => 'Private-Nachrichten',
-    'title' => 'Private-Nachrichten - Konfiguration'
+    'label' => 'Prywatne wiadomosci',
+    'title' => '	Prywatne wiadomosci Konfiguracja'
 );
 
 $LANG_confignames['pm'] = array(
-    'messages_per_page' => 'Nachrichten je Seite',
-    'post_speedlimit' => 'Nachrichten Speedlimit (Sekunden)',
-    'max_recipients' => 'Max. Anzahl der Empfänger je Nachricht',
+    'messages_per_page' => 'Wiadomosci na stronie',
+    'post_speedlimit' => 'Posting Speedlimit (seconds)',
+    'max_recipients' => 'Maksymalna liczba adresatów na wiadomosc',
     'displayblocks' => 'Display glFusion Blocks'
 );
 
 $LANG_configsubgroups['pm'] = array(
-    'sg_main' => 'Haupteinstellungen'
+    'sg_main' => 'Glówne Ustawienia'
 );
 
 $LANG_fs['pm'] = array(
-    'pm_general' => 'PN - Allgemeine Einstellungen'
+    'pm_general' => 'PM Ustawienia ogólne'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -184,10 +194,10 @@ $LANG_configselects['pm'] = array(
     1 => array('True' => true, 'False' => false),
     2 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
 );
-$PLG_pm_MESSAGE1 = 'Nachricht(en) erfolgreich versendet.';
-$PLG_pm_MESSAGE2 = 'Nachricht(en) erfolgreich gelöscht.';
-$PLG_pm_MESSAGE3 = 'Nachricht(en) erfolgreich archiviert.';
-$PLG_pm_MESSAGE4 = 'Private-Nachrichten - Speedlimit: Bitte warte eine Minute, bevor Du eine andere Nachricht versendest.';
-$PLG_pm_MESSAGE5 = 'Freundesliste aktualisiert.';
+$PLG_pm_MESSAGE1 = 'Wiadomosci zostaly wyslane.';
+$PLG_pm_MESSAGE2 = 'Wiadomosci zostaly usuniete.';
+$PLG_pm_MESSAGE3 = 'Message(s) successfully archived.';
+$PLG_pm_MESSAGE4 = 'Private Message Speedlimit Hit - Please wait a minute before sending another message.';
+$PLG_pm_MESSAGE5 = 'Aktualizacja listy przyjaciól.';
 
 ?>

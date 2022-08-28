@@ -8,9 +8,8 @@ other.
 
 PM has the following system requirements:
 
-* PHP 5.3.3 and higher.
-* MySQL v5.0.15 or newer
-* glFusion v1.5.0 or newer
+* PHP 7.4.0 and higher.
+* glFusion v2.0.0 or newer
 
 ## INSTALLATION
 

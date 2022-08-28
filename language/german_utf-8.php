@@ -155,6 +155,17 @@ $LANG_PM00 = array(
     't_help' => 'Use [file]#[/file] to embed an attached image in the post',
     'e_help' => 'List item: [*]text',
     'smiley' => 'Smileys'
+    'system_message' => 'System Message',
+    'block_user' => 'Block User',
+    'block_confirm' => 'Are you sure you want to block these users?',
+    'block' => 'Block',
+    'blocked' => 'Blocked',
+    'friend' => 'Friend',
+    'friends' => 'Friends',
+    'friend_added' => 'Added a friend.',
+    'friend_removed' => 'Removed from the address book.',
+    'user_blocked' => 'Blocked the sender',
+    'user_unblocked' => 'The sender has been un-blocked.',
 );
 
 // Localization of the Admin Configuration UI
