@@ -1,5 +1,12 @@
 # Private Messages Plugin ChangeLog
 
+## v3.0.0
+Release TBD
+  - Refactor using classes for data types.
+  - Implement user blocking, leveraging the Friends table.
+  - Allow PM to provide notification functions for other plugins.
+  - Remove utility to import from Geeklog Messenger plugin.
+
 ## v2.2.1
   - Fixed incorrect hover text for Link
   - HTML 5 Updates
