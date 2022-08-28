@@ -1,74 +1,62 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | PM Plugin for glFusion CMS                                               |
-// +--------------------------------------------------------------------------+
-// | ajax_addfriend.php                                                       |
-// |                                                                          |
-// | PM plugin add friend                                                     |
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2016 by the following authors:                        |
-// |                                                                          |
-// | Mark R. Evans          mark AT glfusion DOT org                          |
-// +--------------------------------------------------------------------------+
-// |                                                                          |
-// | This program is free software; you can redistribute it and/or            |
-// | modify it under the terms of the GNU General Public License              |
-// | as published by the Free Software Foundation; either version 2           |
-// | of the License, or (at your option) any later version.                   |
-// |                                                                          |
-// | This program is distributed in the hope that it will be useful,          |
-// | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
-// | GNU General Public License for more details.                             |
-// |                                                                          |
-// | You should have received a copy of the GNU General Public License        |
-// | along with this program; if not, write to the Free Software Foundation,  |
-// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.          |
-// |                                                                          |
-// +--------------------------------------------------------------------------+
-
+/**
+ * Take action when a friend is added or removed.
+ *
+ * @author      Mark Evans <mark AT glfusion DOT org>
+ * @copyright   Copyright (c) 2022 Mark Evans <mark AT glfusion DOT org>
+ * @package     pm
+ * @version     v3.0.0
+ * @license     http://opensource.org/licenses/gpl-2.0.php
+ *              GNU Public License v2 or later
+ * @filesource
+ */
 require_once '../lib-common.php';
 
-if (!in_array('pm', $_PLUGINS)) {
+if (
+    !in_array('pm', $_PLUGINS) ||
+    COM_isAnonUser() ||
+    !SEC_hasRights('pm.user')
+) {
     COM_404();
     exit;
 }
 
-if ( COM_isAnonUser() || !SEC_hasRights('pm.user')) {
-    exit;
+$action = $_POST['action'];
+$uid = COM_applyFilter($_POST['uid'],true);
+$stat = COM_applyFilter($_POST['stat'], true);
+$retval = array(
+    'status' => 0,
+    'message' => '',
+);
+
+if ($_USER['uid'] == $uid) {
+    return json_encode($retval);
 }
 
-$uid  = intval(COM_applyFilter($_GET['uid'],true));
-$auid = intval(COM_applyFilter($_GET['auid'],true));
-
-$returnHTML = '';
-
-if ( $_USER['uid'] != $uid ) {
-    return;
+switch ($action) {
+case 'addfriend':
+    switch ($stat) {
+    case 0:     // removing friend
+        PM\Friend::remFriend($uid);
+        $retval['message'] = $LANG_PM00['friend_removed'];
+        break;
+    case 1:
+        PM\Friend::addFriend($uid);
+        $retval['message'] = $LANG_PM00['friend_added'];
+        break;
+    }
+    break;
+case 'blockuser':
+    switch ($stat) {
+    case 0:
+        PM\Friend::unblockUser($uid);
+        $retval['message'] = $LANG_PM00['user_unblocked'];
+        break;
+    case 1:
+        PM\Friend::blockUser($uid);
+        $retval['message'] = $LANG_PM00['user_blocked'];
+        break;
+    }
 }
-if ( $_USER['uid'] == $auid ) {
-    return;
-}
+echo json_encode($retval);
 
-$friendUserName = DB_getItem($_TABLES['users'],'username','uid='.$auid);
-if ( $friendUserName != '' ) {
-    $sql  = "INSERT INTO {$_TABLES['pm_friends']} ";
-    $sql .= "(uid,friend_id,friend_name) ";
-    $sql .= "VALUES (".$_USER['uid'].",'$auid','$friendUserName')";
-    DB_query($sql,1);
-
-    $returnHTML = '<br /><strong>'.$LANG_PM00['in_friends_list'].'</strong><br />';
-} else {
-    $returnHTML = 'User name found';
-}
-
-$html = htmlentities ($returnHTML);
-
-$retval = "<result>";
-$retval .= "<auid>$auid</auid>";
-$retval .= "<html>$html</html>";
-$retval .= "</result>";
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("content-type: text/xml");
-print $retval;
-?>
