@@ -5,82 +5,7 @@
 </script>
 
 <div id="pm">
-	<nav class="uk-navbar uk-margin-bottom">
-		<div class="uk-navbar-brand uk-hidden-small"><i class="uk-icon-comments uk-icon-medium"></i></div>
-		<ul class="uk-navbar-nav uk-hidden-small">
-			<li>
-				<a href="{site_url}/pm/compose.php?mode=new" class="uk-navbar-nav-subtitle uk-text-center">
-					<i class="uk-icon-file-o uk-icon-small" title="{$LANG_PM00[compose]}"></i>
-					<div>{$LANG_PM00[compose]}</div>
-				</a>
-			</li>
-{!if can_reply}
-			<li>
-				<a href="{site_url}/pm/compose.php?mode=reply&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-center">
-					<i class="uk-icon-mail-reply uk-icon-small" title="{$LANG_PM00[reply]}"></i>
-					<div>{$LANG_PM00[reply]}</div>
-				</a>
-			</li>
-{!endif}
-			<li>
-				<a href="{site_url}/pm/compose.php?mode=quote&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-center">
-					<i class="uk-icon-quote-right uk-icon-small" title="{$LANG_PM00[quote]}"></i>
-					<div>{$LANG_PM00[quote]}</div>
-				</a>
-			</li>
-			<li>
-				<a href="{site_url}/pm/index.php?mode=delete&amp;msgid={msg_id}&amp;folder={folder_id}" onclick="return confirm('{$LANG_PM00[delete_confirm]}');" class="uk-navbar-nav-subtitle uk-text-center">
-					<i class="uk-icon-trash uk-icon-small" title="{$LANG_PM00[delete]}"></i>
-					<div>{$LANG_PM00[delete]}</div>
-				</a>
-			</li>
-			<li>
-				<a href="{site_url}/pm/friends.php" class="uk-navbar-nav-subtitle uk-text-center">
-					<i class="uk-icon-book uk-icon-small" title="{$LANG_PM00[address_book]}"></i>
-					<div>{$LANG_PM00[address_book]}</div>
-				</a>
-			</li>
-		</ul>
-		<div class="uk-navbar-flip">
-			<ul class="uk-navbar-nav">
-				<li><a href="{return_link}">{$LANG_PM00[return_to]} {folder}</a></li>
-			</ul>
-		</div>
-
-{# small screen menu #}
-	<div class="uk-button-dropdown uk-navbar-content uk-visible-small" data-uk-dropdown="{mode:'click'}">
-		<a class="uk-navbar-toggle"></a>
-		<div class="uk-dropdown">
-			<ul class="uk-nav uk-nav-dropdown">
-			<li>
-				<a href="{site_url}/pm/compose.php?mode=new" class="uk-navbar-nav-subtitle uk-text-left">
-					{$LANG_PM00[compose]}
-				</a>
-			</li>
-			<li>
-				<a href="{site_url}/pm/compose.php?mode=reply&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-left">
-					{$LANG_PM00[reply]}
-				</a>
-			</li>
-			<li>
-				<a href="{site_url}/pm/compose.php?mode=quote&amp;msgid={msg_id}" class="uk-navbar-nav-subtitle uk-text-left">
-					{$LANG_PM00[quote]}
-				</a>
-			</li>
-			<li>
-				<a href="{site_url}/pm/index.php?mode=delete&amp;msgid={msg_id}&amp;folder={folder_id}" onclick="return confirm('{$LANG_PM00[delete_confirm]}');" class="uk-navbar-nav-subtitle uk-text-left">
-					{$LANG_PM00[delete]}
-				</a>
-			</li>
-			<li>
-				<a href="{site_url}/pm/friends.php" class="uk-navbar-nav-subtitle uk-text-left">
-					{$LANG_PM00[address_book]}
-				</a>
-			</li>
-			</ul>
-		</div>
-	</div>
-{# end of small screen menu #}
+	{menu}
 	</nav>
 	<div class="uk-panel uk-panel-box uk-margin-bottom">
 		<h1 class="uk-panel-title">{subject}</h1>
@@ -88,6 +13,16 @@
 			<div class="uk-width-medium-1-10 uk-text-large">{$LANG_PM00[from]}</div>
 			<div class="uk-width-medium-9-10 uk-text-large">
 				{from_name}
+				<span id="sp_is_friend" style="display:none;">
+					<a href="#" onclick="PM.addFriend({from_uid},0);return false;">
+						<i id="fr_ico" class="uk-icon uk-icon-user uk-text-success tooltip" title="Is a friend, click to remove"></i>
+					</a>
+				</span>
+				<span id="sp_not_friend" style="display:none;">
+					<a href="#" onclick="PM.addFriend({from_uid},1);return false;">
+						<i id="fr_ico" class="uk-icon uk-icon-user uk-text-muted tooltip" title="Add Friend"></i>
+					</a>
+				</span>
 			</div>
 		</div>
 		<div class="uk-grid uk-width-1-1 uk-margin-remove">
@@ -143,6 +78,18 @@
 					{$LANG_PM00[registered]}:&nbsp;{registered}<br>
 					{!endif}
 				</div>
+{!if can_block}
+				<div id="unblock_user" style="display:none;">
+					<a href="#" onclick="PM.blockUser({from_uid},0);return false;" style="float:right">
+						<i class="uk-icon uk-icon-user-times uk-text-danger tooltip" title="UnBlock User"></i>
+					</a>
+				</div>
+				<div id="block_user" style="display:none;">
+					<a href="#" onclick="PM.blockUser({from_uid},1);return false;" style="float:right">
+						<i id="blk_ico" class="uk-icon uk-icon-user-times uk-text-muted tooltip" title="Block User"></i>
+					</a>
+				</div>
+{!endif}
 			</div>
 		</div>
 	</div>
@@ -156,4 +103,16 @@
 	</div>
 {!endif}
 </div>
+<script>
+if ({is_blocked}) {
+	$("#unblock_user").css("display", "block");
+} else {
+	$("#block_user").css("display", "block");
+}
+if ({is_friend}) {
+	$("#sp_is_friend").css("display", "inline");
+} else {
+	$("#sp_not_friend").css("display", "inline");
+}
+</script>
 {# end {templatelocation} #}

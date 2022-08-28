@@ -10,8 +10,8 @@
 </script>
 <script src="{site_url}/pm/javascript/editor.js"></script>
 <form class="uk-form uk-form-horizontal" id="forumpost" name="forumpost" action="{site_url}/pm/compose.php" method="post">
-	<input type="hidden" name="reply_msgid" value="{reply_msgid}">
-	<input type="hidden" name="msgid" value="{msgid}">
+	<input type="hidden" name="parent_id" value="{parent_id}">
+	<input type="hidden" name="msg_id" value="{msg_id}">
 	<input type="hidden" name="{gltoken_name}" value="{gltoken}">
 	<div id="pm" class="pm-main">
 		<nav class="uk-navbar uk-margin-bottom">
@@ -21,15 +21,15 @@
 			<div class="uk-navbar-content">
 				<button class="uk-button uk-button-success" type="submit" name="send" value="{$LANG_PM00[send]}" tabindex="4">{$LANG_PM00[send]}</button>
 				<button class="uk-button uk-button-primary" type="submit" name="preview" value="{$LANG_PM00[preview]}" tablindex="5">{$LANG_PM00[preview]}</button>
-				<button class="uk-button uk-button-danger" type="submit" name="cancel" value="{$LANG_PM00[cancel]}" tabindex="6">{$LANG_PM00[cancel]}</button>
+				<a href="{site_url}/pm/index.php" class="uk-button uk-button-default" type="submit" name="cancel" value="{$LANG_PM00[cancel]}" tabindex="6">{$LANG_PM00[cancel]}</a>
 			</div>
 			<div class="uk-navbar-content uk-navbar-flip uk-hidden-small">
 				{$LANG_PM00[compose_msg]}
 			</div>
 		</nav>
-{!if error_message}
+{!if error_messages}
 		<div class="uk-alert uk-alert-danger">
-			{error_message}
+			{error_messages}
 		</div>
 {!endif}
 {!if preview_text}
@@ -68,7 +68,9 @@
 									<div class="uk-text-large uk-text-center">{$LANG_PM00[site_users]}</div>
 								</div>
 								<div class="uk-form-row uk-text-center">
-									{userselect}
+									<select id="combo_user" name="to_name" multiple="multiple">
+										{userselect_options}
+									</select>
 								</div>
 							</div>
 						</form>
@@ -99,7 +101,7 @@
 			<div class="uk-form-row uk-margin-bottom">
 				<label class="uk-form-label">{$LANG_PM00[subject]}</label>
 				<div class="uk-form-controls">
-					<input class="uk-width-2-3" type="text" id="subject" name="subject" value="{subject}" tabindex="2">
+					<input class="uk-width-2-3" type="text" id="subject" name="message_subject" value="{message_subject}" tabindex="2">
 				</div>
 			</div>
 			<div id="smileys" class="uk-form-row uk-clearfix" style="display:none;">
@@ -159,7 +161,7 @@
 						</ul>
 					</div>
 				</div>
-				<textarea name="comment" id="comment" rows="20" cols="45" tabindex="3" class="post" style="width:100%" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{msg_text}</textarea>
+				<textarea name="message_text" id="comment" rows="20" cols="45" tabindex="3" class="post" style="width:100%" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{message_text}</textarea>
 			</div>
 	</div>
 
@@ -167,7 +169,7 @@
   <div class="uk-margin">
   	<button class="uk-button uk-button-success" type="submit" name="send" value="{$LANG_PM00[send]}">{$LANG_PM00[send]}</button>
   	<button class="uk-button uk-button-primary" type="submit" name="preview" value="{$LANG_PM00[preview]}">{$LANG_PM00[preview]}</button>
-  	<button class="uk-button uk-button-danger"  type="submit" name="cancel" value="{$LANG_PM00[cancel]}">{$LANG_PM00[cancel]}</button>
+  	<button class="uk-button uk-button-default"  type="submit" name="cancel" value="{$LANG_PM00[cancel]}">{$LANG_PM00[cancel]}</button>
   </div>
 #}
 </form>
