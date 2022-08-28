@@ -2,7 +2,7 @@
 // +--------------------------------------------------------------------------+
 // | PM Plugin - glFusion CMS                                                 |
 // +--------------------------------------------------------------------------+
-// | polish.php                                                               |
+// | polish_utf8.php                                                          |
 // |                                                                          |
 // | Polish language file                                                     |
 // +--------------------------------------------------------------------------+
@@ -68,7 +68,7 @@ $LANG_PM00 = array(
     'subject' => 'Temat',
     'ascending' => 'Rosnaco',
     'descending' => 'Malejaco',
-    'no_subject' => 'Brak temat體...',
+    'no_subject' => 'Brak temat贸w...',
     'by' => 'Przez',
     'to' => 'Do',
     'folder' => 'Folder',
@@ -79,7 +79,8 @@ $LANG_PM00 = array(
     'display' => 'Wyswietl',
     'sort_by' => 'Sortuj wg',
     'view_msg' => 'Wyswietl Wiadomosci',
-    'return_to' => 'Wr骳 do',
+    'return_to' => 'Wr贸c do',
+    'sent'              => 'Sent',
     'from' => 'Do',
     'registered' => 'Dolaczyl',
     'location' => 'Localizacja',
@@ -104,8 +105,8 @@ $LANG_PM00 = array(
     'friend_help' => 'Znajomi umozliwiaja szybki kontakt.',
     'your_friends' => 'Twoi znajomi',
     'your_friends_help' => 'Aby usunac uzytkownika zaznacz i kliknij.',
-    'add_new_friend' => 'Dodawanie nowych przyjaci髄',
-    'add_new_friend_help' => 'Mozna podac kilka nazw uzytkownik體 oddzielone przecinkiem.',
+    'add_new_friend' => 'Dodawanie nowych przyjaci贸l',
+    'add_new_friend_help' => 'Mozna podac kilka nazw uzytkownik贸w oddzielone przecinkiem.',
     'in_friends_list' => 'Jest twoim przyjacielem',
     'send_pm' => 'Send Private Message',
     'error' => ' Error',
@@ -137,7 +138,7 @@ $LANG_PM00 = array(
     'VIOLET' => 'Violet',
     'WHITE' => 'White',
     'BLACK' => 'Black',
-    'ID' => 'ID',
+    'ID'    => 'ID',
     'b_help' => 'Bold text: [b]text[/b]',
     'i_help' => 'Italic text: [i]text[/i]',
     'u_help' => 'Underline text: [u]text[/u]',
@@ -167,37 +168,59 @@ $LANG_PM00 = array(
     'user_unblocked' => 'The sender has been un-blocked.',
 );
 
+$LANG_PM_NOTIFY = array(
+    'pm_notify'         => 'PM Notifications',
+    'new_pm_notification' => 'New Private Message Notification',
+    'hello'             => 'Hello',
+    'subject'           => 'Subject',
+    'new_pm_text'       => 'You have a new Private Message from',
+    'disclaimer'        => 'You are receiving this because you allow Private Message notifications.  To change your privacy settings, please use the My Account option at ' . $_CONF['site_url'] ,
+    'sincerely'         => 'Thanks!',
+    'support'           => 'Support',
+    'pm_block'          => 'Block other users from sending me PMs',
+    'notify_header'     => 'Private Message Notification from ',
+);
+
+$LANG_PM_ERROR = array(
+    'token_failure'     => 'Security Token Failure',
+    'message_not_found' => 'Message not found',
+    'no_to_address'     => 'No to address specified',
+    'no_subject'        => 'Subject must not be blank and must be greater than 4 characters in length.',
+    'no_message'        => 'Message body must not be blank and must be greater than 4 characters in length.',
+    'unknown_user'      => 'Unable to locate user:',
+    'too_many_recipients' => 'You have included too many recipients - Maximum %s allowed.',
+    'invalid_msg_id'    => 'Invalid Message ID',
+    'invalid_reply_id'  => 'Invalid Reply ID',
+    'private_user'      => 'User does not allow PM messages',
+);
+
 // Localization of the Admin Configuration UI
 $LANG_configsections['pm'] = array(
     'label' => 'Prywatne wiadomosci',
     'title' => '	Prywatne wiadomosci Konfiguracja'
 );
-
 $LANG_confignames['pm'] = array(
     'messages_per_page' => 'Wiadomosci na stronie',
     'post_speedlimit' => 'Posting Speedlimit (seconds)',
-    'max_recipients' => 'Maksymalna liczba adresat體 na wiadomosc',
+    'max_recipients' => 'Maksymalna liczba adresat贸w na wiadomosc',
     'displayblocks' => 'Display glFusion Blocks'
 );
-
 $LANG_configsubgroups['pm'] = array(
-    'sg_main' => 'Gl體ne Ustawienia'
+    'sg_main' => 'Gl贸wne Ustawienia'
 );
 
 $LANG_fs['pm'] = array(
-    'pm_general' => 'PM Ustawienia og髄ne'
+    'pm_general' => 'PM Ustawienia og贸lne'
 );
 
-// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['pm'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
+$LANG_configSelect['pm'] = array(
+    0 => array(1 => 'True', 0 => 'False'),
+    1 => array(true => 'True', false => 'False'),
+    2 => array(0 => 'Left Blocks', 1 => 'Right Blocks', 2 => 'Left & Right Blocks', 3 => 'None')
 );
 $PLG_pm_MESSAGE1 = 'Wiadomosci zostaly wyslane.';
 $PLG_pm_MESSAGE2 = 'Wiadomosci zostaly usuniete.';
 $PLG_pm_MESSAGE3 = 'Message(s) successfully archived.';
 $PLG_pm_MESSAGE4 = 'Private Message Speedlimit Hit - Please wait a minute before sending another message.';
-$PLG_pm_MESSAGE5 = 'Aktualizacja listy przyjaci髄.';
+$PLG_pm_MESSAGE5 = 'Aktualizacja listy przyjaci贸l.';
 
-?>

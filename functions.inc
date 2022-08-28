@@ -2,7 +2,7 @@
 /**
  * API functions for the Private Message plugin.
  *
- * @author      Lee Garner <lee@leegarner.com>
+ * @author      Mark R. Evans <mark AT glfusion DOT org>
  * @copyright   Copyright (c) 2009-2016 Mark R. Evans <mark AT glfusion DOT org>
  * @package     pm
  * @version     v3.0.0

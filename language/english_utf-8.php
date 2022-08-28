@@ -212,10 +212,10 @@ $LANG_fs['pm'] = array(
     'pm_general'            => 'PM General Settings',
 );
 
-$LANG_configselects['pm'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE),
-    2 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
+$LANG_configSelect['pm'] = array(
+    0 => array(1 => 'True', 0 => 'False'),
+    1 => array(true => 'True', false => 'False'),
+    2 => array(0 => 'Left Blocks', 1 => 'Right Blocks', 2 => 'Left & Right Blocks', 3 => 'None')
 );
 
 $PLG_pm_MESSAGE1 = 'Message(s) successfully sent.';

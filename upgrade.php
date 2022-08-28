@@ -177,7 +177,10 @@ function pm_upgrade()
         case '2.2.0' :
             // no changes
 
-        case '2.2.1':
+        case '2.2.1' :
+            // no changes
+
+        case '2.2.2':
             try {
                 $db->conn->executeQuery(
                     "ALTER TABLE {$_TABLES['pm_friends']} ADD `is_friend` tinyint(1) NOT NULL default 1"
