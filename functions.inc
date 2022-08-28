@@ -1,32 +1,16 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | PM Plugin for glFusion CMS                                               |
-// +--------------------------------------------------------------------------+
-// | functions.inc                                                            |
-// |                                                                          |
-// | Implement the glFusion Plugin API                                        |
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009-2017 by the following authors:                        |
-// |                                                                          |
-// | Mark R. Evans          mark AT glfusion DOT org                          |
-// +--------------------------------------------------------------------------+
-// |                                                                          |
-// | This program is free software; you can redistribute it and/or            |
-// | modify it under the terms of the GNU General Public License              |
-// | as published by the Free Software Foundation; either version 2           |
-// | of the License, or (at your option) any later version.                   |
-// |                                                                          |
-// | This program is distributed in the hope that it will be useful,          |
-// | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
-// | GNU General Public License for more details.                             |
-// |                                                                          |
-// | You should have received a copy of the GNU General Public License        |
-// | along with this program; if not, write to the Free Software Foundation,  |
-// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.          |
-// |                                                                          |
-// +--------------------------------------------------------------------------+
-
+/**
+ * API functions for the Private Message plugin.
+ *
+ * @author      Lee Garner <lee@leegarner.com>
+ * @copyright   Copyright (c) 2009-2016 Mark R. Evans <mark AT glfusion DOT org>
+ * @package     pm
+ * @version     v3.0.0
+ * @since       v3.0.0
+ * @license     http://opensource.org/licenses/gpl-2.0.php
+ *              GNU Public License v2 or later
+ * @filesource
+ */
 if (!defined ('GVERSION')) {
     die ('This file can not be used on its own!');
 }
@@ -59,51 +43,60 @@ spl_autoload_register(function ($class)
         require $file;
     }
 });
+use glFusion\Database\Database;
 
 // Initialize the configuration
-
 require_once $_CONF['path_system'] . 'classes/config.class.php';
 $pm_config = config::get_instance();
 $_PM_CONF = $pm_config->get_config('pm');
-require_once $_CONF['path'].'plugins/pm/pm.php';
+require_once __DIR__ . '/pm.php';
+
+define('PM_URL', $_CONF['site_url'] . '/pm');
 
 $langfile = $_CONF['path'] . 'plugins/pm/language/' . $_CONF['language'] . '.php';
 if (file_exists ($langfile)) {
     require_once $langfile;
 } else {
-    require_once $_CONF['path'].'plugins/pm/language/english.php';
+    require_once $_CONF['path'].'plugins/pm/language/english_utf-8.php';
 }
 
-function plugin_chkVersion_pm() {
+function plugin_chkVersion_pm()
+{
     global $_PM_CONF;
 
     return $_PM_CONF['pi_version'];
 }
 
-function plugin_geticon_pm() {
+function plugin_geticon_pm()
+{
     global $_CONF;
 
     $retval = $_CONF['site_url'].'/pm/images/pm48.png';
     return $retval;
 }
 
-function plugin_upgrade_pm(){
-    global $_CONF, $_TABLES, $_PM_CONF, $_DB_table_prefix;
-
-    if ( @file_exists($_CONF['path'].'plugins/pm/upgrade.php') ) {
-        require_once $_CONF['path'].'plugins/pm/upgrade.php';
+function plugin_upgrade_pm()
+{
+    if (@file_exists(__DIR__ . '/upgrade.php')) {
+        require_once __DIR__ . '/upgrade.php';
         return pm_upgrade();
     } else {
-        COM_errorLog("PM plugin upgrade function not implemented");
-        return 3001;
+        return false;
     }
 }
 
-function plugin_getuseroption_pm() {
+function plugin_getuseroption_pm()
+{
     global $_CONF, $_PM_CONF, $_TABLES, $_USER, $LANG_PM00;
 
-    if ( !COM_isAnonUser() && SEC_hasRights('pm.user')) {
-        $unread = DB_count($_TABLES['pm_dist'],array('user_id','folder_name','pm_unread'),array((int) $_USER['uid'],'inbox',1));
+    if (!COM_isAnonUser() && SEC_hasRights('pm.user')) {
+        $db = Database::getInstance();
+        $unread = $db->getCount(
+            $_TABLES['pm_dist'],
+            array('user_id', 'folder_name', 'pm_unread'),
+            array($_USER['uid'], 'inbox', 1),
+            array(Database::INTEGER, Database::STRING, Database::INTEGER)
+        );
         return array($LANG_PM00['user_menu'], $_CONF['site_url'] . '/pm/index.php', $unread);
     }
 }
@@ -122,28 +115,56 @@ function plugin_autotags_pm($op, $content = '', $autotag = '')
 
 function plugin_user_create_pm($uid)
 {
-    global $_TABLES;
-
-    DB_save($_TABLES['pm_userprefs'],'uid,notify',"'".(int)$uid."',1");
+    $User = PM\User::getInstance($uid);
+    $User->save();
 }
 
 function plugin_user_delete_pm($uid)
 {
     global $_TABLES;
 
-    $sql  = "SELECT * FROM {$_TABLES['pm_msg']} msg ";
-    $sql .= "LEFT JOIN {$_TABLES['pm_dist']} dist ON msg.msg_id=dist.msg_id ";
-    $sql .= "WHERE dist.user_id=".(int) $uid;
-
-    $result = DB_query($sql);
-    while ($msg = DB_fetchArray($result) ) {
+    $db = Database::getInstance();
+    $qb = $db->conn->createQueryBuilder();
+    try {
+        $data = $qb->select('*')
+           ->from($_TABLES['pm_msg'], 'msg')
+           ->leftJoin('msg', $_TABLES['pm_dist'], 'dist', 'msg.msg_id=dist.msg_id')
+           ->where('dist.user_id = ?')
+           ->setParameter(0, $uid, Database::INTEGER)
+           ->execute()
+           ->fetchAll(Database::ASSOCIATIVE);
+    } catch (\Throwable $e) {
+        Log::write('system', Log::ERROR, __FUNCTION__ . ': error ' . $e->getMessage());
+        $data = array();
+    }
+    foreach ($data as $msg) {
         $msg_id = $msg['msg_id'];
-        DB_delete($_TABLES['pm_dist'],array('msg_id','user_id'),array((int) $msg_id,(int) $uid));
-        if ( DB_count($_TABLES['pm_dist'],'msg_id',(int) $msg_id) == 0 ) {
-            DB_delete($_TABLES['pm_msg'],'msg_id',(int) $msg_id);
+        $db->conn->delete(
+            $_TABLES['pm_dist'],
+            array('msg_id', 'user_id'),
+            array($msg_id, $uid),
+            array(Database::INTEGER, Database::INTEGER)
+        );
+        if ($db->getCount(
+            $_TABLES['pm_dist'],
+            array('msg_id'),
+            array($msg_id),
+            array(Database::INTEGER)
+        ) == 0 ) {
+            $db->conn->delete(
+                $_TABLES['pm_msg'],
+                array('msg_id'),
+                array($msg_id),
+                array(Database::INTEGER)
+            );
         }
     }
-    DB_query("DELETE FROM {$_TABLES['pm_friends']} WHERE uid=".(int) $uid,1);
+    $db->conn->delete(
+        $_TABLES['pm_friends'],
+        array('uid'),
+        array($uid),
+        array(Database::INTEGER)
+    );
 }
 
 function plugin_templatesetvars_pm($templatename, &$template)
@@ -152,8 +173,14 @@ function plugin_templatesetvars_pm($templatename, &$template)
 
     if ( COM_isAnonUser() ) return;
 
-    if ( !COM_isAnonUser() && $templatename == 'header' && SEC_hasRights('pm.user')) {
-        $unread = DB_count($_TABLES['pm_dist'],array('user_id','folder_name','pm_unread'),array((int) $_USER['uid'],'inbox',1));
+    if ( $templatename == 'header' && SEC_hasRights('pm.user')) {
+        $db = Database::getInstance();
+        $unread = $db->getCount(
+            $_TABLES['pm_dist'],
+            array('user_id', 'folder_name', 'pm_unread'),
+            array($_USER['uid'], 'inbox', 1),
+            array(Database::INTEGER, Database::STRING, Database::INTEGER)
+        );
         if ( $unread > 0 ) {
             $msg = $template->get_var('welcome_msg');
             $msg .= '</a> - ' . sprintf($LANG_PM00['newpm'], $unread );
@@ -162,20 +189,6 @@ function plugin_templatesetvars_pm($templatename, &$template)
     }
 }
 
-function plugin_userpreferencesedit_pm($panel,$uid)
-{
-    global $_CONF, $_TABLES, $_PM_CONF, $LANG_PM_NOTIFY;
-
-    $retval = '';
-
-    switch ($panel) {
-        case 'privacy' :
-            $retval =  '<tr><td><label>'.$LANG_PM_NOTIFY['pm_notify'].'</label></td><td><input type="checkbox"></td></tr>';
-            $retval .= '<tr><td><label>'.$LANG_PM_NOTIFY['pm_block'].'</label></td><td><input type="checkbox"></td></tr>';
-            break;
-    }
-    return $retval;
-}
 
 function plugin_profileedit_pm($uid,$panel,$fieldset)
 {
@@ -183,38 +196,28 @@ function plugin_profileedit_pm($uid,$panel,$fieldset)
 
     $retval = '';
 
+    $User = PM\User::getInstance($uid);
     switch ($panel) {
         case 'privacy' :
             switch ($fieldset) {
-                case 'privacy' :
-                    $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $uid);
-                    $nrows = DB_numRows($result);
-                    if ($nrows == 0) {
-                        // Insert a new blank record. Defaults are set in SQL Defintion for table.
-                        DB_query("INSERT INTO {$_TABLES['pm_userprefs']} (uid) VALUES (".(int) $uid.")");
-                        $result = DB_query("SELECT * FROM {$_TABLES['pm_userprefs']} WHERE uid=".(int) $uid);
-                    }
-                    $A = DB_fetchArray($result);
-                    $notify = $A['notify'];
-                    $block  = $A['block'];
+            case 'privacy' :
+                $T = new Template(pm_get_template_path());
+                $T->set_file (array ('privacy'=>'profile_privacy.thtml'));
+                $T->set_var(array(
+                    'lang_pmnotify'     => $LANG_PM_NOTIFY['pm_notify'],
+                    'pmnotify_checked'  => $User->getNotify() ? ' checked="checked"' : '',
+                    'lang_pmblock'      => $LANG_PM_NOTIFY['pm_block'],
+                    'pmblock_checked'   => $User->getBlock() ? ' checked="checked"' : '',
+                ));
+                $T->parse ('output', 'privacy');
+                $retval .= $T->finish ($T->get_var('output'));
+                break;
 
-                    $T = new Template(pm_get_template_path());
-                    $T->set_file (array ('privacy'=>'profile_privacy.thtml'));
-                    $T->set_var(array(
-                        'lang_pmnotify'     => $LANG_PM_NOTIFY['pm_notify'],
-                        'pmnotify_checked'  => $notify ? ' checked="checked"' : '',
-                        'lang_pmblock'      => $LANG_PM_NOTIFY['pm_block'],
-                        'pmblock_checked'   => $block ? ' checked="checked"' : '',
-                    ));
-                    $T->parse ('output', 'privacy');
-                    $retval .= $T->finish ($T->get_var('output'));
-                    break;
+            default :
+                $retval = '';
+                break;
             }
-            break;
-
-        default :
-            $retval = '';
-            break;
+        break;
     }
     return $retval;
 }
@@ -229,18 +232,20 @@ function plugin_profilesave_pm( $uid = 0 )
 
     if ( $uid == 0 ) $uid = $_USER['uid'];
 
+    $User = PM\User::getInstance($uid);
+
     if ( isset($_POST['pmnotify']) ) {
-        $notify = 1;
+        $User->withNotify(1);
     } else {
-        $notify = 0;
+        $User->withNotify(0);
     }
     if ( isset($_POST['pmblock']) ) {
-        $block = 1;
+        $User->withBlock(1);
     } else {
-        $block = 0;
+        $User->withBlock(0);
     }
 
-    DB_save($_TABLES['pm_userprefs'],'uid,notify,block',"'".(int) $uid."',".(int) $notify.','.(int) $block);
+    $User->save();
 }
 
 /*
@@ -269,6 +274,53 @@ function plugin_profileicondisplay_pm($uid)
     }
     return $retval;
 }
+
+
+/**
+ * Get additional code to place in the header.
+ * This is used only to register the notification method to glFusion.
+ *
+ * @return  string      Header code (not used)
+ */
+function plugin_getheadercode_pm() : string
+{
+    global $_PM_CONF;
+
+    if (GVERSION > '2.0.2') {
+        glFusion\Notifier::Register($_PM_CONF['pi_name'], 'PM\\Notifier', $_PM_CONF['pi_display_name']);
+    }
+    return '';
+}
+
+
+/**
+ * Get additional CSS into the site header.
+ * Checks first for layout-specific version, gets the plugin default if none.
+ *
+ * @return  array   List of paths to CSS files
+ */
+function plugin_getheadercss_pm()
+{
+    global $_CONF;
+
+    $styles = array();
+    $pi_css = __DIR__ . '/css/';
+    $layout_css = "{$_CONF['path_layout']}plugins/pm/";
+
+    $files = array('style.css');
+
+    foreach ($files as $file) {
+        $styles[] = $pi_css . $file;
+        if (@file_exists($pi_css . 'custom/' . $file)) {
+            $styles[] = $pi_css . 'custom/' . $file;
+        }
+        if (@file_exists($layout_css . $file)) {
+            $styles[] = $layout_css . $file;
+        }
+    }
+    return $styles;
+}
+
 
 function pm_get_template_path()
 {
@@ -346,5 +398,42 @@ function PM_checkAccess() : void
         echo COM_refresh($_CONF['site_url']);
         exit;
     }
+}
+
+function PM_siteHeader($title='', $meta='')
+{
+    global $_PM_CONF;
+
+    $retval = '';
+    $retval .= COM_siteHeader('menu',$title,$meta);
+    return $retval;
+}
+
+function PM_siteFooter() {
+    global $_CONF, $_PM_CONF;
+
+    $retval = '';
+    $retval .= COM_siteFooter();
+    return $retval;
+}
+
+function PM_alertMessage( $msgText = '' )
+{
+    global $_CONF, $_PM_CONF, $LANG_PM00;
+
+    $display = COM_siteHeader('menu',$LANG_PM00['title']);
+
+    $T = new Template(pm_get_template_path());
+    $T->set_file (array ('message'=>'pm_alertmsg.thtml'));
+    $T->set_var(array(
+        'message_title' =>  $LANG_PM00['title'] . $LANG_PM00['error'],
+        'message_text'  =>  $msgText,
+    ));
+    $T->parse ('output', 'message');
+    $display .= $T->finish ($T->get_var('output'));
+
+    $display .= COM_siteFooter();
+    echo $display;
+    exit;
 }
 
