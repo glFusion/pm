@@ -59,5 +59,16 @@ class Author extends \glFusion\User
         return array_key_exists($uid, $this->Blocked);
     }
 
+
+    /**
+     * Check if this author is a PM admin.
+     *
+     * @return  boolean     True for admins, False for regular users
+     */
+    public function isAdmin() : bool
+    {
+        return $this->hasRights('pm.admin');
+    }
+
 }
 
