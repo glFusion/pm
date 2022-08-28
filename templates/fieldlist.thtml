@@ -1,0 +1,27 @@
+{# begin {templatename} #}
+
+<!-- BEGIN field-archive-button -->
+    <button name="{button_name}" class="uk-button uk-button-mini uk-button-primary"
+    <!-- BEGIN attr -->
+        {name}="{value}"
+    <!-- END attr -->
+    ><i class="uk-icon uk-icon-archive"></i>
+    </button>
+{!if text}
+    &nbsp;{text}
+{!endif}
+<!-- END field-archive-button -->
+
+<!-- BEGIN field-block-button -->
+    <button name="{button_name}" class="uk-button uk-button-mini uk-button-danger"
+    <!-- BEGIN attr -->
+        {name}="{value}"
+    <!-- END attr -->
+    ><i class="uk-icon uk-icon-minus-circle"></i>
+    </button>
+{!if text}
+    &nbsp;{text}
+{!endif}
+<!-- END field-block-button -->
+
+{# begin {templatename} #}
