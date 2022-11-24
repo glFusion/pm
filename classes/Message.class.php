@@ -900,11 +900,15 @@ class Message
             ),
         );
 
-        //$message_history = PM_showHistory( $this->msg_id, 0 );
         $message_history = Views\History::render($this->msg_id, 0);
 
         $formatted_msg_text = self::formatTextBlock($this->message_text,'text', $parsers);
         $dt = new \Date($this->message_time, $_USER['tzid']);
+        if ($this->author_uid > 0) {
+            $rank = \glFusion\Badges\Badge::getSingle($this->author_uid)->getHTML();
+        } else {
+            $rank = '';
+        }
         $T->set_var(array(
             'from'          => $this->author_uid,
             'to'            => $this->_uid,
@@ -919,8 +923,7 @@ class Message
             'from_uid'      => $this->author_uid,
             'to_name'       => $this->to_address,
             'msg_id'        => $this->msg_id,
-            //'rank'          => SEC_inGroup('Root',$this->author_uid) ? 'Site Admin' : 'User',
-            'rank'          => \glFusion\Badges\Badge::getSingle($this->author_uid)->getHTML(),
+            'rank'          => $rank,
             'registered'    => $Author->regdate,
             'signature'     => nl2br($Author->sig),
             'homepage'      => $Author->homepage,
