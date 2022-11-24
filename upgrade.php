@@ -192,9 +192,9 @@ function pm_upgrade()
         default:
             try {
                 $db->conn->executeUpdate(
-                    "UPDATE {$_TABLES['plugins']} SET pi_version = ?, pi_gl_version='?
+                    "UPDATE {$_TABLES['plugins']} SET pi_version = ?, pi_gl_version= ?
                     WHERE pi_name='pm' LIMIT 1",
-                    array($_PM_CONF['pi_version'], $_PM_CONF['gl_versoin']),
+                    array($_PM_CONF['pi_version'], $_PM_CONF['gl_version']),
                     array(Database::STRING, Database::STRING)
                 );
             break;
