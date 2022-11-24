@@ -231,7 +231,18 @@ class Message
      */
     public function withAuthorUid(int $uid) : self
     {
+        global $_USER, $_TABLES;
+
         $this->author_uid = (int)$uid;
+        if ($uid == $_USER['uid']) {
+            $this->author_name = $_USER['username'];
+        } else {
+            $this->author_name = Database::getInstance()->getItem(
+                $_TABLES['users'],
+                'username',
+                array('uid' => $uid)
+            );
+        }
         return $this;
     }
 
@@ -530,7 +541,9 @@ class Message
             }
             if (is_array($to_users)) {
                 foreach ($to_users as $user) {
-                    $this->toUsers[$user['uid']] = $user;
+                    if ($user['uid'] > 1) {
+                        $this->toUsers[$user['uid']] = $user;
+                    }
                 }
             }
         }
@@ -963,30 +976,16 @@ class Message
         $db = Database::getInstance();
         if ($folder == 'outbox') {
             foreach ($msgs as $msg_id) {
-                $msg_id = (int)$msg_id;
-                // we know no one has read it yet or it wouldn't be in our out box
-                $db->conn->delete(
-                    $_TABLES['pm_dist'],
-                    array(
-                        'msg_id' => $msg_id,
-                    ),
-                    array(
-                        Database::INTEGER,
-                    )
-                );
-                $db->conn->delete(
-                    $_TABLES['pm_msg'],
-                    array(
-                        'msg_id' => $msg_id,
-                    ),
-                    array(
-                        Database::INTEGER,
-                    )
-                );
+                // We know no one has read it yet or it wouldn't be in our out box.
+                // Delete from both the sender and recipient.
+                $values = array('msg_id' => $msg_id);
+                $types = array(Database::INTEGER);
+                $db->conn->delete($_TABLES['pm_dist'], $values, $types);
+                $db->conn->delete($_TABLES['pm_msg'], $values, $types);
             }
         } else {
             foreach ($msgs as $msg_id) {
-                // must be in our in, sent, or archive folder
+                // Must be in our in, sent, or archive folder. Delete only our copy.
                 $db->conn->delete(
                     $_TABLES['pm_dist'],
                     array(
@@ -1000,6 +999,7 @@ class Message
                         Database::STRING,
                     )
                 );
+                // Then delete the message only if no one else has it in their inbox.
                 $msgCount = $db->getCount($_TABLES['pm_dist'],'msg_id', $msg_id, Database::INTEGER);
                 if ($msgCount == 0) {
                     $db->conn->delete(
