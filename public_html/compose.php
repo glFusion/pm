@@ -22,7 +22,6 @@ PM_checkAccess();
 USES_lib_user();
 USES_lib_bbcode();
 
-
 /*
  * Start of main code
  */
@@ -53,7 +52,10 @@ function PM_msgSend( )
 }
 
 $expected = array(
-    'new', 'edit', 'quote', 'send', 'preview', 'cancel', 'mode',
+    // views
+    'new', 'reply', 'edit', 'quote', 'send',
+    // actions
+    'preview', 'cancel', 'mode',
 );
 $action = 'new';    // default view
 foreach($expected as $provided) {
