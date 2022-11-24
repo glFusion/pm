@@ -277,23 +277,6 @@ function plugin_profileicondisplay_pm($uid)
 
 
 /**
- * Get additional code to place in the header.
- * This is used only to register the notification method to glFusion.
- *
- * @return  string      Header code (not used)
- */
-function plugin_getheadercode_pm() : string
-{
-    global $_PM_CONF;
-
-    if (GVERSION > '2.0.2') {
-        glFusion\Notifier::Register($_PM_CONF['pi_name'], 'PM\\Notifier', $_PM_CONF['pi_display_name']);
-    }
-    return '';
-}
-
-
-/**
  * Get additional CSS into the site header.
  * Checks first for layout-specific version, gets the plugin default if none.
  *
@@ -350,7 +333,7 @@ function plugin_sendmessage_pm(array $A)
 {
     $PM = new PM\Message;
     $PM->withSubject($A['subject'])
-        ->withMessage($A['message']);
+        ->withComment($A['message']);
 
     if (isset($A['to'])) {
         $toList = $A['to'];
@@ -435,5 +418,9 @@ function PM_alertMessage( $msgText = '' )
     $display .= COM_siteFooter();
     echo $display;
     exit;
+}
+
+if (GVERSION > '2.0.2') {
+    glFusion\Notifier::Register($_PM_CONF['pi_name'], 'PM\\Notifier', $_PM_CONF['pi_display_name']);
 }
 
