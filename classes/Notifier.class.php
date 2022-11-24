@@ -31,15 +31,25 @@ class Notifier extends \glFusion\Notifier
     {
         $retval = false;
 
+        $PM = new Message;
         if (!empty($this->recipients)) {
-            $PM = new Message;
-            $PM->withToUsers(array_keys($this->recipients))
-               ->withBccUsers(array_keys($this->bcc))
-               ->withAuthorUid($this->from_uid)
-               ->withSubject($this->subject)
-               ->withComment($this->textmessage);
-            $retval = $PM->send();
+            $uids = array();
+            foreach ($this->recipients as $recip) {
+                $uids[] = $recip['uid'];
+            }
+            $PM->withToUsers($uids);
         }
+        if (!empty($this->bcc)) {
+            $uids = array();
+            foreach ($this->bcc as $bcc) {
+                $uids[] = $bcc['uid'];
+            }
+            $PM->withBccUsers($uids);
+        }
+        $PM->withAuthorUid($this->from_uid)
+           ->withSubject($this->subject)
+           ->withComment($this->textmessage);
+        $retval = $PM->send();
         return $retval;
     }
 
