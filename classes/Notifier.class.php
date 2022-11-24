@@ -47,6 +47,7 @@ class Notifier extends \glFusion\Notifier
             $PM->withBccUsers($uids);
         }
         $PM->withAuthorUid($this->from_uid)
+           ->withAuthorName($this->from_name)
            ->withSubject($this->subject)
            ->withComment($this->textmessage);
         $retval = $PM->send();

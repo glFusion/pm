@@ -169,16 +169,16 @@ class Message
             $this->bcc_address = $A['bcc_address'];
         }
         if (isset($A['author_uid'])) {
-            $this->withAuthorUid((int)$A['author_uid']);
+            $this->author_uid = (int)$A['author_uid'];
         }
         if (isset($A['author_name'])) {
-            $this->withAuthorName($A['author_name']);
+            $this->author_name = $A['author_name'];
         }
         if (isset($A['folder_name'])) {
-            $this->withFolder($A['folder_name']);
+            $this->foler_name = $A['folder_name'];
         }
         if (isset($A['user_id'])) {
-            $this->withUid($A['user_id']);
+            $this->uid = (int)$A['user_id'];
         }
         $this->_pm_unread = (int)$A['pm_unread'];
         $this->withParentId((int)$A['parent_id'])
@@ -225,6 +225,7 @@ class Message
 
     /**
      * Set the message author's user ID.
+     * Also sets the author name if a user ID > 0 is given.
      *
      * @param   integer $uid    Author user ID
      * @return  object  $this
@@ -236,7 +237,7 @@ class Message
         $this->author_uid = (int)$uid;
         if ($uid == $_USER['uid']) {
             $this->author_name = $_USER['username'];
-        } else {
+        } elseif ($uid > 0) {
             $this->author_name = Database::getInstance()->getItem(
                 $_TABLES['users'],
                 'username',

@@ -56,7 +56,7 @@ class Mailbox
         case 'archive':
             $tofrom = $LANG_PM00['from'];
             $tofrom_field = 'author_name';
-            $sql  = "SELECT msg.*, dist.pm_unread, u.username AS author_name
+            $sql  = "SELECT msg.*, dist.pm_unread, u.username
                 FROM {$_TABLES['pm_dist']} dist
                 LEFT JOIN {$_TABLES['pm_msg']} msg ON msg.msg_id=dist.msg_id
                 LEFT JOIN {$_TABLES['users']} u ON dist.author_uid = u.uid
@@ -185,8 +185,13 @@ class Mailbox
         case 'msg_id' :
             return $fieldvalue;
             break;
-        case 'message_subject' :
         case 'author_name' :
+            if (!empty($A['username'])) {
+                // Message from a valid user, override the author name
+                // in case the sender's username was changed.
+                $fieldvalue = $A['username'];
+            }
+        case 'message_subject' :
             $retval = '<a href="'.$_CONF['site_url'].'/pm/view.php?msgid='.$A['msg_id'].'&amp;folder='.$folder.'">'.$fieldvalue.'</a>';
             if ( $A['pm_unread'] == 1 ) {
                 $retval = '<strong>'.$retval.'</strong>';
