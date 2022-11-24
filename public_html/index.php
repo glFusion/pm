@@ -58,19 +58,19 @@ $folder = PM\Folder::fromParams();
 switch ($action) {
 case 'delete_marked':
     PM\Message::delete($_POST['marked_msg_id'], $folder);
-    echo COM_refresh($self);
+    echo COM_refresh($self . '?folder=' . $folder);
     break;
 case 'archive_marked':
     PM\Message::archive($_POST['marked_msg_id'], $folder);
-    echo COM_refresh($self);
+    echo COM_refresh($self . '?folder=' . $folder);
     break;
 case 'block_marked':
     PM\Message::block($_POST['marked_msg_id'], $folder);
-    echo COM_refresh($self);
+    echo COM_refresh($self . '?folder=' . $folder);
     break;
 case 'delete':
     PM\Message::delete($actionval, $folder);
-    echo COM_refresh($self);
+    echo COM_refresh($self . '?folder=' . $folder);
     break;
 case 'archive':
     PM\Message::archive($actionval, $folder);
