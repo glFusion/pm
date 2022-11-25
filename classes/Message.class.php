@@ -847,16 +847,19 @@ class Message
             )
         );
 
+        // move from outbox to sent folder
         $db->conn->update(
             $_TABLES['pm_dist'],
             array('folder_name' => 'sent'),
             array(
                 'msg_id' => $this->msg_id,
-                'user_id' => $this->author_uid,
+                'user_id' => $_USER['uid'],
+                'author_uid' => $this->author_uid,
                 'folder_name' => 'outbox',
             ),
             array(
                 Database::STRING,
+                Database::INTEGER,
                 Database::INTEGER,
                 Database::INTEGER,
                 Database::STRING,
