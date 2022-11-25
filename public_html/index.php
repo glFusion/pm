@@ -88,7 +88,7 @@ $T->set_file(array(
     'list' => 'pm_box.thtml',
     'menu' => 'menu.thtml',
 ));
- 
+
 // build folder selection list
 $MsgList = new PM\Views\Mailbox;
 $MsgList->withFolder($folder);

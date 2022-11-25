@@ -129,7 +129,7 @@ class Message
             } else {
                 $qb->andWhere('dist.user_id = :uid');
             }
-            $data = $qb->execute()->fetch(Database::ASSOCIATIVE);
+            $data = $qb->execute()->fetchAssociative();
             $PM->setVars($data);
         } catch (\Throwable $e) {
             Log::write('system', Log::ERROR, __METHOD__ . ': ' . $e->getMessage());
@@ -180,7 +180,9 @@ class Message
         if (isset($A['user_id'])) {
             $this->uid = (int)$A['user_id'];
         }
-        $this->_pm_unread = (int)$A['pm_unread'];
+        if (isset($A['pm_unread'])) {
+            $this->_pm_unread = (int)$A['pm_unread'];
+        }
         $this->withParentId((int)$A['parent_id'])
               ->withSubject($A['message_subject'])
               ->withComment($A['message_text']);
@@ -360,6 +362,18 @@ class Message
             }
         }
         return implode(',', $names);
+    }
+
+
+    public function getToAddress() : string
+    {
+        return $this->to_address;
+    }
+
+
+    public function getBccAddress() : string
+    {
+        return $this->bcc_address;
     }
 
 
@@ -1066,6 +1080,82 @@ class Message
             $Msg = self::getInstance($msg_id);
             Friend::blockUser($Msg->getAuthorUId());
         }
+    }
+
+
+    /**
+     * Get all messages for a user in a given folder.
+     *
+     * @param   string  $folder     Folder name
+     * @param   integer $uid        User ID, current user by default
+     * @return  array       Array of Message objects
+     */
+    public static function getByFolder(string $folder, ?int $uid=NULL) : array
+    {
+        global $_TABLES, $_USER;
+
+        if (empty($uid)) {
+            $uid = $_USER['uid'];
+        }
+
+        $retval = array();
+        $db = Database::getInstance();
+        $qb = $db->conn->createQueryBuilder();
+        $qb->select('msg.*')
+           ->from($_TABLES['pm_dist'], 'dist')
+           ->leftJoin('dist', $_TABLES['pm_msg'], 'msg', 'msg.msg_id = dist.msg_id')
+           ->where('dist.folder_name = :folder')
+           ->setParameter('folder', $folder, Database::STRING)
+           ->setParameter('uid', $uid, Database::INTEGER);
+
+        switch ($folder) {
+        case 'inbox' :
+        case 'archive':
+            // Limit to the target user in the dist table and get 
+            $qb->addSelect('u.username')
+               ->leftJoin('dist', $_TABLES['users'], 'u', 'dist.author_uid = u.uid')
+               ->andWhere('dist.user_id = :uid');
+            break;
+        case 'sent' :
+        case 'outbox':
+            $qb->andWhere('msg.author_uid = :uid');
+            break;
+        }
+
+        try {
+            $stmt = $qb->execute();
+        } catch (\Throwable $e) {
+            Log::write('system', Log::ERROR, __METHOD__ . ': ' . $e->getMessage());
+            $stmt = false;
+        }
+        if ($stmt) {
+            while ($A = $stmt->fetchAssociative()) {
+                $retval[$A['msg_id']] = new self;
+                $retval[$A['msg_id']]->setVars($A);
+            }
+        }
+        return $retval;
+    }
+
+
+    /**
+     * Format message data as XML for the privacy export.
+     *
+     * @return  string      XML for one message
+     */
+    public function toXML() : string
+    {
+        $retval = "<message>\n";
+        $retval .= '<timestamp>' . $this->message_time . "</timestamp>\n";
+        $retval .= '<from>' . $this->author_name . "</from>\n";
+        $retval .= '<to>' . $this->to_address . "</to>\n";
+        if (!empty($this->bcc_address)) {
+            $retval .= '<bcc>' . $this->bcc_address . "</bcc>\n";
+        }
+        $retval .= '<subject>' . $this->message_subject . "</subject>\n";
+        $retval .= '<content>' . $this->message_text . "</content>\n";
+        $retval .= "</message>\n";
+        return $retval;
     }
 
 }

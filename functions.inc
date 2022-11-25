@@ -319,6 +319,36 @@ function pm_get_template_path()
 
 
 /**
+ * Export user data when requested.
+ * Exports all private messages organized by folder
+ *
+ * @param   integer $uid        User ID
+ * @param   string  $email      User Email Address (not used)
+ * @param   string  $username   User Name (not used)
+ * @param   string  $ip         IP address (not used)
+ * @return  string              XML-formatted data
+ */
+function plugin_privacy_export_pm($uid,$email='',$username='',$ip='')
+{
+    $retval = "<private_messages>\n";
+    foreach (array('inbox', 'outbox', 'sent', 'archive') as $folder) {
+        $retval .= "<$folder>\n";
+        $msgs = PM\Message::getByFolder($folder, $uid);
+        foreach ($msgs as $msg) {
+            $retval .= $msg->toXML();
+        }
+        $retval .= "</$folder>\n";
+    }
+    $retval .= "</private_messages>\n";
+
+    if ( function_exists('tidy_repair_string')) {
+        $retval = tidy_repair_string($retval, array('input-xml' => 1));
+    }
+    return $retval;
+}
+
+
+/**
  * Send a private message, either by a system event or from a user.
  *
  * Parameter array consists of:

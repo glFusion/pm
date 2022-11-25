@@ -27,7 +27,7 @@ class Folder
         }
         return $folder;
     }
-    
+
 
     public static function makeSelection(string $folder='') : string
     {
@@ -57,7 +57,7 @@ class Folder
             ),
         ) );
         return $folderSelect;
-    } 
+    }
 
 }
 

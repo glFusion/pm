@@ -199,8 +199,8 @@ class User extends \glFusion\User
         }
         return $this;
     }
-    
-    
+
+
     /**
      * Get the options for the site user address list.
      * Blocks those in the Friends table who have blocked this user,

@@ -49,7 +49,7 @@ class Mailbox
         global $_USER, $LANG_PM00, $_TABLES, $_CONF;
 
         USES_lib_admin();
-        
+
         $uid = (int)$_USER['uid'];  // probably unnecessary sanitization
         switch ($this->folder) {
         case 'inbox' :
@@ -136,7 +136,6 @@ class Mailbox
             'chkall' => true,
             'chkactions' => $arc_action . '&nbsp;&nbsp;' . $del_action . '&nbsp;&nbsp;' . $blk_action,
         );
-        
         $query_arr = array(
             'table' => $_TABLES['pm_msg'],
             'sql' => $sql,
@@ -145,7 +144,6 @@ class Mailbox
             ),
             'default_filter' => ''
         );
-
         $msg_list = ADMIN_list(
             'mailbox',
             array(__CLASS__, 'getListField'),
