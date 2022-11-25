@@ -39,6 +39,8 @@ class History
             return '';
         }
 
+        USES_lib_bbcode();
+
         $dt = new \Date('now',$_USER['tzid']);
         $uid = (int)$_USER['uid'];
 
@@ -58,10 +60,10 @@ class History
         try {
             $data = $db->conn->executeQuery(
                 "SELECT * FROM {$_TABLES['pm_msg']}
-                WHERE msg_id = $parent_id OR parent_id = $parent_id
+                WHERE msg_id = ? OR parent_id = ?
                 ORDER BY message_time DESC",
-                array($parent_id),
-                array(Database::INTEGER)
+                array($parent_id, $parent_id),
+                array(Database::INTEGER, Database::INTEGER)
             )->fetchAll(Database::ASSOCIATIVE);
         } catch (\Throwable $e) {
             Log::write('system', Log::ERROR, $e->getMessage());
